@@ -68,11 +68,11 @@ function calculateVdzCdst(){
   if(f.disease!=='CD'||f.cdstAlbumin===''||f.cdstCrp===''){
     output.className='cdst-result';output.innerHTML='<strong>VDZ-CDST</strong><span>アルブミンとCRPを入力してください</span>';return null;
   }
-  const albumin=Number(f.cdstAlbumin),crp=Number(f.cdstCrp);
-  if(!Number.isFinite(albumin)||!Number.isFinite(crp)||albumin<10||albumin>60||crp<0||crp>500)return null;
+  const albuminGdl=Number(f.cdstAlbumin),albuminGl=albuminGdl*10,crpMgdl=Number(f.cdstCrp),crpMgl=crpMgdl*10;
+  if(!Number.isFinite(albuminGdl)||!Number.isFinite(crpMgdl)||albuminGdl<1||albuminGdl>6||crpMgdl<0||crpMgdl>50)return null;
   const priorAntiTnf=used().some(id=>['IFX','ADA','GLM'].includes(id));
-  let score=(yes('cdstSurgery')?0:2)+(priorAntiTnf?0:3)+(yes('cdstFistula')?0:2)+(albumin*0.4);
-  score+=crp<3?0:crp<=10?-0.5:-3;
+  let score=(yes('cdstSurgery')?0:2)+(priorAntiTnf?0:3)+(yes('cdstFistula')?0:2)+(albuminGl*0.4);
+  score+=crpMgl<3?0:crpMgl<=10?-0.5:-3;
   score=Math.round(score*10)/10;
   const category=score<=13?'低':score<=19?'中間':'高';
   output.className=`cdst-result cdst-${category==='高'?'high':category==='中間'?'mid':'low'}`;
@@ -89,9 +89,9 @@ function validateForm(){
   if(!f.severity)errors.push([form.elements.severity,'活動性を選択してください']);
   if(f.disease==='CD'){
     if(f.cdstAlbumin==='')errors.push([form.elements.cdstAlbumin,'CDST計算用のアルブミンを入力してください']);
-    else if(+f.cdstAlbumin<10||+f.cdstAlbumin>60)errors.push([form.elements.cdstAlbumin,'アルブミンは10〜60 g/Lで入力してください']);
+    else if(+f.cdstAlbumin<1||+f.cdstAlbumin>6)errors.push([form.elements.cdstAlbumin,'アルブミンは1.0〜6.0 g/dLで入力してください']);
     if(f.cdstCrp==='')errors.push([form.elements.cdstCrp,'CDST計算用のCRPを入力してください']);
-    else if(+f.cdstCrp<0||+f.cdstCrp>500)errors.push([form.elements.cdstCrp,'CRPは0〜500 mg/Lで入力してください']);
+    else if(+f.cdstCrp<0||+f.cdstCrp>50)errors.push([form.elements.cdstCrp,'CRPは0〜50 mg/dLで入力してください']);
   }
   if(errors.length){errors.forEach(([el])=>el.closest('.field')?.classList.add('invalid'));showToast(errors.map(x=>x[1]).join('／'));errors[0][0].scrollIntoView({behavior:'smooth',block:'center'});errors[0][0].focus();return false}
   return true;

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD Advanced Therapy 選択支援 Ver.3.6.0</title>
-<link rel="stylesheet" href="static/style.css?v=3.6.0">
+<title>IBD Advanced Therapy 選択支援 Ver.3.6.1</title>
+<link rel="stylesheet" href="static/style.css?v=3.6.1">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -15,7 +15,7 @@
 <div class="eyebrow">IBD CLINICAL DECISION SUPPORT</div>
 <h1>Advanced Therapy 選択支援</h1>
 <p>潰瘍性大腸炎・クローン病の患者背景と治療目標を整理し、候補薬を比較します。</p>
-<span class="version">Version 3.6.0</span>
+<span class="version">Version 3.6.1</span>
 </header>
 <form id="patientForm">
 <section>
@@ -123,19 +123,19 @@
 </div>
 <div class="cdst-labs">
 <label class="field">
-<span>ベースライン アルブミン（g/L）</span>
-<input name="cdstAlbumin" type="number" min="10" max="60" step="0.1" inputmode="decimal" placeholder="例：38">
+<span>ベースラインのアルブミン（g/dL）</span>
+<input name="cdstAlbumin" type="number" min="1" max="6" step="0.1" inputmode="decimal" placeholder="例：3.8">
 </label>
 <label class="field">
-<span>ベースライン CRP（mg/L）</span>
-<input name="cdstCrp" type="number" min="0" max="500" step="0.1" inputmode="decimal" placeholder="例：8.5">
+<span>ベースラインのCRP（mg/dL）</span>
+<input name="cdstCrp" type="number" min="0" max="50" step="0.01" inputmode="decimal" placeholder="例：0.85">
 </label>
 </div>
 <div class="cdst-result" id="cdstResult" aria-live="polite">
 <strong>VDZ-CDST</strong>
 <span>アルブミンとCRPを入力してください</span>
 </div>
-<p class="cdst-note">抗TNF使用歴は「使用したAdvanced Therapy」のIFX・ADA・GLMから自動判定します。このCDSTはCD重症度ではなく、ベドリズマブ反応予測の補助指標です。</p>
+<p class="cdst-note">アルブミンはg/dL、CRPはmg/dLで入力し、計算時にそれぞれg/L、mg/Lへ自動換算します。抗TNF使用歴は「使用したAdvanced Therapy」のIFX・ADA・GLMから自動判定します。このCDSTはCD重症度ではなく、ベドリズマブ反応予測の補助指標です。</p>
 </div>
 <div class="input-group route-group">
 <div class="group-title">
@@ -193,11 +193,11 @@
 </div>
 </dialog>
 <footer>
-<strong>IBD Advanced Therapy 選択支援 Ver.3.6.0</strong>
+<strong>IBD Advanced Therapy 選択支援 Ver.3.6.1</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=3.6.0" charset="utf-8">
+<script src="static/app.js?v=3.6.1" charset="utf-8">
 </script>
 </body>
 </html>
