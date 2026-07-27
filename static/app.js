@@ -129,11 +129,21 @@ function resultTags(reasons){
 function renderUsed(disease){
   usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
 }
+function updateRoutePreferences(changed){
+  const routes=selected('inductionRoute'),any=yes('inductionAny'),field=document.querySelector('#maintenanceRouteField');
+  const oralOnly=routes.length===1&&routes[0]==='oral';
+  const show=any||routes.some(route=>route!=='oral');
+  field.hidden=!show;
+  if(changed==='inductionRoute'||changed==='inductionAny')form.elements.maintenanceRoute.value=oralOnly?'oral':'any';
+  if(!routes.length&&!any)form.elements.maintenanceRoute.value='any';
+}
 function conditional(changed){
   const f=data(); female.hidden=f.sex!=='female'; cd.hidden=f.disease!=='CD';
+  document.querySelector('#treatmentStepNumber').textContent=f.sex==='female'?'03':'02';
   if(changed==='disease')renderUsed(f.disease);
   if(f.sex!=='female')for(const n of ['lifeNone','menopause','pregnancyPlan','pregnant','nursing'])form.elements[n].checked=false;
   pregnancy.hidden=yes('lifeNone')||yes('menopause');
+  updateRoutePreferences(changed);
   calculateVdzCdst();
 }
 form.addEventListener('change',e=>{
@@ -143,6 +153,8 @@ form.addEventListener('change',e=>{
   if(n==='menopause'&&e.target.checked)for(const x of ['pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
   if(n==='optimizationNone'&&e.target.checked)for(const x of ['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch'])form.elements[x].checked=false;
   if(['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch'].includes(n)&&e.target.checked)form.elements.optimizationNone.checked=false;
+  if(n==='inductionAny'&&e.target.checked)form.querySelectorAll('input[name="inductionRoute"]').forEach(x=>x.checked=false);
+  if(n==='inductionRoute'&&e.target.checked)form.elements.inductionAny.checked=false;
   e.target.closest('.field')?.classList.remove('invalid'); conditional(n); results.hidden=true;
 });
 form.addEventListener('input',e=>{e.target.closest('.field')?.classList.remove('invalid');calculateVdzCdst();results.hidden=true});
@@ -231,7 +243,15 @@ document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0
 document.querySelector('#restart').onclick=()=>{form.reset();renderUsed('');conditional();results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
 
 const trialRoot=document.querySelector('#trials'),dialog=document.querySelector('#trialDialog'),detail=document.querySelector('#trialDetail');
-trialRoot.innerHTML=drugs.map(d=>`<button type="button" class="trial-card" data-drug="${d.id}" aria-label="${d.name}の臨床試験結果を見る"><span>${d.cls}</span><strong>${d.name}</strong><small>${d.trials}</small><em>${evidence[d.id]?'結果グラフを見る':'試験名を確認'}</em></button>`).join('');
+function mechanismGroup(d){
+  if(d.cls.includes('抗TNF'))return 'tnf';
+  if(d.cls.includes('インテグリン'))return 'integrin';
+  if(d.cls.includes('IL-12/23'))return 'il12';
+  if(d.cls.includes('IL-23'))return 'il23';
+  if(d.cls.includes('JAK'))return 'jak';
+  return 's1p';
+}
+trialRoot.innerHTML=drugs.map(d=>`<button type="button" class="trial-card trial-${mechanismGroup(d)}" data-drug="${d.id}" aria-label="${d.name}の臨床試験結果を見る"><span>${d.cls}</span><strong>${d.name}</strong><small>${d.trials}</small><em>${evidence[d.id]?'結果グラフを見る':'試験名を確認'}</em></button>`).join('');
 function renderStudy(ev,index=0){
   const studies=ev.studies||[ev],study=studies[index];
   detail.innerHTML=`<span class="eyebrow">CLINICAL TRIAL</span>${studies.length>1?`<div class="study-tabs">${studies.map((s,i)=>`<button type="button" data-study="${i}" class="${i===index?'active':''}">${s.trial}</button>`).join('')}</div>`:''}<h2>${study.trial}</h2><p>${study.endpoint}</p>${study.periods.map(([label,active,control])=>`<div class="chart"><b>${label}</b><div class="barrow"><span>${control==null?'継続投与群':study.activeLabel||'実薬'} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control"><span>${study.controlLabel||'対照'} ${control}%</span><i style="width:${control}%"></i></div>`}</div>`).join('')}<p class="trial-note">※ 対象集団、評価項目の定義、再ランダム化条件、評価時点は試験ごとに異なります。試験間の数値を直接比較しないでください。</p><a href="${study.source}" target="_blank" rel="noopener">一次資料を開く</a>${study.source2?`　<a href="${study.source2}" target="_blank" rel="noopener">関連試験資料を開く</a>`:''}`;

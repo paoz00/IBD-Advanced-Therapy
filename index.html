@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD Advanced Therapy 選択支援 Ver.3.8.0</title>
-<link rel="stylesheet" href="static/style.css?v=3.8.0">
+<title>IBD Advanced Therapy 選択支援 Ver.3.9.0</title>
+<link rel="stylesheet" href="static/style.css?v=3.9.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -15,7 +15,7 @@
 <div class="eyebrow">IBD CLINICAL DECISION SUPPORT</div>
 <h1>Advanced Therapy 選択支援</h1>
 <p>潰瘍性大腸炎・クローン病の患者背景と治療目標を整理し、候補薬を比較します。</p>
-<span class="version">Version 3.8.0</span>
+<span class="version">Version 3.9.0</span>
 </header>
 <form id="patientForm">
 <section>
@@ -88,7 +88,7 @@
 </section>
 <section>
 <h2>
-<b>03</b> 治療背景とリスク</h2>
+<b id="treatmentStepNumber">02</b> 治療背景とリスク</h2>
 <div class="history-guide">
 <strong>高度治療歴</strong>
 <span>下の薬剤一覧から、これまでに使用したATをすべて選択してください。</span>
@@ -152,14 +152,15 @@
 </div>
 <div class="preference-block">
 <h4>導入療法で許容できる投与経路（複数選択可）</h4>
-<p class="hint">未選択の場合は「こだわらない」として扱います。</p>
+<p class="hint">希望する経路、または「こだわらない」を選択してください。</p>
 <div class="checks">
+<label class="check"><input name="inductionAny" type="checkbox"><span>こだわらない</span></label>
 <label class="check"><input name="inductionRoute" value="iv" type="checkbox"><span>点滴静注</span></label>
 <label class="check"><input name="inductionRoute" value="sc" type="checkbox"><span>皮下注</span></label>
 <label class="check"><input name="inductionRoute" value="oral" type="checkbox"><span>内服</span></label>
 </div>
 </div>
-<label class="field route-field">
+<label class="field route-field" id="maintenanceRouteField" hidden>
 <span>維持療法で希望する投与経路</span>
 <select name="maintenanceRoute">
 <option value="any">こだわらない</option>
@@ -206,6 +207,14 @@
 <span class="eyebrow">EVIDENCE LIBRARY</span>
 <h2>主要臨床試験</h2>
 <p>カードを押すと主要評価項目をグラフで確認できます。試験間の単純比較には使用できません。</p>
+<div class="trial-legend" aria-label="作用機序別の色分け">
+<span class="legend-tnf">抗TNF</span>
+<span class="legend-integrin">抗インテグリン</span>
+<span class="legend-il12">IL-12/23</span>
+<span class="legend-il23">IL-23</span>
+<span class="legend-jak">JAK</span>
+<span class="legend-s1p">S1P</span>
+</div>
 <div id="trials" class="trial-grid">
 </div>
 </section>
@@ -215,11 +224,11 @@
 </div>
 </dialog>
 <footer>
-<strong>IBD Advanced Therapy 選択支援 Ver.3.8.0</strong>
+<strong>IBD Advanced Therapy 選択支援 Ver.3.9.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=3.8.0" charset="utf-8">
+<script src="static/app.js?v=3.9.0" charset="utf-8">
 </script>
 </body>
 </html>
