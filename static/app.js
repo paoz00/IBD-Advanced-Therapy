@@ -149,6 +149,7 @@ function updateBurdenVisibility(routes,any,maintenanceVisible){
     injectionIncrease:possible.has('sc'),
     adherenceOk:possible.has('oral')
   };
+  document.querySelector('#burdenBlock').hidden=!Object.values(visibility).some(Boolean);
   Object.entries(visibility).forEach(([name,show])=>{
     const input=form.elements[name],label=input.closest('.check');
     label.hidden=!show;
@@ -173,6 +174,7 @@ function updateRoutePreferences(changed){
 function conditional(changed){
   const f=data(); female.hidden=f.sex!=='female'; cd.hidden=f.disease!=='CD';
   document.querySelector('#treatmentStepNumber').textContent=f.sex==='female'?'03':'02';
+  document.querySelector('#routeStepNumber').textContent=f.disease==='CD'?'04':'03';
   if(changed==='disease')renderUsed(f.disease);
   updateOptimizationVisibility();
   if(f.sex!=='female')for(const n of ['lifeNone','menopause','pregnancyPlan','pregnant','nursing'])form.elements[n].checked=false;
@@ -293,6 +295,7 @@ function renderStudy(ev,index=0){
 }
 trialRoot.addEventListener('click',e=>{
   const card=e.target.closest('[data-drug]'); if(!card)return; const d=drugs.find(x=>x.id===card.dataset.drug),ev=evidence[d.id];
+  dialog.className=`trial-${mechanismGroup(d)}`;
   if(ev){const studies=ev.studies||[ev],disease=data().disease,initial=Math.max(0,studies.findIndex(s=>s.trial.includes(`（${disease}）`)));renderStudy(ev,initial)}else detail.innerHTML=`<h2>${d.name}</h2><p>${d.trials}</p><p>グラフ用の検証済み数値は次版で追加予定です。</p>`;
   if(typeof dialog.showModal==='function')dialog.showModal();else{dialog.setAttribute('open','');dialog.scrollIntoView({behavior:'smooth',block:'center'})}
 });

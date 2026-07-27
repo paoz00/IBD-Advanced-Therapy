@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD Advanced Therapy 選択支援 Ver.3.10.0</title>
-<link rel="stylesheet" href="static/style.css?v=3.10.0">
+<title>IBD Advanced Therapy 選択支援 Ver.3.10.1</title>
+<link rel="stylesheet" href="static/style.css?v=3.10.1.2">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -15,7 +15,7 @@
 <div class="eyebrow">IBD CLINICAL DECISION SUPPORT</div>
 <h1>Advanced Therapy 選択支援</h1>
 <p>潰瘍性大腸炎・クローン病の患者背景と治療目標を整理し、候補薬を比較します。</p>
-<span class="version">Version 3.10.0</span>
+<span class="version">Version 3.10.1</span>
 </header>
 <form id="patientForm">
 <section>
@@ -144,7 +144,7 @@
 </div>
 <div class="input-group route-group">
 <div class="group-title">
-<span>04</span>
+<span id="routeStepNumber">03</span>
 <div>
 <h3>投与経路と治療最適化の希望</h3>
 <p>導入期と維持期を分け、効果減弱時の調整方法と許容できる負担を選択します。</p>
@@ -173,7 +173,7 @@
 <h4>効果減弱時の治療最適化</h4>
 <div class="checks" id="optimizationChecks"></div>
 </div>
-<div class="preference-block">
+<div class="preference-block" id="burdenBlock" hidden>
 <h4>許容できる投与負担</h4>
 <div class="checks" id="burdenChecks"></div>
 </div>
@@ -224,11 +224,11 @@
 </div>
 </dialog>
 <footer>
-<strong>IBD Advanced Therapy 選択支援 Ver.3.10.0</strong>
+<strong>IBD Advanced Therapy 選択支援 Ver.3.10.1</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=3.10.0" charset="utf-8">
+<script src="static/app.js?v=3.10.1.2" charset="utf-8">
 </script>
 </body>
 </html>
