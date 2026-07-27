@@ -15,7 +15,7 @@ const regimenData={
   ETR:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
   TOF:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
   FIL:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
-  UPA:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'}
+  UPA:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服',optimization:{kind:'intensify',points:2,label:'維持療法15mgから30mgへの増量選択肢',diseases:['UC','CD']}}
 };
 drugs.forEach(d=>Object.assign(d,regimenData[d.id]));
 
@@ -129,18 +129,52 @@ function resultTags(reasons){
 function renderUsed(disease){
   usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
 }
+function updateOptimizationVisibility(){
+  const input=form.elements.secondaryLoss,label=input.closest('.check'),hasUsedAt=used().length>0;
+  label.hidden=!hasUsedAt;
+  if(!hasUsedAt)input.checked=false;
+}
+function updateBurdenVisibility(routes,any,maintenanceVisible){
+  const possible=new Set(any?['iv','sc','oral']:routes);
+  if(maintenanceVisible){
+    const value=form.elements.maintenanceRoute.value;
+    if(value==='any'){
+      [...form.elements.maintenanceRoute.options].filter(option=>option.value!=='any'&&!option.disabled).forEach(option=>possible.add(option.value));
+    }else possible.add(value);
+  }
+  const visibility={
+    visitIncrease:possible.has('iv')||possible.has('sc'),
+    infusionTime:possible.has('iv'),
+    selfInjection:possible.has('sc'),
+    injectionIncrease:possible.has('sc'),
+    adherenceOk:possible.has('oral')
+  };
+  Object.entries(visibility).forEach(([name,show])=>{
+    const input=form.elements[name],label=input.closest('.check');
+    label.hidden=!show;
+    if(!show)input.checked=false;
+  });
+}
 function updateRoutePreferences(changed){
   const routes=selected('inductionRoute'),any=yes('inductionAny'),field=document.querySelector('#maintenanceRouteField');
-  const oralOnly=routes.length===1&&routes[0]==='oral';
-  const show=any||routes.some(route=>route!=='oral');
+  const allowedMaintenance=new Set(any?['iv','sc','oral']:drugs.filter(d=>d.induction.some(route=>routes.includes(route))).flatMap(d=>d.maintenance));
+  [...form.elements.maintenanceRoute.options].filter(option=>option.value!=='any').forEach(option=>{
+    const allowed=allowedMaintenance.has(option.value);
+    option.hidden=!allowed;option.disabled=!allowed;
+  });
+  const onlyRoute=allowedMaintenance.size===1?[...allowedMaintenance][0]:null;
+  const show=allowedMaintenance.size>1;
   field.hidden=!show;
-  if(changed==='inductionRoute'||changed==='inductionAny')form.elements.maintenanceRoute.value=oralOnly?'oral':'any';
+  if(changed==='inductionRoute'||changed==='inductionAny')form.elements.maintenanceRoute.value=onlyRoute||'any';
+  if(form.elements.maintenanceRoute.selectedOptions[0]?.disabled)form.elements.maintenanceRoute.value=onlyRoute||'any';
   if(!routes.length&&!any)form.elements.maintenanceRoute.value='any';
+  updateBurdenVisibility(routes,any,show);
 }
 function conditional(changed){
   const f=data(); female.hidden=f.sex!=='female'; cd.hidden=f.disease!=='CD';
   document.querySelector('#treatmentStepNumber').textContent=f.sex==='female'?'03':'02';
   if(changed==='disease')renderUsed(f.disease);
+  updateOptimizationVisibility();
   if(f.sex!=='female')for(const n of ['lifeNone','menopause','pregnancyPlan','pregnant','nursing'])form.elements[n].checked=false;
   pregnancy.hidden=yes('lifeNone')||yes('menopause');
   updateRoutePreferences(changed);
