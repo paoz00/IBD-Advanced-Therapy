@@ -1,5 +1,5 @@
 const drugs=[
-['IFX','インフリキシマブ','抗TNF抗体','iv','UC,CD','ACT 1/2・ACCENT I/II・SONIC・UC-SUCCESS'],['ADA','アダリムマブ','抗TNF抗体','sc','UC,CD','ULTRA 2・CLASSIC I・CHARM'],['GLM','ゴリムマブ','抗TNF抗体','sc','UC','PURSUIT-SC・PURSUIT-J'],['VED','ベドリズマブ','抗α4β7インテグリン抗体','iv','UC,CD','GEMINI 1/2'],['UST','ウステキヌマブ','抗IL-12/23p40抗体','sc','UC,CD','UNIFI・UNITI・IM-UNITI'],['RIS','リサンキズマブ','抗IL-23p19抗体','sc','UC,CD','INSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFY'],['MIRI','ミリキズマブ','抗IL-23p19抗体','sc','UC,CD','LUCENT・VIVID-1・VIVID-2'],['GUS','グセルクマブ','抗IL-23p19抗体','sc','UC,CD','QUASAR・ASTRO・GALAXI'],['OZA','オザニモド','S1P受容体調節薬','oral','UC','True North'],['ETR','エトラシモド','S1P受容体調節薬','oral','UC','ELEVATE'],['TOF','トファシチニブ','JAK阻害薬','oral','UC','OCTAVE'],['FIL','フィルゴチニブ','JAK1阻害薬','oral','UC','SELECTION'],['UPA','ウパダシチニブ','JAK1阻害薬','oral','UC,CD','U-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDURE']
+['IFX','インフリキシマブ','抗TNFα抗体','iv','UC,CD','ACT 1/2・ACCENT I/II・SONIC・UC-SUCCESS'],['ADA','アダリムマブ','抗TNFα抗体','sc','UC,CD','ULTRA 2・CLASSIC I・CHARM'],['GLM','ゴリムマブ','抗TNFα抗体','sc','UC','PURSUIT-SC・PURSUIT-J'],['VED','ベドリズマブ','抗α4β7インテグリン抗体','iv','UC,CD','GEMINI 1/2'],['UST','ウステキヌマブ','抗IL-12/23p40抗体','sc','UC,CD','UNIFI・UNITI・IM-UNITI'],['RIS','リサンキズマブ','抗IL-23p19抗体','sc','UC,CD','INSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFY'],['MIRI','ミリキズマブ','抗IL-23p19抗体','sc','UC,CD','LUCENT・VIVID-1・VIVID-2'],['GUS','グセルクマブ','抗IL-23p19抗体','sc','UC,CD','QUASAR・ASTRO・GALAXI'],['OZA','オザニモド','S1P受容体調節薬','oral','UC','True North'],['ETR','エトラシモド','S1P受容体調節薬','oral','UC','ELEVATE'],['TOF','トファシチニブ','JAK阻害薬','oral','UC','OCTAVE'],['FIL','フィルゴチニブ','JAK1阻害薬','oral','UC','SELECTION'],['UPA','ウパダシチニブ','JAK1阻害薬','oral','UC,CD','U-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDURE']
 ].map(([id,name,cls,route,diseases,trials])=>({id,name,cls,route,diseases:diseases.split(','),trials}));
 
 const regimenData={
@@ -29,16 +29,25 @@ IFX:{studies:[
 ]},
 ADA:{studies:[
  {trial:'ULTRA 2（UC）',endpoint:'臨床的寛解（%）',periods:[['Week 8：臨床的寛解',16.5,9.3],['Week 52：臨床的寛解',17.3,8.5]],source:'https://pubmed.ncbi.nlm.nih.gov/22062358/'},
+ {trial:'VARSITY（UC）',headToHead:true,endpoint:'VDZとADAの直接比較（%）',activeLabel:'VDZ',controlLabel:'ADA',periods:[['Week 52：臨床的寛解',31.3,22.5],['Week 52：内視鏡的改善',39.7,27.7]],source:'https://www.nejm.org/doi/full/10.1056/NEJMoa1905725'},
  {trial:'CLASSIC I（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 4：臨床的寛解（160/80 mg）',36.0,12.0]],source:'https://pubmed.ncbi.nlm.nih.gov/16469680/'},
- {trial:'CHARM（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 26：臨床的寛解（隔週）',40.0,17.0],['Week 56：臨床的寛解（隔週）',36.0,12.0]],source:'https://pubmed.ncbi.nlm.nih.gov/17030176/'}
+ {trial:'CHARM（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 26：臨床的寛解（隔週）',40.0,17.0],['Week 56：臨床的寛解（隔週）',36.0,12.0]],source:'https://pubmed.ncbi.nlm.nih.gov/17030176/'},
+ {trial:'SEAVUE（CD）',headToHead:true,endpoint:'生物学的製剤未使用例の直接比較（%）',activeLabel:'UST',controlLabel:'ADA',periods:[['Week 52：臨床的寛解（有意差なし）',65.0,61.0]],source:'https://pubmed.ncbi.nlm.nih.gov/35691323/'}
 ]},
 VED:{studies:[
  {trial:'GEMINI 1（UC）',endpoint:'臨床的反応・寛解（%）',periods:[['Week 6：臨床的反応',47.1,25.5],['Week 6：臨床的寛解',16.9,5.4],['Week 52：臨床的寛解（q8w）',41.8,15.9],['Week 52：臨床的寛解（q4w）',44.8,15.9]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1215734'},
+ {trial:'VARSITY（UC）',headToHead:true,endpoint:'VDZとADAの直接比較（%）',activeLabel:'VDZ',controlLabel:'ADA',periods:[['Week 52：臨床的寛解',31.3,22.5],['Week 52：内視鏡的改善',39.7,27.7]],source:'https://www.nejm.org/doi/full/10.1056/NEJMoa1905725'},
  {trial:'GEMINI 2（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 6：臨床的寛解',14.5,6.8],['Week 52：臨床的寛解（q8w）',39.0,21.6]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1215739'}
 ]},
-UST:{trial:'UNIFI（UC）',endpoint:'臨床的寛解',periods:[['導入期 Week 8',15.6,5.3],['維持期 Week 44',43.8,24.0]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1900750'},
+UST:{studies:[
+ {trial:'UNIFI（UC）',endpoint:'臨床的寛解',periods:[['導入期 Week 8',15.6,5.3],['維持期 Week 44',43.8,24.0]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1900750'},
+ {trial:'SEAVUE（CD）',headToHead:true,endpoint:'生物学的製剤未使用例の直接比較（%）',activeLabel:'UST',controlLabel:'ADA',periods:[['Week 52：臨床的寛解（有意差なし）',65.0,61.0]],source:'https://pubmed.ncbi.nlm.nih.gov/35691323/'}
+]},
 GLM:{trial:'PURSUIT-SC / PURSUIT-J（UC）',endpoint:'主要有効性評価（%）',periods:[['PURSUIT-SC Week 6：臨床的反応（200/100 mg）',51.0,30.3],['PURSUIT-SC Week 6：臨床的寛解',17.8,6.4],['PURSUIT-J Week 54：臨床的反応維持',56.3,19.4],['PURSUIT-J Week 54：臨床的寛解',50.0,6.5]],source:'https://pubmed.ncbi.nlm.nih.gov/23735746/',source2:'https://link.springer.com/article/10.1007/s00535-017-1326-1'},
-MIRI:{trial:'LUCENT（UC）/ VIVID-1・2（CD）',endpoint:'主要有効性評価（%）',periods:[['LUCENT 導入期 Week 12：臨床的寛解',24.2,13.3],['LUCENT 維持期 Week 40：臨床的寛解',49.9,25.1],['VIVID-1 Week 12反応＋Week 52 CDAI寛解',45.4,19.6],['VIVID-1 Week 12反応＋Week 52内視鏡反応',38.0,9.0],['VIVID-2 Week 104：臨床的寛解',79.0,null],['VIVID-2 Week 104：内視鏡的反応',81.8,null]],source:'https://pubmed.ncbi.nlm.nih.gov/39581202/',source2:'https://www.cghjournal.org/article/S1542-3565(26)00155-2/fulltext'},
+MIRI:{studies:[
+ {trial:'LUCENT（UC）',endpoint:'主要有効性評価（%）',periods:[['導入期 Week 12：臨床的寛解',24.2,13.3],['維持期 Week 40：臨床的寛解',49.9,25.1]],source:'https://pubmed.ncbi.nlm.nih.gov/37385239/'},
+ {trial:'VIVID-1・VIVID-2（CD）',endpoint:'主要有効性評価（%）',periods:[['VIVID-1 Week 12反応＋Week 52 CDAI寛解',45.4,19.6],['VIVID-1 Week 12反応＋Week 52内視鏡反応',38.0,9.0],['VIVID-2 Week 104：臨床的寛解',79.0,null],['VIVID-2 Week 104：内視鏡的反応',81.8,null]],source:'https://pubmed.ncbi.nlm.nih.gov/39581202/',source2:'https://www.cghjournal.org/article/S1542-3565(26)00155-2/fulltext'}
+]},
 RIS:{studies:[
  {trial:'INSPIRE（UC）',endpoint:'Week 12導入結果（%）',periods:[['臨床的寛解',20.3,6.2],['内視鏡的改善',36.5,12.1]],source:'https://pmc.ncbi.nlm.nih.gov/articles/PMC11772864/'},
  {trial:'COMMAND（UC）',endpoint:'Week 52維持結果（%）',periods:[['臨床的寛解（180 mg q8w）',40.2,25.1],['臨床的寛解（360 mg q8w）',37.6,25.1]],source:'https://pmc.ncbi.nlm.nih.gov/articles/PMC11772864/'},
@@ -49,7 +58,7 @@ RIS:{studies:[
 GUS:{studies:[
  {trial:'QUASAR（UC）',endpoint:'静注導入・皮下注維持（%）',periods:[['導入 Week 12：臨床的寛解',23.0,8.0],['維持 Week 44：臨床的寛解（200 mg q4w）',50.0,18.9]],source:'https://pubmed.ncbi.nlm.nih.gov/38104586/'},
  {trial:'ASTRO（UC）',endpoint:'皮下注導入・維持（%）',periods:[['Week 12：臨床的寛解',28.0,6.0],['Week 24：臨床的寛解（100 mg q8w）',35.3,9.4],['Week 24：臨床的寛解（200 mg q4w）',36.4,9.4],['Week 24：内視鏡的改善（200 mg q4w）',45.0,12.2]],source:'https://pubmed.ncbi.nlm.nih.gov/41544637/'},
- {trial:'GALAXI 2 / 3（CD）',endpoint:'Week 48の臨床・内視鏡評価（%）',activeLabel:'GUS',controlLabel:'UST',periods:[['臨床的寛解（200 mg q4w）',58.0,52.4],['内視鏡的反応（200 mg q4w）',51.3,30.8]],source:'https://pubmed.ncbi.nlm.nih.gov/39581203/'}
+ {trial:'GALAXI 2 / 3（CD）',headToHead:true,endpoint:'Week 48のGUSとUSTの直接比較（%）',activeLabel:'GUS',controlLabel:'UST',periods:[['臨床的寛解（200 mg q4w）',58.0,52.4],['内視鏡的反応（200 mg q4w）',51.3,30.8]],source:'https://pubmed.ncbi.nlm.nih.gov/40684778/'}
 ]},
 OZA:{trial:'True North（UC）',endpoint:'臨床的寛解',periods:[['導入期 Week 10',18.4,6.0],['維持期 Week 52',37.0,18.5]],source:'https://www.nejm.org/doi/10.1056/NEJMoa2033617'},
 ETR:{studies:[
@@ -127,6 +136,8 @@ function resultTags(reasons){
   if(reasons.some(x=>x.includes('作用機序変更')))tags.push('作用機序変更');
   if(reasons.some(x=>x.includes('肛門病変')||x.includes('瘻孔')))tags.push('肛門病変');
   if(reasons.some(x=>x.includes('治療最適化')))tags.push('最適化可能');
+  if(reasons.some(x=>x.includes('Head-to-Head')))tags.push('直接比較データ');
+  if(reasons.some(x=>x.includes('投与負担')))tags.push('投与負担あり');
   if(reasons.some(x=>x.includes('AZA併用注意')))tags.push('AZA併用注意');
   else if(reasons.some(x=>x.includes('AZA併用')))tags.push('AZA併用');
   return tags.slice(0,3);
@@ -190,13 +201,16 @@ function updateRoutePreferences(changed){
   updateBurdenVisibility(routes,any,show);
 }
 function conditional(changed){
-  const f=data(); female.hidden=f.sex!=='female'; cd.hidden=f.disease!=='CD';
-  document.querySelector('#treatmentStepNumber').textContent=f.sex==='female'?'03':'02';
+  const f=data(),autoMenopause=f.sex==='female'&&['65-74','75+'].includes(f.ageGroup);
+  female.hidden=f.sex!=='female'||autoMenopause; cd.hidden=f.disease!=='CD';
+  document.querySelector('#treatmentStepNumber').textContent=f.sex==='female'&&!autoMenopause?'03':'02';
   document.querySelector('#routeStepNumber').textContent=f.disease==='CD'?'04':'03';
-  if(changed==='disease')renderUsed(f.disease);
+  if(changed==='disease'){
+    renderUsed(f.disease);
+    renderTrialCards(f.disease);
+  }
   updateOptimizationVisibility();
   if(f.sex!=='female')for(const n of ['lifeNone','menopause','pregnancyPlan','pregnant','nursing'])form.elements[n].checked=false;
-  const autoMenopause=f.sex==='female'&&f.ageGroup==='75+';
   if(autoMenopause){
     form.elements.menopause.checked=true;
     form.elements.lifeNone.checked=false;
@@ -237,12 +251,19 @@ function calculate(f){
   const excluded=new Set(used());
   const historyEntries=[...excluded].map(id=>({drug:drugs.find(d=>d.id===id),reason:form.elements[`usedReason_${id}`]?.value||''}));
   const usedClasses=drugs.filter(d=>excluded.has(d.id)).map(d=>d.cls);
-  const historyType=!excluded.size?'none':usedClasses.includes('抗TNF抗体')?'antiTNF':'advanced';
+  const historyType=!excluded.size?'none':usedClasses.includes('抗TNFα抗体')?'antiTNF':'advanced';
   const inductionPreferences=selected('inductionRoute');
   return drugs.filter(d=>d.diseases.includes(f.disease)&&!excluded.has(d.id)).map(d=>{
     let score=70,reasons=[]; const add=(n,s)=>{score+=n;reasons.push(`${n>0?'+':''}${n} ${s}`)};
     if(f.severity==='severe'&&['IFX','UPA','RIS'].includes(d.id))add(8,'高度活動性で有効性を重視');
-    if(historyType==='antiTNF'&&d.cls!=='抗TNF抗体')add(7,'抗TNF既治療後の作用機序変更');
+    if(f.disease==='UC'&&d.id==='VED')add(4,'Head-to-Head（VARSITY）：ADAに対するWeek 52臨床的寛解・内視鏡的改善の優越性');
+    if(f.disease==='UC'&&d.id==='ADA')add(0,'Head-to-Head（VARSITY）：VDZとの直接比較結果を考慮');
+    if(f.disease==='CD'&&d.id==='GUS')add(4,'Head-to-Head（GALAXI 2/3）：USTに対するWeek 48複数評価項目の優越性');
+    if(f.disease==='CD'&&['UST','ADA'].includes(d.id)&&!excluded.size)add(0,'Head-to-Head（SEAVUE）：生物学的製剤未使用例でUSTとADAに有意差なし');
+    if(f.disease==='CD'&&d.id==='MIRI'&&historyEntries.length)add(2,'Head-to-Head（VIVID-1）：既治療失敗例のWeek 52組織学的反応でUSTより良好');
+    if(d.id==='OZA')add(-1,'投与負担：導入時にスターターパックによる7日間の漸増が必要');
+    if(d.id==='TOF')add(-1,'投与負担：維持療法でも1日2回内服が必要');
+    if(historyType==='antiTNF'&&d.cls!=='抗TNFα抗体')add(7,'抗TNFα既治療後の作用機序変更');
     if(historyType==='advanced'&&['UPA','RIS','MIRI','GUS'].includes(d.id))add(5,'高度治療既治療後の選択肢');
     const primaryFailures=historyEntries.filter(entry=>entry.reason==='primary');
     if(primaryFailures.some(entry=>entry.drug.cls===d.cls))add(-6,'同一作用機序で一次無効歴あり');
@@ -300,7 +321,7 @@ function calculate(f){
     if(yes('infection')){
       if(d.id==='VED')add(8,'重篤感染症リスクで腸管選択性を考慮');
       else if(['UST','RIS','MIRI','GUS'].includes(d.id))add(4,'感染症リスクを考慮した作用機序');
-      else if(['IFX','ADA','GLM'].includes(d.id))add(-6,'重篤感染症リスクで抗TNF抗体を慎重評価');
+      else if(['IFX','ADA','GLM'].includes(d.id))add(-6,'重篤感染症リスクで抗TNFα抗体を慎重評価');
       else if(['TOF','FIL','UPA'].includes(d.id))add(-12,'重篤感染症リスクでJAK阻害薬を慎重評価');
     }
     if(yes('malignancy')){
@@ -327,6 +348,19 @@ document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0
 document.querySelector('#restart').onclick=()=>{form.reset();renderUsed('');conditional();results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
 
 const trialRoot=document.querySelector('#trials'),dialog=document.querySelector('#trialDialog'),detail=document.querySelector('#trialDetail');
+const trialNames={
+  IFX:{UC:'ACT 1 / 2・UC-SUCCESS',CD:'ACCENT I / II・SONIC'},
+  ADA:{UC:'ULTRA 2・VARSITY［直接比較］',CD:'CLASSIC I・CHARM・SEAVUE［直接比較］'},
+  GLM:{UC:'PURSUIT-SC・PURSUIT-J'},
+  VED:{UC:'GEMINI 1・VARSITY［直接比較］',CD:'GEMINI 2'},
+  UST:{UC:'UNIFI',CD:'UNITI・IM-UNITI・SEAVUE［直接比較］'},
+  RIS:{UC:'INSPIRE・COMMAND',CD:'ADVANCE・MOTIVATE・FORTIFY'},
+  MIRI:{UC:'LUCENT',CD:'VIVID-1・VIVID-2'},
+  GUS:{UC:'QUASAR・ASTRO',CD:'GALAXI 2 / 3［直接比較］'},
+  OZA:{UC:'True North'},ETR:{UC:'ELEVATE UC 12 / 52'},
+  TOF:{UC:'OCTAVE'},FIL:{UC:'SELECTION'},
+  UPA:{UC:'U-ACHIEVE・U-ACCOMPLISH',CD:'U-EXCEL・U-EXCEED・U-ENDURE'}
+};
 function mechanismGroup(d){
   if(d.cls.includes('抗TNF'))return 'tnf';
   if(d.cls.includes('インテグリン'))return 'integrin';
@@ -335,19 +369,33 @@ function mechanismGroup(d){
   if(d.cls.includes('JAK'))return 'jak';
   return 's1p';
 }
-trialRoot.innerHTML=drugs.map(d=>`<button type="button" class="trial-card trial-${mechanismGroup(d)}" data-drug="${d.id}" aria-label="${d.name}の臨床試験結果を見る"><span>${d.cls}</span><strong>${d.name}</strong><small>${d.trials}</small><em>${evidence[d.id]?'結果グラフを見る':'試験名を確認'}</em></button>`).join('');
+function studiesForDisease(ev,disease){
+  if(!ev||!disease)return [];
+  return (ev.studies||[ev]).filter(study=>study.trial.includes(`（${disease}）`)||(disease==='UC'&&study.trial.includes(' UC ')));
+}
+function renderTrialCards(disease){
+  if(!disease){
+    trialRoot.innerHTML='<p class="hint">疾患を選択すると、その疾患に関連する主要臨床試験を表示します。</p>';
+    return;
+  }
+  trialRoot.innerHTML=drugs.filter(d=>d.diseases.includes(disease)).map(d=>{
+    const studies=studiesForDisease(evidence[d.id],disease),label=trialNames[d.id]?.[disease]||'関連試験';
+    return `<button type="button" class="trial-card trial-${mechanismGroup(d)}" data-drug="${d.id}" aria-label="${d.name}の${disease}臨床試験結果を見る"><span>${d.cls}</span><strong>${d.name}</strong><small>${label}</small><em>${studies.length?'結果グラフを見る':'試験名を確認'}</em></button>`;
+  }).join('');
+}
 function renderStudy(ev,index=0){
   const studies=ev.studies||[ev],study=studies[index];
-  detail.innerHTML=`<span class="eyebrow">CLINICAL TRIAL</span>${studies.length>1?`<div class="study-tabs">${studies.map((s,i)=>`<button type="button" data-study="${i}" class="${i===index?'active':''}">${s.trial}</button>`).join('')}</div>`:''}<h2>${study.trial}</h2><p>${study.endpoint}</p>${study.periods.map(([label,active,control])=>`<div class="chart"><b>${label}</b><div class="barrow"><span>${control==null?'継続投与群':study.activeLabel||'実薬'} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control"><span>${study.controlLabel||'対照'} ${control}%</span><i style="width:${control}%"></i></div>`}</div>`).join('')}<p class="trial-note">※ 対象集団、評価項目の定義、再ランダム化条件、評価時点は試験ごとに異なります。試験間の数値を直接比較しないでください。</p><a href="${study.source}" target="_blank" rel="noopener">一次資料を開く</a>${study.source2?`　<a href="${study.source2}" target="_blank" rel="noopener">関連試験資料を開く</a>`:''}`;
+  detail.innerHTML=`<span class="eyebrow">CLINICAL TRIAL</span>${study.headToHead?'<span class="h2h-badge">HEAD-TO-HEAD 直接比較試験</span>':''}${studies.length>1?`<div class="study-tabs">${studies.map((s,i)=>`<button type="button" data-study="${i}" class="${i===index?'active':''}">${s.headToHead?'H2H｜':''}${s.trial}</button>`).join('')}</div>`:''}<h2>${study.trial}</h2><p>${study.endpoint}</p>${study.periods.map(([label,active,control])=>`<div class="chart"><b>${label}</b><div class="barrow"><span>${control==null?'継続投与群':study.activeLabel||'実薬'} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control"><span>${study.controlLabel||'対照'} ${control}%</span><i style="width:${control}%"></i></div>`}</div>`).join('')}<p class="trial-note">※ 対象集団、評価項目の定義、再ランダム化条件、評価時点は試験ごとに異なります。試験間の数値を直接比較しないでください。</p><a href="${study.source}" target="_blank" rel="noopener">一次資料を開く</a>${study.source2?`　<a href="${study.source2}" target="_blank" rel="noopener">関連試験資料を開く</a>`:''}`;
   detail.querySelectorAll('[data-study]').forEach(button=>button.addEventListener('click',()=>renderStudy(ev,Number(button.dataset.study))));
 }
 trialRoot.addEventListener('click',e=>{
-  const card=e.target.closest('[data-drug]'); if(!card)return; const d=drugs.find(x=>x.id===card.dataset.drug),ev=evidence[d.id];
+  const card=e.target.closest('[data-drug]'); if(!card)return; const d=drugs.find(x=>x.id===card.dataset.drug),disease=data().disease,ev=evidence[d.id],studies=studiesForDisease(ev,disease);
   dialog.className=`trial-${mechanismGroup(d)}`;
-  if(ev){const studies=ev.studies||[ev],disease=data().disease,initial=Math.max(0,studies.findIndex(s=>s.trial.includes(`（${disease}）`)));renderStudy(ev,initial)}else detail.innerHTML=`<h2>${d.name}</h2><p>${d.trials}</p><p>グラフ用の検証済み数値は次版で追加予定です。</p>`;
+  if(studies.length)renderStudy({studies});
+  else detail.innerHTML=`<h2>${d.name}</h2><p>${trialNames[d.id]?.[disease]||'関連試験'}</p><p>${disease}に関連するグラフ用の検証済み数値は次版で追加予定です。</p>`;
   if(typeof dialog.showModal==='function')dialog.showModal();else{dialog.setAttribute('open','');dialog.scrollIntoView({behavior:'smooth',block:'center'})}
 });
 const closeDialog=()=>typeof dialog.close==='function'?dialog.close():dialog.removeAttribute('open');
 document.querySelector('#closeTrial').onclick=closeDialog;
 dialog.addEventListener('click',e=>{if(e.target===dialog)closeDialog()});
-renderUsed(''); conditional();
+renderUsed(''); renderTrialCards(''); conditional();
