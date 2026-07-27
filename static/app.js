@@ -53,13 +53,58 @@ UPA:{studies:[
 ]}
 };
 
-const form=document.querySelector('#patientForm'),female=document.querySelector('#femaleSection'),pregnancy=document.querySelector('#pregnancyFields'),cd=document.querySelector('#cdChecks'),results=document.querySelector('#results'),usedRoot=document.querySelector('#usedDrugs');
+const form=document.querySelector('#patientForm'),female=document.querySelector('#femaleSection'),pregnancy=document.querySelector('#pregnancyFields'),cd=document.querySelector('#cdGroup'),results=document.querySelector('#results'),usedRoot=document.querySelector('#usedDrugs');
 const checks=(root,items)=>root.innerHTML=items.map(([n,l])=>`<label class="check"><input name="${n}" type="checkbox"><span>${l}</span></label>`).join('');
 checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['infection','重篤感染症リスク'],['malignancy','悪性腫瘍の既往（治療後）'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
-checks(cd,[['cdst','CDST関連入力あり'],['perianal','肛門病変・瘻孔あり']]);
+checks(document.querySelector('#cdChecks'),[['cdstSurgery','腸管手術歴あり'],['cdstFistula','瘻孔型病変の既往あり'],['perianal','現在、肛門病変・瘻孔あり']]);
 const data=()=>Object.fromEntries(new FormData(form));
 const yes=n=>form.elements[n]?.checked;
 const used=()=>[...form.querySelectorAll('input[name="usedDrug"]:checked')].map(x=>x.value);
+const toast=document.querySelector('#toast');
+let toastTimer;
+function showToast(message){toast.textContent=message;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,4500)}
+function calculateVdzCdst(){
+  const f=data(),output=document.querySelector('#cdstResult');
+  if(f.disease!=='CD'||f.cdstAlbumin===''||f.cdstCrp===''){
+    output.className='cdst-result';output.innerHTML='<strong>VDZ-CDST</strong><span>アルブミンとCRPを入力してください</span>';return null;
+  }
+  const albumin=Number(f.cdstAlbumin),crp=Number(f.cdstCrp);
+  if(!Number.isFinite(albumin)||!Number.isFinite(crp)||albumin<10||albumin>60||crp<0||crp>500)return null;
+  const priorAntiTnf=used().some(id=>['IFX','ADA','GLM'].includes(id));
+  let score=(yes('cdstSurgery')?0:2)+(priorAntiTnf?0:3)+(yes('cdstFistula')?0:2)+(albumin*0.4);
+  score+=crp<3?0:crp<=10?-0.5:-3;
+  score=Math.round(score*10)/10;
+  const category=score<=13?'低':score<=19?'中間':'高';
+  output.className=`cdst-result cdst-${category==='高'?'high':category==='中間'?'mid':'low'}`;
+  output.innerHTML=`<strong>VDZ-CDST ${score}点</strong><span>ベドリズマブ反応可能性：${category}</span>`;
+  return {score,category};
+}
+function validateForm(){
+  form.querySelectorAll('.field.invalid').forEach(x=>x.classList.remove('invalid'));
+  const f=data(),age=Number(f.age),errors=[];
+  if(!f.disease)errors.push([form.elements.disease,'疾患を選択してください']);
+  if(!f.sex)errors.push([form.elements.sex,'性別を選択してください']);
+  if(!f.age)errors.push([form.elements.age,'年齢を入力してください']);
+  else if(!Number.isInteger(age)||age<15||age>120)errors.push([form.elements.age,'年齢は15〜120歳の整数で入力してください']);
+  if(!f.severity)errors.push([form.elements.severity,'活動性を選択してください']);
+  if(f.disease==='CD'){
+    if(f.cdstAlbumin==='')errors.push([form.elements.cdstAlbumin,'CDST計算用のアルブミンを入力してください']);
+    else if(+f.cdstAlbumin<10||+f.cdstAlbumin>60)errors.push([form.elements.cdstAlbumin,'アルブミンは10〜60 g/Lで入力してください']);
+    if(f.cdstCrp==='')errors.push([form.elements.cdstCrp,'CDST計算用のCRPを入力してください']);
+    else if(+f.cdstCrp<0||+f.cdstCrp>500)errors.push([form.elements.cdstCrp,'CRPは0〜500 mg/Lで入力してください']);
+  }
+  if(errors.length){errors.forEach(([el])=>el.closest('.field')?.classList.add('invalid'));showToast(errors.map(x=>x[1]).join('／'));errors[0][0].scrollIntoView({behavior:'smooth',block:'center'});errors[0][0].focus();return false}
+  return true;
+}
+function resultTags(reasons){
+  const tags=[];
+  if(reasons.some(x=>x.includes('有効性')||x.includes('高度活動性')))tags.push('有効性重視');
+  if(reasons.some(x=>x.includes('安全性')||x.includes('感染症')||x.includes('悪性腫瘍')||x.includes('高齢者')))tags.push('安全性重視');
+  if(reasons.some(x=>x.includes('希望する投与経路')))tags.push('希望経路一致');
+  if(reasons.some(x=>x.includes('作用機序変更')))tags.push('作用機序変更');
+  if(reasons.some(x=>x.includes('肛門病変')||x.includes('瘻孔')))tags.push('肛門病変');
+  return tags.slice(0,3);
+}
 
 function renderUsed(disease){
   usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
@@ -69,14 +114,16 @@ function conditional(changed){
   if(changed==='disease')renderUsed(f.disease);
   if(f.sex!=='female')for(const n of ['lifeNone','menopause','pregnancyPlan','pregnant','nursing'])form.elements[n].checked=false;
   pregnancy.hidden=yes('lifeNone')||yes('menopause');
+  calculateVdzCdst();
 }
 form.addEventListener('change',e=>{
   const n=e.target.name;
   if(n==='lifeNone'&&e.target.checked)for(const x of ['menopause','pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
   if(['menopause','pregnancyPlan','pregnant','nursing'].includes(n)&&e.target.checked)form.elements.lifeNone.checked=false;
   if(n==='menopause'&&e.target.checked)for(const x of ['pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
-  conditional(n); results.hidden=true;
+  e.target.closest('.field')?.classList.remove('invalid'); conditional(n); results.hidden=true;
 });
+form.addEventListener('input',e=>{e.target.closest('.field')?.classList.remove('invalid');calculateVdzCdst();results.hidden=true});
 
 function calculate(f){
   const excluded=new Set(used());
@@ -89,7 +136,12 @@ function calculate(f){
     if(historyType==='advanced'&&['UPA','RIS','MIRI','GUS'].includes(d.id))add(5,'高度治療既治療後の選択肢');
     if(yes('steroid')&&['UPA','IFX'].includes(d.id))add(4,'ステロイド依存・抵抗性');
     if(f.disease==='CD'&&yes('perianal')&&d.id==='IFX')add(12,'肛門病変・瘻孔のエビデンス');
-    if(f.disease==='CD'&&yes('cdst')&&['UST','RIS','GUS'].includes(d.id))add(6,'CDST関連の層別化');
+    if(f.disease==='CD'&&d.id==='VED'){
+      const cdstScore=calculateVdzCdst();
+      if(cdstScore?.category==='高')add(8,`VDZ-CDST ${cdstScore.score}点：反応可能性 高`);
+      else if(cdstScore?.category==='中間')add(3,`VDZ-CDST ${cdstScore.score}点：反応可能性 中間`);
+      else if(cdstScore?.category==='低')add(-5,`VDZ-CDST ${cdstScore.score}点：反応可能性 低`);
+    }
     if(f.route!=='any')d.route===f.route?add(6,'希望する投与経路'):add(-4,'希望経路と不一致');
     if(yes('adherence')&&d.route==='oral')add(-8,'内服アドヒアランス懸念');
     if(+f.age>=65){
@@ -116,12 +168,12 @@ function calculate(f){
   }).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'ja')).map((d,i,a)=>({...d,rank:a.findIndex(x=>x.score===d.score)+1}));
 }
 form.addEventListener('submit',e=>{
-  e.preventDefault(); if(!form.reportValidity())return;
+  e.preventDefault(); if(!validateForm())return;
   const rows=calculate(data()),error=document.querySelector('#error');
   if(!rows.length){error.textContent='使用済み薬剤以外に候補がありません。選択内容を確認してください。';return}
   error.textContent=''; const top=rows[0].score,names=rows.filter(x=>x.rank===1).map(x=>x.name).join('、');
   document.querySelector('#summary').innerHTML=`<strong>${names}</strong>${rows.filter(x=>x.rank===1).length>1?' は同点で、いずれも第一選択候補です。':' を第一選択候補として提示します。'} 最終決定は適応・禁忌・最新の添付文書と患者希望を確認してください。`;
-  document.querySelector('#cards').innerHTML=rows.map(r=>`<article class="${r.rank===1?'best':''}"><div class="rank"><strong>${r.rank}</strong><small>位</small></div><div class="drug"><h3>${r.name}</h3><p>${r.cls} / ${{oral:'内服',sc:'皮下注',iv:'点滴静注'}[r.route]}</p></div><div class="score"><strong>${r.score}</strong><small>点 ${r.score===top?'TOP':`-${top-r.score}`}</small></div><details><summary>評価の内訳</summary>${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`).join('');
+  document.querySelector('#cards').innerHTML=rows.map(r=>{const tags=resultTags(r.reasons);return `<article class="${r.rank===1?'best':''}"><div class="rank"><strong>${r.rank}</strong><small>位</small></div><div class="drug"><h3>${r.name}</h3><p>${r.cls} / ${{oral:'内服',sc:'皮下注',iv:'点滴静注'}[r.route]}</p>${tags.length?`<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<p class="reason-line">${r.reasons[0]?.replace(/^[+-]?\d+\s*/,'')||'標準条件による基本評価'}</p></div><div class="score"><strong>${r.score}</strong><small>点 ${r.score===top?'TOP':`-${top-r.score}`}</small></div><details><summary>評価の内訳</summary>${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`}).join('');
   results.hidden=false; results.scrollIntoView({behavior:'smooth'});
 });
 document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
@@ -136,7 +188,7 @@ function renderStudy(ev,index=0){
 }
 trialRoot.addEventListener('click',e=>{
   const card=e.target.closest('[data-drug]'); if(!card)return; const d=drugs.find(x=>x.id===card.dataset.drug),ev=evidence[d.id];
-  if(ev)renderStudy(ev);else detail.innerHTML=`<h2>${d.name}</h2><p>${d.trials}</p><p>グラフ用の検証済み数値は次版で追加予定です。</p>`;
+  if(ev){const studies=ev.studies||[ev],disease=data().disease,initial=Math.max(0,studies.findIndex(s=>s.trial.includes(`（${disease}）`)));renderStudy(ev,initial)}else detail.innerHTML=`<h2>${d.name}</h2><p>${d.trials}</p><p>グラフ用の検証済み数値は次版で追加予定です。</p>`;
   if(typeof dialog.showModal==='function')dialog.showModal();else{dialog.setAttribute('open','');dialog.scrollIntoView({behavior:'smooth',block:'center'})}
 });
 const closeDialog=()=>typeof dialog.close==='function'?dialog.close():dialog.removeAttribute('open');
