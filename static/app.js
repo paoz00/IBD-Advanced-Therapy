@@ -1,5 +1,5 @@
 const drugs=[
-['IFX','インフリキシマブ','抗TNF抗体','iv','UC,CD','ACT 1/2・ACCENT I/II'],['ADA','アダリムマブ','抗TNF抗体','sc','UC,CD','ULTRA 2・CLASSIC I・CHARM'],['GLM','ゴリムマブ','抗TNF抗体','sc','UC','PURSUIT-SC・PURSUIT-J'],['VED','ベドリズマブ','抗α4β7インテグリン抗体','iv','UC,CD','GEMINI 1/2'],['UST','ウステキヌマブ','抗IL-12/23p40抗体','sc','UC,CD','UNIFI・UNITI・IM-UNITI'],['RIS','リサンキズマブ','抗IL-23p19抗体','sc','UC,CD','INSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFY'],['MIRI','ミリキズマブ','抗IL-23p19抗体','sc','UC,CD','LUCENT・VIVID-1・VIVID-2'],['GUS','グセルクマブ','抗IL-23p19抗体','sc','UC,CD','QUASAR・ASTRO・GALAXI'],['OZA','オザニモド','S1P受容体調節薬','oral','UC','True North'],['ETR','エトラシモド','S1P受容体調節薬','oral','UC','ELEVATE'],['TOF','トファシチニブ','JAK阻害薬','oral','UC','OCTAVE'],['FIL','フィルゴチニブ','JAK1阻害薬','oral','UC','SELECTION'],['UPA','ウパダシチニブ','JAK1阻害薬','oral','UC,CD','U-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDURE']
+['IFX','インフリキシマブ','抗TNF抗体','iv','UC,CD','ACT 1/2・ACCENT I/II・SONIC・UC-SUCCESS'],['ADA','アダリムマブ','抗TNF抗体','sc','UC,CD','ULTRA 2・CLASSIC I・CHARM'],['GLM','ゴリムマブ','抗TNF抗体','sc','UC','PURSUIT-SC・PURSUIT-J'],['VED','ベドリズマブ','抗α4β7インテグリン抗体','iv','UC,CD','GEMINI 1/2'],['UST','ウステキヌマブ','抗IL-12/23p40抗体','sc','UC,CD','UNIFI・UNITI・IM-UNITI'],['RIS','リサンキズマブ','抗IL-23p19抗体','sc','UC,CD','INSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFY'],['MIRI','ミリキズマブ','抗IL-23p19抗体','sc','UC,CD','LUCENT・VIVID-1・VIVID-2'],['GUS','グセルクマブ','抗IL-23p19抗体','sc','UC,CD','QUASAR・ASTRO・GALAXI'],['OZA','オザニモド','S1P受容体調節薬','oral','UC','True North'],['ETR','エトラシモド','S1P受容体調節薬','oral','UC','ELEVATE'],['TOF','トファシチニブ','JAK阻害薬','oral','UC','OCTAVE'],['FIL','フィルゴチニブ','JAK1阻害薬','oral','UC','SELECTION'],['UPA','ウパダシチニブ','JAK1阻害薬','oral','UC,CD','U-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDURE']
 ].map(([id,name,cls,route,diseases,trials])=>({id,name,cls,route,diseases:diseases.split(','),trials}));
 
 const regimenData={
@@ -23,7 +23,9 @@ const evidence={
 IFX:{studies:[
  {trial:'ACT 1 / 2（UC）',endpoint:'臨床的反応・寛解（%）',periods:[['ACT 1 Week 8：臨床的反応',69.4,37.2],['ACT 1 Week 8：臨床的寛解',38.8,14.9],['ACT 2 Week 30：臨床的寛解',25.6,10.6]],source:'https://www.nejm.org/doi/10.1056/NEJMoa050516'},
  {trial:'ACCENT I（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 30：臨床的寛解',39.0,21.0],['Week 54：臨床的寛解',29.0,9.0]],source:'https://pubmed.ncbi.nlm.nih.gov/12091826/'},
- {trial:'ACCENT II（瘻孔型CD）',endpoint:'完全瘻孔閉鎖（%）',periods:[['Week 54：完全瘻孔閉鎖',36.0,19.0]],source:'https://www.nejm.org/doi/10.1056/NEJMoa030815'}
+ {trial:'ACCENT II（瘻孔型CD）',endpoint:'完全瘻孔閉鎖（%）',periods:[['Week 54：完全瘻孔閉鎖',36.0,19.0]],source:'https://www.nejm.org/doi/10.1056/NEJMoa030815'},
+ {trial:'SONIC（CD）',endpoint:'IFX＋AZA併用とIFX単独の比較（%）',activeLabel:'IFX＋AZA',controlLabel:'IFX単独',periods:[['Week 26：ステロイドフリー寛解',56.8,44.4],['Week 26：粘膜治癒',43.9,30.1]],source:'https://www.nejm.org/doi/full/10.1056/NEJMoa0904492'},
+ {trial:'UC-SUCCESS（UC）',endpoint:'IFX＋AZA併用とIFX単独の比較（%）',activeLabel:'IFX＋AZA',controlLabel:'IFX単独',periods:[['Week 16：ステロイドフリー寛解',39.7,22.1],['Week 16：粘膜治癒',62.8,54.6]],source:'https://pubmed.ncbi.nlm.nih.gov/24512909/'}
 ]},
 ADA:{studies:[
  {trial:'ULTRA 2（UC）',endpoint:'臨床的寛解（%）',periods:[['Week 8：臨床的寛解',16.5,9.3],['Week 52：臨床的寛解',17.3,8.5]],source:'https://pubmed.ncbi.nlm.nih.gov/22062358/'},
@@ -72,7 +74,7 @@ UPA:{studies:[
 
 const form=document.querySelector('#patientForm'),female=document.querySelector('#femaleSection'),pregnancy=document.querySelector('#pregnancyFields'),cd=document.querySelector('#cdGroup'),results=document.querySelector('#results'),usedRoot=document.querySelector('#usedDrugs');
 const checks=(root,items)=>root.innerHTML=items.map(([n,l])=>`<label class="check"><input name="${n}" type="checkbox"><span>${l}</span></label>`).join('');
-checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['infection','重篤感染症リスク'],['cvRisk','心血管リスク（喫煙・高血圧・糖尿病・心血管疾患既往など）'],['malignancy','悪性腫瘍の既往（治療後）'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
+checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['aza','AZA／6-MP内服中'],['infection','重篤感染症リスク'],['cvRisk','心血管リスク（喫煙・高血圧・糖尿病・心血管疾患既往など）'],['malignancy','悪性腫瘍の既往（治療後）'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
 checks(document.querySelector('#cdChecks'),[['cdstSurgery','腸管手術歴あり'],['cdstFistula','瘻孔型病変の既往あり'],['perianal','現在、肛門病変・瘻孔あり']]);
 checks(document.querySelector('#optimizationChecks'),[['secondaryLoss','過去に二次無効・効果減弱があった'],['optimizeSame','同じ薬剤で増量・間隔短縮できることを重視'],['rescueOption','追加導入・再導入できることを重視'],['mechanismSwitch','最適化より作用機序変更を優先'],['optimizationNone','どれにも当てはまらない']]);
 checks(document.querySelector('#burdenChecks'),[['visitIncrease','通院回数が増えてもよい'],['infusionTime','点滴時間を許容できる'],['selfInjection','自己注射が可能'],['injectionIncrease','注射回数が増えてもよい'],['adherenceOk','服薬管理に問題がない']]);
@@ -82,6 +84,7 @@ const used=()=>[...form.querySelectorAll('input[name="usedDrug"]:checked')].map(
 const selected=n=>[...form.querySelectorAll(`input[name="${n}"]:checked`)].map(x=>x.value);
 const toast=document.querySelector('#toast');
 let toastTimer;
+let menopauseAuto=false;
 function showToast(message){toast.textContent=message;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,4500)}
 function calculateVdzCdst(){
   const f=data(),output=document.querySelector('#cdstResult');
@@ -100,19 +103,20 @@ function calculateVdzCdst(){
   return {score,category};
 }
 function validateForm(){
-  form.querySelectorAll('.field.invalid').forEach(x=>x.classList.remove('invalid'));
+  form.querySelectorAll('.field.invalid,.used-reason.invalid').forEach(x=>x.classList.remove('invalid'));
   const f=data(),errors=[];
   if(!f.disease)errors.push([form.elements.disease,'疾患を選択してください']);
   if(!f.sex)errors.push([form.elements.sex,'性別を選択してください']);
   if(!f.ageGroup)errors.push([form.elements.ageGroup,'年齢区分を選択してください']);
   if(!f.severity)errors.push([form.elements.severity,'活動性を選択してください']);
+  used().forEach(id=>{if(!form.elements[`usedReason_${id}`].value)errors.push([form.elements[`usedReason_${id}`],`${drugs.find(d=>d.id===id).name}の使用後の経過を選択してください`])});
   if(f.disease==='CD'){
     if(f.cdstAlbumin==='')errors.push([form.elements.cdstAlbumin,'CDST計算用のアルブミンを入力してください']);
     else if(+f.cdstAlbumin<1||+f.cdstAlbumin>6)errors.push([form.elements.cdstAlbumin,'アルブミンは1.0〜6.0 g/dLで入力してください']);
     if(f.cdstCrp==='')errors.push([form.elements.cdstCrp,'CDST計算用のCRPを入力してください']);
     else if(+f.cdstCrp<0||+f.cdstCrp>50)errors.push([form.elements.cdstCrp,'CRPは0〜50 mg/dLで入力してください']);
   }
-  if(errors.length){errors.forEach(([el])=>el.closest('.field')?.classList.add('invalid'));showToast(errors.map(x=>x[1]).join('／'));errors[0][0].scrollIntoView({behavior:'smooth',block:'center'});errors[0][0].focus();return false}
+  if(errors.length){errors.forEach(([el])=>el.closest('.field,.used-reason')?.classList.add('invalid'));showToast(errors.map(x=>x[1]).join('／'));errors[0][0].scrollIntoView({behavior:'smooth',block:'center'});errors[0][0].focus();return false}
   return true;
 }
 function resultTags(reasons){
@@ -123,16 +127,30 @@ function resultTags(reasons){
   if(reasons.some(x=>x.includes('作用機序変更')))tags.push('作用機序変更');
   if(reasons.some(x=>x.includes('肛門病変')||x.includes('瘻孔')))tags.push('肛門病変');
   if(reasons.some(x=>x.includes('治療最適化')))tags.push('最適化可能');
+  if(reasons.some(x=>x.includes('AZA併用注意')))tags.push('AZA併用注意');
+  else if(reasons.some(x=>x.includes('AZA併用')))tags.push('AZA併用');
   return tags.slice(0,3);
 }
 
 function renderUsed(disease){
-  usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
+  usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<div class="used-history"><label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label><label class="used-reason" data-reason-for="${d.id}" hidden><span>使用後の経過</span><select name="usedReason_${d.id}"><option value="">選択してください</option><option value="primary">一次無効</option><option value="secondary">二次無効・効果減弱</option><option value="adverse">有害事象で中止</option><option value="remission">寛解後に中止</option><option value="other">その他</option></select></label></div>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
 }
 function updateOptimizationVisibility(){
-  const input=form.elements.secondaryLoss,label=input.closest('.check'),hasUsedAt=used().length>0;
-  label.hidden=!hasUsedAt;
-  if(!hasUsedAt)input.checked=false;
+  const routes=selected('inductionRoute'),any=yes('inductionAny'),hasUsedAt=used().length>0;
+  const visibility={
+    secondaryLoss:hasUsedAt,
+    optimizeSame:any||routes.length>0,
+    rescueOption:any||routes.includes('iv'),
+    mechanismSwitch:hasUsedAt
+  };
+  Object.entries(visibility).forEach(([name,show])=>{
+    const input=form.elements[name];input.closest('.check').hidden=!show;
+    if(!show)input.checked=false;
+  });
+  const hasChoice=Object.values(visibility).some(Boolean);
+  form.elements.optimizationNone.closest('.check').hidden=!hasChoice;
+  if(!hasChoice)form.elements.optimizationNone.checked=false;
+  document.querySelector('#optimizationBlock').hidden=!hasChoice;
 }
 function updateBurdenVisibility(routes,any,maintenanceVisible){
   const possible=new Set(any?['iv','sc','oral']:routes);
@@ -164,7 +182,7 @@ function updateRoutePreferences(changed){
     option.hidden=!allowed;option.disabled=!allowed;
   });
   const onlyRoute=allowedMaintenance.size===1?[...allowedMaintenance][0]:null;
-  const show=allowedMaintenance.size>1;
+  const show=!any&&allowedMaintenance.size>1;
   field.hidden=!show;
   if(changed==='inductionRoute'||changed==='inductionAny')form.elements.maintenanceRoute.value=onlyRoute||'any';
   if(form.elements.maintenanceRoute.selectedOptions[0]?.disabled)form.elements.maintenanceRoute.value=onlyRoute||'any';
@@ -178,6 +196,17 @@ function conditional(changed){
   if(changed==='disease')renderUsed(f.disease);
   updateOptimizationVisibility();
   if(f.sex!=='female')for(const n of ['lifeNone','menopause','pregnancyPlan','pregnant','nursing'])form.elements[n].checked=false;
+  const autoMenopause=f.sex==='female'&&f.ageGroup==='75+';
+  if(autoMenopause){
+    form.elements.menopause.checked=true;
+    form.elements.lifeNone.checked=false;
+    for(const n of ['pregnancyPlan','pregnant','nursing'])form.elements[n].checked=false;
+    menopauseAuto=true;
+  }else if(menopauseAuto){
+    form.elements.menopause.checked=false;
+    menopauseAuto=false;
+  }
+  document.querySelector('#ageMenopauseNotice').hidden=!autoMenopause;
   pregnancy.hidden=yes('lifeNone')||yes('menopause');
   updateRoutePreferences(changed);
   calculateVdzCdst();
@@ -189,14 +218,24 @@ form.addEventListener('change',e=>{
   if(n==='menopause'&&e.target.checked)for(const x of ['pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
   if(n==='optimizationNone'&&e.target.checked)for(const x of ['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch'])form.elements[x].checked=false;
   if(['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch'].includes(n)&&e.target.checked)form.elements.optimizationNone.checked=false;
+  if(n==='mechanismSwitch'&&e.target.checked)for(const x of ['optimizeSame','rescueOption'])form.elements[x].checked=false;
+  if(['optimizeSame','rescueOption'].includes(n)&&e.target.checked)form.elements.mechanismSwitch.checked=false;
   if(n==='inductionAny'&&e.target.checked)form.querySelectorAll('input[name="inductionRoute"]').forEach(x=>x.checked=false);
   if(n==='inductionRoute'&&e.target.checked)form.elements.inductionAny.checked=false;
-  e.target.closest('.field')?.classList.remove('invalid'); conditional(n); results.hidden=true;
+  if(n==='usedDrug'){
+    const reason=form.querySelector(`[data-reason-for="${e.target.value}"]`);
+    reason.hidden=!e.target.checked;
+    if(!e.target.checked)reason.querySelector('select').value='';
+  }
+  if(n==='adherence'&&e.target.checked)form.elements.adherenceOk.checked=false;
+  if(n==='adherenceOk'&&e.target.checked)form.elements.adherence.checked=false;
+  e.target.closest('.field,.used-reason')?.classList.remove('invalid'); conditional(n); results.hidden=true;
 });
 form.addEventListener('input',e=>{e.target.closest('.field')?.classList.remove('invalid');calculateVdzCdst();results.hidden=true});
 
 function calculate(f){
   const excluded=new Set(used());
+  const historyEntries=[...excluded].map(id=>({drug:drugs.find(d=>d.id===id),reason:form.elements[`usedReason_${id}`]?.value||''}));
   const usedClasses=drugs.filter(d=>excluded.has(d.id)).map(d=>d.cls);
   const historyType=!excluded.size?'none':usedClasses.includes('抗TNF抗体')?'antiTNF':'advanced';
   const inductionPreferences=selected('inductionRoute');
@@ -205,7 +244,15 @@ function calculate(f){
     if(f.severity==='severe'&&['IFX','UPA','RIS'].includes(d.id))add(8,'高度活動性で有効性を重視');
     if(historyType==='antiTNF'&&d.cls!=='抗TNF抗体')add(7,'抗TNF既治療後の作用機序変更');
     if(historyType==='advanced'&&['UPA','RIS','MIRI','GUS'].includes(d.id))add(5,'高度治療既治療後の選択肢');
+    const primaryFailures=historyEntries.filter(entry=>entry.reason==='primary');
+    if(primaryFailures.some(entry=>entry.drug.cls===d.cls))add(-6,'同一作用機序で一次無効歴あり');
+    else if(primaryFailures.length)add(3,'一次無効後の作用機序変更');
+    if(historyEntries.some(entry=>entry.reason==='adverse'&&entry.drug.cls===d.cls))add(-3,'同一作用機序で有害事象中止歴あり');
     if(yes('steroid')&&['UPA','IFX'].includes(d.id))add(4,'ステロイド依存・抵抗性');
+    if(yes('aza')&&d.id==='IFX'){
+      if(f.ageGroup==='75+'||yes('infection')||yes('malignancy'))add(0,'AZA併用注意：年齢・感染症・悪性腫瘍リスクを優先評価');
+      else add(4,'AZA併用による有効性・免疫原性抑制のエビデンス');
+    }
     if(f.disease==='CD'&&yes('perianal')&&d.id==='IFX')add(12,'肛門病変・瘻孔のエビデンス');
     if(f.disease==='CD'&&d.id==='VED'){
       const cdstScore=calculateVdzCdst();
@@ -220,7 +267,8 @@ function calculate(f){
     if(yes('adherenceOk')&&d.maintenance.includes('oral'))add(1,'服薬管理に問題なし');
     if(yes('adherence')&&d.maintenance.includes('oral'))add(-8,'内服アドヒアランス懸念');
     if(d.optimization&&d.optimization.diseases.includes(f.disease)&&!yes('mechanismSwitch')){
-      const wanted=yes('secondaryLoss')||(d.optimization.kind==='intensify'&&yes('optimizeSame'))||(d.optimization.kind==='rescue'&&yes('rescueOption'));
+      const hasSecondaryHistory=historyEntries.some(entry=>entry.reason==='secondary');
+      const wanted=yes('secondaryLoss')||hasSecondaryHistory||(d.optimization.kind==='intensify'&&yes('optimizeSame'))||(d.optimization.kind==='rescue'&&yes('rescueOption'));
       if(wanted){
         add(d.optimization.points,`治療最適化：${d.optimization.label}`);
         if(yes('visitIncrease')&&['IFX','RIS','MIRI'].includes(d.id))add(0,'治療最適化に伴う通院増加を許容');

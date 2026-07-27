@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD Advanced Therapy 選択支援 Ver.3.10.1</title>
-<link rel="stylesheet" href="static/style.css?v=3.10.1.2">
+<title>IBD Advanced Therapy 選択支援 Ver.3.11.0</title>
+<link rel="stylesheet" href="static/style.css?v=3.11.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -15,7 +15,7 @@
 <div class="eyebrow">IBD CLINICAL DECISION SUPPORT</div>
 <h1>Advanced Therapy 選択支援</h1>
 <p>潰瘍性大腸炎・クローン病の患者背景と治療目標を整理し、候補薬を比較します。</p>
-<span class="version">Version 3.10.1</span>
+<span class="version">Version 3.11.0</span>
 </header>
 <form id="patientForm">
 <section>
@@ -61,6 +61,7 @@
 <section id="femaleSection" class="conditional" hidden>
 <h2>
 <b>02</b> 女性のライフステージ</h2>
+<p class="hint" id="ageMenopauseNotice" hidden>75歳以上のため「閉経後」を自動選択しています。</p>
 <div class="checks">
 <label class="check">
 <input name="lifeNone" type="checkbox">
@@ -89,10 +90,6 @@
 <section>
 <h2>
 <b id="treatmentStepNumber">02</b> 治療背景とリスク</h2>
-<div class="history-guide">
-<strong>高度治療歴</strong>
-<span>下の薬剤一覧から、これまでに使用したATをすべて選択してください。</span>
-</div>
 <div class="input-group therapy-group">
 <div class="group-title">
 <span>01</span>
@@ -150,7 +147,7 @@
 <p>導入期と維持期を分け、効果減弱時の調整方法と許容できる負担を選択します。</p>
 </div>
 </div>
-<div class="preference-block">
+<div class="preference-block" id="optimizationBlock" hidden>
 <h4>導入療法で許容できる投与経路（複数選択可）</h4>
 <p class="hint">希望する経路、または「こだわらない」を選択してください。</p>
 <div class="checks">
@@ -224,11 +221,11 @@
 </div>
 </dialog>
 <footer>
-<strong>IBD Advanced Therapy 選択支援 Ver.3.10.1</strong>
+<strong>IBD Advanced Therapy 選択支援 Ver.3.11.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=3.10.1.2" charset="utf-8">
+<script src="static/app.js?v=3.11.0" charset="utf-8">
 </script>
 </body>
 </html>
