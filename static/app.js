@@ -1,5 +1,5 @@
 const drugs=[
-['IFX','インフリキシマブ','抗TNFα抗体','iv','UC,CD','ACT 1/2・ACCENT I/II・SONIC・UC-SUCCESS'],['ADA','アダリムマブ','抗TNFα抗体','sc','UC,CD','ULTRA 2・CLASSIC I・CHARM'],['GLM','ゴリムマブ','抗TNFα抗体','sc','UC','PURSUIT-SC・PURSUIT-J'],['VED','ベドリズマブ','抗α4β7インテグリン抗体','iv','UC,CD','GEMINI 1/2'],['UST','ウステキヌマブ','抗IL-12/23p40抗体','sc','UC,CD','UNIFI・UNITI・IM-UNITI'],['RIS','リサンキズマブ','抗IL-23p19抗体','sc','UC,CD','INSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFY'],['MIRI','ミリキズマブ','抗IL-23p19抗体','sc','UC,CD','LUCENT・VIVID-1・VIVID-2'],['GUS','グセルクマブ','抗IL-23p19抗体','sc','UC,CD','QUASAR・ASTRO・GALAXI'],['OZA','オザニモド','S1P受容体調節薬','oral','UC','True North'],['ETR','エトラシモド','S1P受容体調節薬','oral','UC','ELEVATE'],['TOF','トファシチニブ','JAK阻害薬','oral','UC','OCTAVE'],['FIL','フィルゴチニブ','JAK1阻害薬','oral','UC','SELECTION'],['UPA','ウパダシチニブ','JAK1阻害薬','oral','UC,CD','U-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDURE']
+['IFX','インフリキシマブ','抗TNFα抗体','iv','UC,CD','ACT 1/2・ACCENT I/II・SONIC・UC-SUCCESS'],['ADA','アダリムマブ','抗TNFα抗体','sc','UC,CD','ULTRA 2・CLASSIC I・CHARM'],['GLM','ゴリムマブ','抗TNFα抗体','sc','UC','PURSUIT-SC・PURSUIT-J'],['VED','ベドリズマブ','抗α4β7インテグリン抗体','iv','UC,CD','GEMINI 1/2'],['UST','ウステキヌマブ','抗IL-12/23p40抗体','sc','UC,CD','UNIFI・UNITI・IM-UNITI'],['RIS','リサンキズマブ','抗IL-23p19抗体','sc','UC,CD','INSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFY'],['MIRI','ミリキズマブ','抗IL-23p19抗体','sc','UC,CD','LUCENT-1/2/3・VIVID-1/2'],['GUS','グセルクマブ','抗IL-23p19抗体','sc','UC,CD','QUASAR・ASTRO・GALAXI'],['OZA','オザニモド','S1P受容体調節薬','oral','UC','True North'],['ETR','エトラシモド','S1P受容体調節薬','oral','UC','ELEVATE'],['TOF','トファシチニブ','JAK阻害薬','oral','UC','OCTAVE'],['FIL','フィルゴチニブ','JAK1阻害薬','oral','UC','SELECTION'],['UPA','ウパダシチニブ','JAK1阻害薬','oral','UC,CD','U-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDURE']
 ].map(([id,name,cls,route,diseases,trials])=>({id,name,cls,route,diseases:diseases.split(','),trials}));
 
 const regimenData={
@@ -20,28 +20,56 @@ const regimenData={
 drugs.forEach(d=>Object.assign(d,regimenData[d.id]));
 
 const scheduleData={
-  IFX:{steps:[['0週','点滴導入'],['2週','点滴'],['6週','点滴'],['以後','通常8週ごとに点滴']]},
-  ADA:{steps:[['0週','皮下注導入'],['2週','皮下注'],['以後','通常2週ごとに皮下注']]},
-  GLM:{steps:[['0週','皮下注導入'],['2週','皮下注'],['以後','4週ごとに皮下注']]},
-  VED:{steps:[['0週','点滴導入'],['2週','点滴'],['6週','点滴'],['維持期','点滴8週ごと／皮下注へ移行可']]},
-  UST:{steps:[['0週','点滴導入'],['8週','皮下注'],['以後','8週または12週ごとに皮下注']]},
-  RIS:{steps:[['0週','点滴導入'],['4週','点滴'],['8週','点滴'],['12週以後','皮下注8週ごと']]},
-  MIRI:{steps:[['0週','点滴導入'],['4週','点滴'],['8週','点滴'],['12週以後','皮下注4週ごと']]},
-  GUS:{steps:[['0週','点滴または皮下注で導入'],['4週','導入投与'],['8週','導入投与'],['維持期','皮下注4週または8週ごと']]},
-  OZA:{steps:[['1日目','スターターパック開始'],['1～7日目','段階的に増量'],['8日目以後','1日1回内服']]},
-  ETR:{steps:[['1日目','内服開始'],['以後','1日1回内服']]},
-  TOF:{steps:[['導入期','1日2回内服'],['8週以後','維持療法も1日2回内服']]},
-  FIL:{steps:[['1日目','内服開始'],['以後','1日1回内服']]},
-  UPA:{UC:[['導入期 8週','1日1回内服'],['維持期','1日1回内服']],CD:[['導入期 12週','1日1回内服'],['維持期','1日1回内服']]}
+  IFX:{steps:[['0週','点滴導入','5mg/kg'],['2週','点滴','5mg/kg'],['6週','点滴','5mg/kg'],['以後','通常8週ごとに点滴','5mg/kg']],optimization:{CD:['効果不十分時の増量','10mg/kgを8週ごとに点滴'],CD2:['効果不十分時の間隔短縮','5mg/kgを4週ごとに点滴']}},
+  ADA:{steps:[['0週','皮下注導入','160mg（80mg製剤×2本）',2],['2週','皮下注','80mg（80mg製剤×1本）',1],['4週以後','通常2週ごとに皮下注','40mg（40mg製剤×1本）',1]],optimization:{UC:['効果不十分時の増量','80mgを2週ごとに皮下注（80mg製剤×1本）',1],CD:['効果不十分時の増量','80mgを2週ごとに皮下注（80mg製剤×1本）',1]}},
+  GLM:{steps:[['0週','皮下注導入','200mg（100mg製剤×2本）',2],['2週','皮下注','100mg（100mg製剤×1本）',1],['以後','4週ごとに皮下注','100mg（100mg製剤×1本）',1]]},
+  VED:{steps:[['0週','点滴導入','300mg'],['2週','点滴','300mg'],['6週','点滴','300mg'],['維持期','点滴8週ごと／皮下注へ移行可','点滴300mg／皮下注108mg（1本）',1]]},
+  UST:{steps:[['0週','体重別用量で点滴導入','約6mg/kg'],['8週','皮下注','90mg（90mg製剤×1本）',1],['以後','8週または12週ごとに皮下注','90mg（90mg製剤×1本）',1]],optimization:{UC:['効果不十分時の間隔短縮','12週ごとから8週ごとへ短縮（90mg×1本）',1],CD:['効果不十分時の間隔短縮','12週ごとから8週ごとへ短縮（90mg×1本）',1]}},
+  RIS:{
+    UC:[['0週','点滴導入','1200mg'],['4週','点滴','1200mg'],['8週','点滴','1200mg'],['12週以後','皮下注8週ごと','180mgまたは360mg（オートドーザー×1本）',1]],
+    CD:[['0週','点滴導入','600mg'],['4週','点滴','600mg'],['8週','点滴','600mg'],['12週以後','皮下注8週ごと','360mg（オートドーザー×1本）',1]],
+    optimization:{UC:['導入反応不十分時','追加・延長導入を検討（承認用法と適用条件を確認）'],CD:['導入反応不十分時','追加・延長導入を検討（承認用法と適用条件を確認）']}
+  },
+  MIRI:{
+    UC:[['0週','点滴導入','300mg'],['4週','点滴','300mg'],['8週','点滴','300mg'],['12週以後','皮下注4週ごと','200mg（100mg製剤×2本）',2]],
+    CD:[['0週','点滴導入','900mg'],['4週','点滴','900mg'],['8週','点滴','900mg'],['12週以後','皮下注4週ごと','300mg（100mg＋200mg製剤、計2本）',2]],
+    optimization:{UC:['維持期の効果減弱時','300mg点滴を4週ごとに計3回、その4週後から皮下注200mgを再開'],CD:['維持期の効果減弱時','900mg点滴による再導入を検討（承認用法と適用条件を確認）']}
+  },
+  GUS:{steps:[['0週','点滴200mgまたは皮下注導入','皮下注400mg（200mg製剤×2本）',2],['4週','導入投与','点滴200mg／皮下注400mg（2本）',2],['8週','導入投与','点滴200mg／皮下注400mg（2本）',2],['維持期','皮下注4週または8週ごと','100mg（1本）または200mg（1本）',1]],optimization:{UC:['効果不十分時の投与強化','100mgを8週ごとから200mgを4週ごとへ変更（1本）',1],CD:['効果不十分時の投与強化','100mgを8週ごとから200mgを4週ごとへ変更（1本）',1]}},
+  OZA:{steps:[['1～4日目','スターターパックで内服','0.23mg 1日1回'],['5～7日目','段階的に増量して内服','0.46mg 1日1回'],['8日目以後','維持内服','0.92mg 1日1回']]},
+  ETR:{steps:[['1日目','内服開始','2mg'],['以後','1日1回内服','2mg 1日1回']]},
+  TOF:{steps:[['導入期','1日2回内服','10mg 1日2回'],['8週以後','維持療法も1日2回内服','通常5mg 1日2回']]},
+  FIL:{steps:[['1日目','内服開始','200mg'],['以後','1日1回内服','200mg 1日1回']]},
+  UPA:{UC:[['導入期 8週','1日1回内服','45mg 1日1回'],['維持期','1日1回内服','15mgまたは30mg 1日1回']],CD:[['導入期 12週','1日1回内服','45mg 1日1回'],['維持期','1日1回内服','15mgまたは30mg 1日1回']],optimization:{UC:['維持期の効果不十分時','15mg 1日1回から30mg 1日1回への増量を検討'],CD:['維持期の効果不十分時','15mg 1日1回から30mg 1日1回への増量を検討']}}
 };
 function scheduleSteps(d,disease){
   const schedule=scheduleData[d.id];
   return schedule?.steps||schedule?.[disease]||[];
 }
+const scheduleIcons={
+  iv:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M18 4h12v6H18zM16 10h16v22a8 8 0 0 1-16 0z"/><path d="M20 16h8M24 16v9M20 21h8M24 40v4M24 44h8"/></svg>',
+  sc:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m8 36 8 4 4-8-8-4zM16 32l17-17M28 11l9 9M33 8l7 7M20 28l-4-4M38 10l4-4"/></svg>',
+  oral:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 12a10 10 0 0 1 14 0l10 10a10 10 0 0 1-14 14L12 26a10 10 0 0 1 0-14zM17 31l14-14"/></svg>'
+};
+function routeKinds(label){
+  const kinds=[];
+  if(label.includes('点滴'))kinds.push('iv');
+  if(label.includes('皮下注'))kinds.push('sc');
+  if(label.includes('内服')||label.includes('スターターパック')||label.includes('増量'))kinds.push('oral');
+  return kinds;
+}
+function routeIconMarkup(label,devices=1){
+  const names={iv:'点滴',sc:'皮下注',oral:'内服'};
+  return `<div class="schedule-icons">${routeKinds(label).map(kind=>kind==='sc'
+    ?`<span class="schedule-icon schedule-${kind} multi-device" title="${names[kind]}"><span class="syringe-pictures">${Array.from({length:Math.max(1,devices)},()=>scheduleIcons[kind]).join('')}</span><em>${names[kind]}${devices>1?` ×${devices}本`:' ×1本'}</em></span>`
+    :`<span class="schedule-icon schedule-${kind}" title="${names[kind]}">${scheduleIcons[kind]}<em>${names[kind]}</em></span>`).join('')}</div>`;
+}
 function scheduleMarkup(d,disease){
   const steps=scheduleSteps(d,disease);
   if(!steps.length)return '';
-  return `<details class="schedule-details"><summary>投与スケジュールを見る</summary><div class="schedule-timeline">${steps.map(([time,label],i)=>`<div class="schedule-step"><span>${i+1}</span><b>${time}</b><small>${label}</small></div>`).join('')}</div><p class="schedule-note">概略図です。実際の用量・投与間隔・増量・短縮は疾患、反応、安全性および最新の電子添文に従って確認してください。</p></details>`;
+  const schedule=scheduleData[d.id],optimization=schedule.optimization?.[disease],optimization2=schedule.optimization?.[`${disease}2`];
+  const optimizationMarkup=[optimization,optimization2].filter(Boolean).map(([title,text,devices])=>`<div class="schedule-optimization"><b>${title}</b>${routeIconMarkup(text,devices)}<span>${text}</span></div>`).join('');
+  return `<details class="schedule-details"><summary>投与スケジュールを見る</summary><div class="schedule-key"><span class="schedule-iv">${scheduleIcons.iv}点滴</span><span class="schedule-sc">${scheduleIcons.sc}皮下注</span><span class="schedule-oral">${scheduleIcons.oral}内服</span></div><div class="schedule-timeline">${steps.map(([time,label,dose,devices],i)=>`<div class="schedule-step"><span>${i+1}</span><b>${time}</b>${routeIconMarkup(label,devices)}<small>${label}</small><strong class="schedule-dose">${dose||''}</strong></div>`).join('')}</div>${optimizationMarkup?`<div class="optimization-schedule"><h4>効果不十分・効果減弱時の選択肢</h4>${optimizationMarkup}<p>患者ごとの反応と安全性を再評価し、承認された適用条件・最新の電子添文を確認してください。適応外の最適化を推奨する表示ではありません。</p></div>`:''}<p class="schedule-note">概略図です。本数は記載した製剤規格を使用した場合の目安です。実際の製剤、用量、投与間隔、増量・短縮は疾患、反応、安全性および最新の電子添文に従って確認してください。</p></details>`;
 }
 
 const evidence={
@@ -70,7 +98,8 @@ UST:{studies:[
 ]},
 GLM:{trial:'PURSUIT-SC / PURSUIT-J（UC）',endpoint:'主要有効性評価（%）',periods:[['PURSUIT-SC Week 6：臨床的反応（200/100 mg）',51.0,30.3],['PURSUIT-SC Week 6：臨床的寛解',17.8,6.4],['PURSUIT-J Week 54：臨床的反応維持',56.3,19.4],['PURSUIT-J Week 54：臨床的寛解',50.0,6.5]],source:'https://pubmed.ncbi.nlm.nih.gov/23735746/',source2:'https://link.springer.com/article/10.1007/s00535-017-1326-1'},
 MIRI:{studies:[
- {trial:'LUCENT（UC）',endpoint:'主要有効性評価（%）',periods:[['導入期 Week 12：臨床的寛解',24.2,13.3],['維持期 Week 40：臨床的寛解',49.9,25.1]],source:'https://pubmed.ncbi.nlm.nih.gov/37385239/'},
+ {trial:'LUCENT-1 / LUCENT-2（UC）',endpoint:'導入・維持の主要有効性評価（%）',periods:[['LUCENT-1 Week 12：臨床的寛解',24.2,13.3],['LUCENT-2 Week 40（通算52週）：臨床的寛解',49.9,25.1]],source:'https://www.nejm.org/doi/full/10.1056/NEJMoa2207940'},
+ {trial:'LUCENT-3（UC）',endpoint:'非盲検長期継続試験（観察例解析、%）',periods:[['Week 152：臨床的寛解（Week 52 responder）',56.1,null],['Week 152：内視鏡的寛解（Week 52 responder）',61.0,null],['Week 152：臨床的寛解（Week 52 remitter）',70.1,null]],source:'https://pubmed.ncbi.nlm.nih.gov/39448057/'},
  {trial:'VIVID-1・VIVID-2（CD）',endpoint:'主要有効性評価（%）',periods:[['VIVID-1 Week 12反応＋Week 52 CDAI寛解',45.4,19.6],['VIVID-1 Week 12反応＋Week 52内視鏡反応',38.0,9.0],['VIVID-2 Week 104：臨床的寛解',79.0,null],['VIVID-2 Week 104：内視鏡的反応',81.8,null]],source:'https://pubmed.ncbi.nlm.nih.gov/39581202/',source2:'https://www.cghjournal.org/article/S1542-3565(26)00155-2/fulltext'}
 ]},
 RIS:{studies:[
@@ -380,7 +409,7 @@ const trialNames={
   VED:{UC:'GEMINI 1・VARSITY［直接比較］',CD:'GEMINI 2'},
   UST:{UC:'UNIFI',CD:'UNITI・IM-UNITI・SEAVUE［直接比較］'},
   RIS:{UC:'INSPIRE・COMMAND',CD:'ADVANCE・MOTIVATE・FORTIFY'},
-  MIRI:{UC:'LUCENT',CD:'VIVID-1・VIVID-2'},
+  MIRI:{UC:'LUCENT-1・LUCENT-2・LUCENT-3',CD:'VIVID-1・VIVID-2'},
   GUS:{UC:'QUASAR・ASTRO',CD:'GALAXI 2 / 3［直接比較］'},
   OZA:{UC:'True North'},ETR:{UC:'ELEVATE UC 12 / 52'},
   TOF:{UC:'OCTAVE'},FIL:{UC:'SELECTION'},
