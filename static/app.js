@@ -55,7 +55,7 @@ UPA:{studies:[
 
 const form=document.querySelector('#patientForm'),female=document.querySelector('#femaleSection'),pregnancy=document.querySelector('#pregnancyFields'),cd=document.querySelector('#cdGroup'),results=document.querySelector('#results'),usedRoot=document.querySelector('#usedDrugs');
 const checks=(root,items)=>root.innerHTML=items.map(([n,l])=>`<label class="check"><input name="${n}" type="checkbox"><span>${l}</span></label>`).join('');
-checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['infection','重篤感染症リスク'],['malignancy','悪性腫瘍の既往（治療後）'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
+checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['infection','重篤感染症リスク'],['cvRisk','心血管リスク（喫煙・高血圧・糖尿病・心血管疾患既往など）'],['malignancy','悪性腫瘍の既往（治療後）'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
 checks(document.querySelector('#cdChecks'),[['cdstSurgery','腸管手術歴あり'],['cdstFistula','瘻孔型病変の既往あり'],['perianal','現在、肛門病変・瘻孔あり']]);
 const data=()=>Object.fromEntries(new FormData(form));
 const yes=n=>form.elements[n]?.checked;
@@ -81,11 +81,10 @@ function calculateVdzCdst(){
 }
 function validateForm(){
   form.querySelectorAll('.field.invalid').forEach(x=>x.classList.remove('invalid'));
-  const f=data(),age=Number(f.age),errors=[];
+  const f=data(),errors=[];
   if(!f.disease)errors.push([form.elements.disease,'疾患を選択してください']);
   if(!f.sex)errors.push([form.elements.sex,'性別を選択してください']);
-  if(!f.age)errors.push([form.elements.age,'年齢を入力してください']);
-  else if(!Number.isInteger(age)||age<15||age>120)errors.push([form.elements.age,'年齢は15〜120歳の整数で入力してください']);
+  if(!f.ageGroup)errors.push([form.elements.ageGroup,'年齢区分を選択してください']);
   if(!f.severity)errors.push([form.elements.severity,'活動性を選択してください']);
   if(f.disease==='CD'){
     if(f.cdstAlbumin==='')errors.push([form.elements.cdstAlbumin,'CDST計算用のアルブミンを入力してください']);
@@ -99,7 +98,7 @@ function validateForm(){
 function resultTags(reasons){
   const tags=[];
   if(reasons.some(x=>x.includes('有効性')||x.includes('高度活動性')))tags.push('有効性重視');
-  if(reasons.some(x=>x.includes('安全性')||x.includes('感染症')||x.includes('悪性腫瘍')||x.includes('高齢者')))tags.push('安全性重視');
+  if(reasons.some(x=>x.includes('安全性')||x.includes('感染症')||x.includes('悪性腫瘍')||x.includes('高齢者')||x.includes('心血管')||x.includes('血栓')))tags.push('安全性重視');
   if(reasons.some(x=>x.includes('希望する投与経路')))tags.push('希望経路一致');
   if(reasons.some(x=>x.includes('作用機序変更')))tags.push('作用機序変更');
   if(reasons.some(x=>x.includes('肛門病変')||x.includes('瘻孔')))tags.push('肛門病変');
@@ -144,11 +143,27 @@ function calculate(f){
     }
     if(f.route!=='any')d.route===f.route?add(6,'希望する投与経路'):add(-4,'希望経路と不一致');
     if(yes('adherence')&&d.route==='oral')add(-8,'内服アドヒアランス懸念');
-    if(+f.age>=65){
+    if(f.ageGroup==='65-74'){
       if(d.id==='VED')add(6,'高齢者で腸管選択性を考慮');
       else if(d.id==='UST')add(4,'高齢者で安全性プロファイルを考慮');
       else if(['RIS','MIRI','GUS'].includes(d.id))add(3,'高齢者でIL-23選択性を考慮');
       else if(['TOF','FIL','UPA'].includes(d.id))add(-10,'高齢者でJAK阻害薬の安全性を慎重評価');
+    }
+    if(f.ageGroup==='75+'){
+      if(d.id==='VED')add(8,'75歳以上で腸管選択性を重視');
+      else if(d.id==='UST')add(6,'75歳以上で安全性プロファイルを重視');
+      else if(['RIS','MIRI','GUS'].includes(d.id))add(4,'75歳以上でIL-23選択性を考慮');
+      else if(['TOF','FIL','UPA'].includes(d.id))add(-15,'75歳以上でJAK阻害薬の安全性をより慎重に評価');
+      if(yes('infection')){
+        if(['TOF','FIL','UPA'].includes(d.id))add(-5,'75歳以上かつ重篤感染症リスク');
+        else if(['IFX','ADA','GLM'].includes(d.id))add(-3,'75歳以上かつ重篤感染症リスク');
+      }
+      if(yes('vte')&&['TOF','FIL','UPA'].includes(d.id))add(-5,'75歳以上かつ血栓塞栓症リスク');
+    }
+    if(yes('cvRisk')){
+      if(['TOF','FIL','UPA'].includes(d.id))add(f.ageGroup==='75+'?-12:-8,`${f.ageGroup==='75+'?'75歳以上かつ':''}心血管リスク`);
+      else if(d.id==='VED')add(3,'心血管リスクを踏まえ腸管選択性を考慮');
+      else if(['UST','RIS','MIRI','GUS'].includes(d.id))add(2,'心血管リスクを踏まえ安全性を考慮');
     }
     if(yes('infection')){
       if(d.id==='VED')add(8,'重篤感染症リスクで腸管選択性を考慮');
