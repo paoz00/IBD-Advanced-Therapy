@@ -38,11 +38,13 @@ form.addEventListener('change',e=>{
 
 function calculate(f){
   const excluded=new Set(used());
+  const usedClasses=drugs.filter(d=>excluded.has(d.id)).map(d=>d.cls);
+  const historyType=!excluded.size?'none':usedClasses.includes('抗TNF抗体')?'antiTNF':'advanced';
   return drugs.filter(d=>d.diseases.includes(f.disease)&&!excluded.has(d.id)).map(d=>{
     let score=70,reasons=[]; const add=(n,s)=>{score+=n;reasons.push(`${n>0?'+':''}${n} ${s}`)};
     if(f.severity==='severe'&&['IFX','UPA','RIS'].includes(d.id))add(8,'高度活動性で有効性を重視');
-    if(f.prior==='antiTNF'&&d.cls!=='抗TNF抗体')add(7,'抗TNF既治療後の作用機序変更');
-    if(f.prior==='advanced'&&['UPA','RIS','MIRI','GUS'].includes(d.id))add(5,'高度治療既治療後の選択肢');
+    if(historyType==='antiTNF'&&d.cls!=='抗TNF抗体')add(7,'抗TNF既治療後の作用機序変更');
+    if(historyType==='advanced'&&['UPA','RIS','MIRI','GUS'].includes(d.id))add(5,'高度治療既治療後の選択肢');
     if(yes('steroid')&&['UPA','IFX'].includes(d.id))add(4,'ステロイド依存・抵抗性');
     if(f.disease==='CD'&&yes('perianal')&&d.id==='IFX')add(12,'肛門病変・瘻孔のエビデンス');
     if(f.disease==='CD'&&yes('cdst')&&['UST','RIS','GUS'].includes(d.id))add(6,'CDST関連の層別化');
@@ -52,7 +54,7 @@ function calculate(f){
     if(yes('vte')&&['TOF','FIL','UPA'].includes(d.id))add(-15,'血栓塞栓症リスク');
     if((yes('pregnancyPlan')||yes('pregnant')||yes('nursing'))&&['TOF','FIL','UPA','OZA','ETR'].includes(d.id))add(-20,'妊娠・授乳関連の安全性');
     return {...d,score,reasons};
-  }).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'ja')).map((d,i,a)=>({...d,rank:i&&a[i-1].score===d.score?a[i-1].rank:i+1}));
+  }).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'ja')).map((d,i,a)=>({...d,rank:a.findIndex(x=>x.score===d.score)+1}));
 }
 form.addEventListener('submit',e=>{
   e.preventDefault(); if(!form.reportValidity())return;
@@ -67,12 +69,13 @@ document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0
 document.querySelector('#restart').onclick=()=>{form.reset();renderUsed('');conditional();results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
 
 const trialRoot=document.querySelector('#trials'),dialog=document.querySelector('#trialDialog'),detail=document.querySelector('#trialDetail');
-trialRoot.innerHTML=drugs.map(d=>`<button class="trial-card" data-drug="${d.id}"><span>${d.cls}</span><strong>${d.name}</strong><small>${d.trials}</small><em>${evidence[d.id]?'結果グラフを見る':'試験名を確認'}</em></button>`).join('');
+trialRoot.innerHTML=drugs.map(d=>`<button type="button" class="trial-card" data-drug="${d.id}" aria-label="${d.name}の臨床試験結果を見る"><span>${d.cls}</span><strong>${d.name}</strong><small>${d.trials}</small><em>${evidence[d.id]?'結果グラフを見る':'試験名を確認'}</em></button>`).join('');
 trialRoot.addEventListener('click',e=>{
   const card=e.target.closest('[data-drug]'); if(!card)return; const d=drugs.find(x=>x.id===card.dataset.drug),ev=evidence[d.id];
   detail.innerHTML=ev?`<span class="eyebrow">CLINICAL TRIAL</span><h2>${ev.trial}</h2><p>${ev.endpoint}</p>${ev.periods.map(([label,active,control])=>`<div class="chart"><b>${label}</b><div class="barrow"><span>${control==null?'継続投与群':'実薬'} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control"><span>対照 ${control}%</span><i style="width:${control}%"></i></div>`}</div>`).join('')}<p class="trial-note">※ 対象集団・再ランダム化条件・評価時点は試験ごとに異なります。試験間の数値を直接比較しないでください。VIVID-2は非盲検延長試験であり、表示値はmodified non-responder imputationによる継続投与群の結果です。</p><a href="${ev.source}" target="_blank" rel="noopener">一次資料を開く</a>${ev.source2?`　<a href="${ev.source2}" target="_blank" rel="noopener">関連試験資料を開く</a>`:''}`:`<h2>${d.name}</h2><p>${d.trials}</p><p>グラフ用の検証済み数値は次版で追加予定です。</p>`;
-  dialog.showModal();
+  if(typeof dialog.showModal==='function')dialog.showModal();else{dialog.setAttribute('open','');dialog.scrollIntoView({behavior:'smooth',block:'center'})}
 });
-document.querySelector('#closeTrial').onclick=()=>dialog.close();
-dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
+const closeDialog=()=>typeof dialog.close==='function'?dialog.close():dialog.removeAttribute('open');
+document.querySelector('#closeTrial').onclick=closeDialog;
+dialog.addEventListener('click',e=>{if(e.target===dialog)closeDialog()});
 renderUsed(''); conditional();
