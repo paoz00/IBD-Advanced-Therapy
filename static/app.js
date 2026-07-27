@@ -2,6 +2,23 @@ const drugs=[
 ['IFX','インフリキシマブ','抗TNF抗体','iv','UC,CD','ACT 1/2・ACCENT I/II'],['ADA','アダリムマブ','抗TNF抗体','sc','UC,CD','ULTRA 2・CLASSIC I・CHARM'],['GLM','ゴリムマブ','抗TNF抗体','sc','UC','PURSUIT-SC・PURSUIT-J'],['VED','ベドリズマブ','抗α4β7インテグリン抗体','iv','UC,CD','GEMINI 1/2'],['UST','ウステキヌマブ','抗IL-12/23p40抗体','sc','UC,CD','UNIFI・UNITI・IM-UNITI'],['RIS','リサンキズマブ','抗IL-23p19抗体','sc','UC,CD','INSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFY'],['MIRI','ミリキズマブ','抗IL-23p19抗体','sc','UC,CD','LUCENT・VIVID-1・VIVID-2'],['GUS','グセルクマブ','抗IL-23p19抗体','sc','UC,CD','QUASAR・ASTRO・GALAXI'],['OZA','オザニモド','S1P受容体調節薬','oral','UC','True North'],['ETR','エトラシモド','S1P受容体調節薬','oral','UC','ELEVATE'],['TOF','トファシチニブ','JAK阻害薬','oral','UC','OCTAVE'],['FIL','フィルゴチニブ','JAK1阻害薬','oral','UC','SELECTION'],['UPA','ウパダシチニブ','JAK1阻害薬','oral','UC,CD','U-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDURE']
 ].map(([id,name,cls,route,diseases,trials])=>({id,name,cls,route,diseases:diseases.split(','),trials}));
 
+const regimenData={
+  IFX:{induction:['iv'],maintenance:['iv'],label:'導入：点滴 → 維持：点滴',optimization:{kind:'intensify',points:3,label:'CDでは増量・投与間隔短縮の選択肢',diseases:['CD']}},
+  ADA:{induction:['sc'],maintenance:['sc'],label:'導入：皮下注 → 維持：皮下注',optimization:{kind:'intensify',points:2,label:'増量・投与強化の選択肢',diseases:['UC','CD']}},
+  GLM:{induction:['sc'],maintenance:['sc'],label:'導入：皮下注 → 維持：皮下注'},
+  VED:{induction:['iv'],maintenance:['iv','sc'],label:'導入：点滴 → 維持：点滴／皮下注'},
+  UST:{induction:['iv'],maintenance:['sc'],label:'導入：点滴 → 維持：皮下注',optimization:{kind:'intensify',points:2,label:'Q12WからQ8Wへの短縮選択肢',diseases:['UC','CD']}},
+  RIS:{induction:['iv'],maintenance:['sc'],label:'導入：点滴 → 維持：皮下注',optimization:{kind:'rescue',points:2,label:'追加・延長導入の選択肢',diseases:['UC','CD']}},
+  MIRI:{induction:['iv'],maintenance:['sc'],label:'導入：点滴 → 維持：皮下注',optimization:{kind:'rescue',points:2,label:'追加・再導入の選択肢',diseases:['UC','CD']}},
+  GUS:{induction:['iv','sc'],maintenance:['sc'],label:'導入：点滴／皮下注 → 維持：皮下注',optimization:{kind:'intensify',points:2,label:'Q8WからQ4Wへの変更選択肢',diseases:['UC','CD']}},
+  OZA:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
+  ETR:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
+  TOF:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
+  FIL:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
+  UPA:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'}
+};
+drugs.forEach(d=>Object.assign(d,regimenData[d.id]));
+
 const evidence={
 IFX:{studies:[
  {trial:'ACT 1 / 2（UC）',endpoint:'臨床的反応・寛解（%）',periods:[['ACT 1 Week 8：臨床的反応',69.4,37.2],['ACT 1 Week 8：臨床的寛解',38.8,14.9],['ACT 2 Week 30：臨床的寛解',25.6,10.6]],source:'https://www.nejm.org/doi/10.1056/NEJMoa050516'},
@@ -57,9 +74,12 @@ const form=document.querySelector('#patientForm'),female=document.querySelector(
 const checks=(root,items)=>root.innerHTML=items.map(([n,l])=>`<label class="check"><input name="${n}" type="checkbox"><span>${l}</span></label>`).join('');
 checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['infection','重篤感染症リスク'],['cvRisk','心血管リスク（喫煙・高血圧・糖尿病・心血管疾患既往など）'],['malignancy','悪性腫瘍の既往（治療後）'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
 checks(document.querySelector('#cdChecks'),[['cdstSurgery','腸管手術歴あり'],['cdstFistula','瘻孔型病変の既往あり'],['perianal','現在、肛門病変・瘻孔あり']]);
+checks(document.querySelector('#optimizationChecks'),[['secondaryLoss','過去に二次無効・効果減弱があった'],['optimizeSame','同じ薬剤で増量・間隔短縮できることを重視'],['rescueOption','追加導入・再導入できることを重視'],['mechanismSwitch','最適化より作用機序変更を優先'],['optimizationNone','どれにも当てはまらない']]);
+checks(document.querySelector('#burdenChecks'),[['visitIncrease','通院回数が増えてもよい'],['infusionTime','点滴時間を許容できる'],['selfInjection','自己注射が可能'],['injectionIncrease','注射回数が増えてもよい'],['adherenceOk','服薬管理に問題がない']]);
 const data=()=>Object.fromEntries(new FormData(form));
 const yes=n=>form.elements[n]?.checked;
 const used=()=>[...form.querySelectorAll('input[name="usedDrug"]:checked')].map(x=>x.value);
+const selected=n=>[...form.querySelectorAll(`input[name="${n}"]:checked`)].map(x=>x.value);
 const toast=document.querySelector('#toast');
 let toastTimer;
 function showToast(message){toast.textContent=message;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,4500)}
@@ -99,9 +119,10 @@ function resultTags(reasons){
   const tags=[];
   if(reasons.some(x=>x.includes('有効性')||x.includes('高度活動性')))tags.push('有効性重視');
   if(reasons.some(x=>x.includes('安全性')||x.includes('感染症')||x.includes('悪性腫瘍')||x.includes('高齢者')||x.includes('心血管')||x.includes('血栓')))tags.push('安全性重視');
-  if(reasons.some(x=>x.includes('希望する投与経路')))tags.push('希望経路一致');
+  if(reasons.some(x=>x.includes('希望投与経路')&&x.includes('一致')))tags.push('希望経路一致');
   if(reasons.some(x=>x.includes('作用機序変更')))tags.push('作用機序変更');
   if(reasons.some(x=>x.includes('肛門病変')||x.includes('瘻孔')))tags.push('肛門病変');
+  if(reasons.some(x=>x.includes('治療最適化')))tags.push('最適化可能');
   return tags.slice(0,3);
 }
 
@@ -120,6 +141,8 @@ form.addEventListener('change',e=>{
   if(n==='lifeNone'&&e.target.checked)for(const x of ['menopause','pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
   if(['menopause','pregnancyPlan','pregnant','nursing'].includes(n)&&e.target.checked)form.elements.lifeNone.checked=false;
   if(n==='menopause'&&e.target.checked)for(const x of ['pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
+  if(n==='optimizationNone'&&e.target.checked)for(const x of ['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch'])form.elements[x].checked=false;
+  if(['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch'].includes(n)&&e.target.checked)form.elements.optimizationNone.checked=false;
   e.target.closest('.field')?.classList.remove('invalid'); conditional(n); results.hidden=true;
 });
 form.addEventListener('input',e=>{e.target.closest('.field')?.classList.remove('invalid');calculateVdzCdst();results.hidden=true});
@@ -128,6 +151,7 @@ function calculate(f){
   const excluded=new Set(used());
   const usedClasses=drugs.filter(d=>excluded.has(d.id)).map(d=>d.cls);
   const historyType=!excluded.size?'none':usedClasses.includes('抗TNF抗体')?'antiTNF':'advanced';
+  const inductionPreferences=selected('inductionRoute');
   return drugs.filter(d=>d.diseases.includes(f.disease)&&!excluded.has(d.id)).map(d=>{
     let score=70,reasons=[]; const add=(n,s)=>{score+=n;reasons.push(`${n>0?'+':''}${n} ${s}`)};
     if(f.severity==='severe'&&['IFX','UPA','RIS'].includes(d.id))add(8,'高度活動性で有効性を重視');
@@ -141,8 +165,20 @@ function calculate(f){
       else if(cdstScore?.category==='中間')add(3,`VDZ-CDST ${cdstScore.score}点：反応可能性 中間`);
       else if(cdstScore?.category==='低')add(-5,`VDZ-CDST ${cdstScore.score}点：反応可能性 低`);
     }
-    if(f.route!=='any')d.route===f.route?add(6,'希望する投与経路'):add(-4,'希望経路と不一致');
-    if(yes('adherence')&&d.route==='oral')add(-8,'内服アドヒアランス懸念');
+    if(inductionPreferences.length)inductionPreferences.some(route=>d.induction.includes(route))?add(2,'導入期に許容できる投与経路と一致'):add(-2,'導入期に許容できる投与経路と不一致');
+    if(f.maintenanceRoute!=='any')d.maintenance.includes(f.maintenanceRoute)?add(6,'維持期の希望投与経路と一致'):add(-4,'維持期の希望投与経路と不一致');
+    if(yes('infusionTime')&&d.induction.includes('iv'))add(1,'点滴時間を許容');
+    if(yes('selfInjection')&&d.maintenance.includes('sc'))add(1,'自己注射が可能');
+    if(yes('adherenceOk')&&d.maintenance.includes('oral'))add(1,'服薬管理に問題なし');
+    if(yes('adherence')&&d.maintenance.includes('oral'))add(-8,'内服アドヒアランス懸念');
+    if(d.optimization&&d.optimization.diseases.includes(f.disease)&&!yes('mechanismSwitch')){
+      const wanted=yes('secondaryLoss')||(d.optimization.kind==='intensify'&&yes('optimizeSame'))||(d.optimization.kind==='rescue'&&yes('rescueOption'));
+      if(wanted){
+        add(d.optimization.points,`治療最適化：${d.optimization.label}`);
+        if(yes('visitIncrease')&&['IFX','RIS','MIRI'].includes(d.id))add(0,'治療最適化に伴う通院増加を許容');
+        if(yes('injectionIncrease')&&['ADA','UST','GUS'].includes(d.id))add(0,'治療最適化に伴う注射回数増加を許容');
+      }
+    }
     if(f.ageGroup==='65-74'){
       if(d.id==='VED')add(6,'高齢者で腸管選択性を考慮');
       else if(d.id==='UST')add(4,'高齢者で安全性プロファイルを考慮');
@@ -188,7 +224,7 @@ form.addEventListener('submit',e=>{
   if(!rows.length){error.textContent='使用済み薬剤以外に候補がありません。選択内容を確認してください。';return}
   error.textContent=''; const top=rows[0].score,names=rows.filter(x=>x.rank===1).map(x=>x.name).join('、');
   document.querySelector('#summary').innerHTML=`<strong>${names}</strong>${rows.filter(x=>x.rank===1).length>1?' は同点で、いずれも第一選択候補です。':' を第一選択候補として提示します。'} 最終決定は適応・禁忌・最新の添付文書と患者希望を確認してください。`;
-  document.querySelector('#cards').innerHTML=rows.map(r=>{const tags=resultTags(r.reasons);return `<article class="${r.rank===1?'best':''}"><div class="rank"><strong>${r.rank}</strong><small>位</small></div><div class="drug"><h3>${r.name}</h3><p>${r.cls} / ${{oral:'内服',sc:'皮下注',iv:'点滴静注'}[r.route]}</p>${tags.length?`<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<p class="reason-line">${r.reasons[0]?.replace(/^[+-]?\d+\s*/,'')||'標準条件による基本評価'}</p></div><div class="score"><strong>${r.score}</strong><small>点 ${r.score===top?'TOP':`-${top-r.score}`}</small></div><details><summary>評価の内訳</summary>${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`}).join('');
+  document.querySelector('#cards').innerHTML=rows.map(r=>{const tags=resultTags(r.reasons);return `<article class="${r.rank===1?'best':''}"><div class="rank"><strong>${r.rank}</strong><small>位</small></div><div class="drug"><h3>${r.name}</h3><p>${r.cls}</p><p class="regimen">${r.label}</p>${tags.length?`<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<p class="reason-line">${r.reasons[0]?.replace(/^[+-]?\d+\s*/,'')||'標準条件による基本評価'}</p></div><div class="score"><strong>${r.score}</strong><small>点 ${r.score===top?'TOP':`-${top-r.score}`}</small></div><details><summary>評価の内訳</summary>${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`}).join('');
   results.hidden=false; results.scrollIntoView({behavior:'smooth'});
 });
 document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
