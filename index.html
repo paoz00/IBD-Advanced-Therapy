@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD Advanced Therapy 選択支援 Ver.3.12.0</title>
-<link rel="stylesheet" href="static/style.css?v=3.12.0">
+<title>IBD Advanced Therapy 選択支援 Ver.3.13.0</title>
+<link rel="stylesheet" href="static/style.css?v=3.13.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -15,7 +15,7 @@
 <div class="eyebrow">IBD CLINICAL DECISION SUPPORT</div>
 <h1>Advanced Therapy 選択支援</h1>
 <p>潰瘍性大腸炎・クローン病の患者背景と治療目標を整理し、候補薬を比較します。</p>
-<span class="version">Version 3.12.0</span>
+<span class="version">Version 3.13.0</span>
 </header>
 <form id="patientForm">
 <section>
@@ -31,14 +31,6 @@
 </select>
 </label>
 <label class="field">
-<span>性別（必須）</span>
-<select name="sex" required>
-<option value="">選択してください</option>
-<option value="male">男性</option>
-<option value="female">女性</option>
-</select>
-</label>
-<label class="field">
 <span>年齢区分（必須）</span>
 <select name="ageGroup" required>
 <option value="">選択してください</option>
@@ -47,6 +39,14 @@
 <option value="75+">75歳以上</option>
 </select>
 <small>該当する年齢区分を選択</small>
+</label>
+<label class="field">
+<span>性別（必須）</span>
+<select name="sex" required>
+<option value="">選択してください</option>
+<option value="male">男性</option>
+<option value="female">女性</option>
+</select>
 </label>
 <label class="field">
 <span>活動性（必須）</span>
@@ -221,11 +221,11 @@
 </div>
 </dialog>
 <footer>
-<strong>IBD Advanced Therapy 選択支援 Ver.3.12.0</strong>
+<strong>IBD Advanced Therapy 選択支援 Ver.3.13.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=3.12.0" charset="utf-8">
+<script src="static/app.js?v=3.13.0" charset="utf-8">
 </script>
 </body>
 </html>

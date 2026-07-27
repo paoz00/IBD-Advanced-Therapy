@@ -19,6 +19,31 @@ const regimenData={
 };
 drugs.forEach(d=>Object.assign(d,regimenData[d.id]));
 
+const scheduleData={
+  IFX:{steps:[['0週','点滴導入'],['2週','点滴'],['6週','点滴'],['以後','通常8週ごとに点滴']]},
+  ADA:{steps:[['0週','皮下注導入'],['2週','皮下注'],['以後','通常2週ごとに皮下注']]},
+  GLM:{steps:[['0週','皮下注導入'],['2週','皮下注'],['以後','4週ごとに皮下注']]},
+  VED:{steps:[['0週','点滴導入'],['2週','点滴'],['6週','点滴'],['維持期','点滴8週ごと／皮下注へ移行可']]},
+  UST:{steps:[['0週','点滴導入'],['8週','皮下注'],['以後','8週または12週ごとに皮下注']]},
+  RIS:{steps:[['0週','点滴導入'],['4週','点滴'],['8週','点滴'],['12週以後','皮下注8週ごと']]},
+  MIRI:{steps:[['0週','点滴導入'],['4週','点滴'],['8週','点滴'],['12週以後','皮下注4週ごと']]},
+  GUS:{steps:[['0週','点滴または皮下注で導入'],['4週','導入投与'],['8週','導入投与'],['維持期','皮下注4週または8週ごと']]},
+  OZA:{steps:[['1日目','スターターパック開始'],['1～7日目','段階的に増量'],['8日目以後','1日1回内服']]},
+  ETR:{steps:[['1日目','内服開始'],['以後','1日1回内服']]},
+  TOF:{steps:[['導入期','1日2回内服'],['8週以後','維持療法も1日2回内服']]},
+  FIL:{steps:[['1日目','内服開始'],['以後','1日1回内服']]},
+  UPA:{UC:[['導入期 8週','1日1回内服'],['維持期','1日1回内服']],CD:[['導入期 12週','1日1回内服'],['維持期','1日1回内服']]}
+};
+function scheduleSteps(d,disease){
+  const schedule=scheduleData[d.id];
+  return schedule?.steps||schedule?.[disease]||[];
+}
+function scheduleMarkup(d,disease){
+  const steps=scheduleSteps(d,disease);
+  if(!steps.length)return '';
+  return `<details class="schedule-details"><summary>投与スケジュールを見る</summary><div class="schedule-timeline">${steps.map(([time,label],i)=>`<div class="schedule-step"><span>${i+1}</span><b>${time}</b><small>${label}</small></div>`).join('')}</div><p class="schedule-note">概略図です。実際の用量・投与間隔・増量・短縮は疾患、反応、安全性および最新の電子添文に従って確認してください。</p></details>`;
+}
+
 const evidence={
 IFX:{studies:[
  {trial:'ACT 1 / 2（UC）',endpoint:'臨床的反応・寛解（%）',periods:[['ACT 1 Week 8：臨床的反応',69.4,37.2],['ACT 1 Week 8：臨床的寛解',38.8,14.9],['ACT 2 Week 30：臨床的寛解',25.6,10.6]],source:'https://www.nejm.org/doi/10.1056/NEJMoa050516'},
@@ -341,7 +366,7 @@ form.addEventListener('submit',e=>{
   if(!rows.length){error.textContent='使用済み薬剤以外に候補がありません。選択内容を確認してください。';return}
   error.textContent=''; const top=rows[0].score,names=rows.filter(x=>x.rank===1).map(x=>x.name).join('、');
   document.querySelector('#summary').innerHTML=`<strong>${names}</strong>${rows.filter(x=>x.rank===1).length>1?' は同点で、いずれも第一選択候補です。':' を第一選択候補として提示します。'} 最終決定は適応・禁忌・最新の添付文書と患者希望を確認してください。`;
-  document.querySelector('#cards').innerHTML=rows.map(r=>{const tags=resultTags(r.reasons);return `<article class="${r.rank===1?'best':''}"><div class="rank"><strong>${r.rank}</strong><small>位</small></div><div class="drug"><h3>${r.name}</h3><p>${r.cls}</p><p class="regimen">${r.label}</p>${tags.length?`<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<p class="reason-line">${r.reasons[0]?.replace(/^[+-]?\d+\s*/,'')||'標準条件による基本評価'}</p></div><div class="score"><strong>${r.score}</strong><small>点 ${r.score===top?'TOP':`-${top-r.score}`}</small></div><details><summary>評価の内訳</summary>${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`}).join('');
+  document.querySelector('#cards').innerHTML=rows.map(r=>{const tags=resultTags(r.reasons);return `<article class="${r.rank===1?'best':''}"><div class="rank"><strong>${r.rank}</strong><small>位</small></div><div class="drug"><h3>${r.name}</h3><p>${r.cls}</p><p class="regimen">${r.label}</p>${tags.length?`<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<p class="reason-line">${r.reasons[0]?.replace(/^[+-]?\d+\s*/,'')||'標準条件による基本評価'}</p></div><div class="score"><strong>${r.score}</strong><small>点 ${r.score===top?'TOP':`-${top-r.score}`}</small></div>${scheduleMarkup(r,data().disease)}<details><summary>評価の内訳</summary>${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`}).join('');
   results.hidden=false; results.scrollIntoView({behavior:'smooth'});
 });
 document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
