@@ -1,8 +1,8 @@
-# IBD Advanced Therapy 選択支援 Ver.3.4.0
+# IBD Advanced Therapy 選択支援 Ver.3.5.0
 
 潰瘍性大腸炎（UC）・クローン病（CD）の高度治療候補を、患者背景・既治療・安全性・投与希望から比較する医療従事者向けWebアプリです。診断、処方、添付文書の確認を代替しません。
 
-## Ver.3.4.0の変更点
+## Ver.3.5.0の変更点
 
 - 男性では妊娠希望・妊娠中・授乳中の入力を完全に非表示
 - 女性でも閉経後は上記入力を非表示にし、保持していた値も解除
@@ -26,6 +26,15 @@
 - 3剤以上の同点で順位が `undefined` になる不具合と表示の重なりを修正
 - 臨床試験カードのクリック領域、ダイアログ互換性、GitHub Pagesのキャッシュ更新を修正
 - 高度治療歴を疾患別ATの複数選択へ一本化し、既治療分類を自動判定
+- 悪性腫瘍既往・感染リスク・65歳以上の評価を薬剤別に細分化
+- 悪性腫瘍既往ではVDZ +10、UST +8、IL-23p19 +4、JAK -12として相対評価
+- 1薬剤に複数の臨床試験を登録できる試験別タブ表示へ変更
+- IFXのACT・ACCENT、ADAのULTRA・CLASSIC・CHARM、GUSのQUASAR・ASTRO・GALAXIを収録
+- VEDのGEMINI 1・2を収録
+- RISのINSPIRE・COMMAND・ADVANCE・MOTIVATE・FORTIFYを収録
+- ETRのELEVATE UC 12・52を収録
+- TOFのOCTAVE Induction 1・2／Sustainを収録
+- UPAのU-ACHIEVE・U-ACCOMPLISH・U-EXCEL・U-EXCEED・U-ENDUREを収録
 
 ## GitHub Desktop / GitHub Pages
 
