@@ -24,7 +24,7 @@ const scheduleData={
   ADA:{steps:[['0週','皮下注導入','160mg（80mg製剤×2本）',2],['2週','皮下注','80mg（80mg製剤×1本）',1],['4週以後','通常2週ごとに皮下注','40mg（40mg製剤×1本）',1]],optimization:{UC:['効果不十分時の増量','80mgを2週ごとに皮下注（80mg製剤×1本）',1],CD:['効果不十分時の増量','80mgを2週ごとに皮下注（80mg製剤×1本）',1]}},
   GLM:{steps:[['0週','皮下注導入','200mg（100mg製剤×2本）',2],['2週','皮下注','100mg（100mg製剤×1本）',1],['以後','4週ごとに皮下注','100mg（100mg製剤×1本）',1]]},
   VED:{steps:[['0週','点滴導入','300mg'],['2週','点滴','300mg'],['6週','点滴','300mg'],['維持期','点滴8週ごと／皮下注へ移行可','点滴300mg／皮下注108mg（1本）',1]]},
-  UST:{steps:[['0週','体重別用量で点滴導入','約6mg/kg'],['8週','皮下注','90mg（90mg製剤×1本）',1],['以後','8週または12週ごとに皮下注','90mg（90mg製剤×1本）',1]],optimization:{UC:['効果不十分時の間隔短縮','12週ごとから8週ごとへ短縮（90mg×1本）',1],CD:['効果不十分時の間隔短縮','12週ごとから8週ごとへ短縮（90mg×1本）',1]}},
+  UST:{steps:[['0週','体重別用量で点滴導入','約6mg/kg'],['8週','皮下注','90mg（45mgシリンジ×2本）',2],['以後','通常12週ごとに皮下注','90mg（45mgシリンジ×2本）',2]],optimization:{UC:['効果減弱時の間隔短縮','12週ごとから8週ごとへ短縮（1回90mg＝45mgシリンジ×2本）',2],CD:['効果減弱時の間隔短縮','12週ごとから8週ごとへ短縮（1回90mg＝45mgシリンジ×2本）',2]}},
   RIS:{
     UC:[['0週','点滴導入','1200mg'],['4週','点滴','1200mg'],['8週','点滴','1200mg'],['12週以後','皮下注8週ごと','180mgまたは360mg（オートドーザー×1本）',1]],
     CD:[['0週','点滴導入','600mg'],['4週','点滴','600mg'],['8週','点滴','600mg'],['12週以後','皮下注8週ごと','360mg（オートドーザー×1本）',1]],
@@ -69,7 +69,7 @@ function scheduleMarkup(d,disease){
   if(!steps.length)return '';
   const schedule=scheduleData[d.id],optimization=schedule.optimization?.[disease],optimization2=schedule.optimization?.[`${disease}2`];
   const optimizationMarkup=[optimization,optimization2].filter(Boolean).map(([title,text,devices])=>`<div class="schedule-optimization"><b>${title}</b>${routeIconMarkup(text,devices)}<span>${text}</span></div>`).join('');
-  return `<details class="schedule-details"><summary>投与スケジュールを見る</summary><div class="schedule-key"><span class="schedule-iv">${scheduleIcons.iv}点滴</span><span class="schedule-sc">${scheduleIcons.sc}皮下注</span><span class="schedule-oral">${scheduleIcons.oral}内服</span></div><div class="schedule-timeline">${steps.map(([time,label,dose,devices],i)=>`<div class="schedule-step"><span>${i+1}</span><b>${time}</b>${routeIconMarkup(label,devices)}<small>${label}</small><strong class="schedule-dose">${dose||''}</strong></div>`).join('')}</div>${optimizationMarkup?`<div class="optimization-schedule"><h4>効果不十分・効果減弱時の選択肢</h4>${optimizationMarkup}<p>患者ごとの反応と安全性を再評価し、承認された適用条件・最新の電子添文を確認してください。適応外の最適化を推奨する表示ではありません。</p></div>`:''}<p class="schedule-note">概略図です。本数は記載した製剤規格を使用した場合の目安です。実際の製剤、用量、投与間隔、増量・短縮は疾患、反応、安全性および最新の電子添文に従って確認してください。</p></details>`;
+  return `<details class="schedule-details"><summary>投与スケジュールを見る</summary><div class="schedule-timeline">${steps.map(([time,label,dose,devices],i)=>`<div class="schedule-step"><span>${i+1}</span><b>${time}</b>${routeIconMarkup(label,devices)}<small>${label}</small><strong class="schedule-dose">${dose||''}</strong></div>`).join('')}</div>${optimizationMarkup?`<div class="optimization-schedule"><h4>効果不十分・効果減弱時の選択肢</h4>${optimizationMarkup}<p>患者ごとの反応と安全性を再評価し、承認された適用条件・最新の電子添文を確認してください。適応外の最適化を推奨する表示ではありません。</p></div>`:''}<p class="schedule-note">概略図です。本数は記載した製剤規格を使用した場合の目安です。実際の製剤、用量、投与間隔、増量・短縮は疾患、反応、安全性および最新の電子添文に従って確認してください。</p></details>`;
 }
 
 const evidence={
@@ -151,6 +151,7 @@ let menopauseAuto=false;
 function showToast(message){toast.textContent=message;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,4500)}
 function calculateVdzCdst(){
   const f=data(),output=document.querySelector('#cdstResult');
+  if(used().includes('VED'))return null;
   if(f.disease!=='CD'||f.cdstAlbumin===''||f.cdstCrp===''){
     output.className='cdst-result';output.innerHTML='<strong>VDZ-CDST</strong><span>アルブミンとCRPを入力してください</span>';return null;
   }
@@ -173,7 +174,7 @@ function validateForm(){
   if(!f.ageGroup)errors.push([form.elements.ageGroup,'年齢区分を選択してください']);
   if(!f.severity)errors.push([form.elements.severity,'活動性を選択してください']);
   used().forEach(id=>{if(!form.elements[`usedReason_${id}`].value)errors.push([form.elements[`usedReason_${id}`],`${drugs.find(d=>d.id===id).name}の使用後の経過を選択してください`])});
-  if(f.disease==='CD'){
+  if(f.disease==='CD'&&!used().includes('VED')){
     if(f.cdstAlbumin==='')errors.push([form.elements.cdstAlbumin,'CDST計算用のアルブミンを入力してください']);
     else if(+f.cdstAlbumin<1||+f.cdstAlbumin>6)errors.push([form.elements.cdstAlbumin,'アルブミンは1.0〜6.0 g/dLで入力してください']);
     if(f.cdstCrp==='')errors.push([form.elements.cdstCrp,'CDST計算用のCRPを入力してください']);
@@ -257,6 +258,14 @@ function updateRoutePreferences(changed){
 function conditional(changed){
   const f=data(),autoMenopause=f.sex==='female'&&['65-74','75+'].includes(f.ageGroup);
   female.hidden=f.sex!=='female'||autoMenopause; cd.hidden=f.disease!=='CD';
+  const priorVed=used().includes('VED'),cdstAssessment=document.querySelector('#cdstAssessment');
+  cdstAssessment.hidden=f.disease!=='CD'||priorVed;
+  if(priorVed){
+    form.elements.cdstAlbumin.value='';
+    form.elements.cdstCrp.value='';
+    document.querySelector('#cdstResult').className='cdst-result';
+    document.querySelector('#cdstResult').innerHTML='<strong>VDZ-CDST</strong><span>ベドリズマブ使用歴があるため測定不要</span>';
+  }
   document.querySelector('#treatmentStepNumber').textContent=f.sex==='female'&&!autoMenopause?'03':'02';
   document.querySelector('#routeStepNumber').textContent=f.disease==='CD'?'04':'03';
   if(changed==='disease'){
