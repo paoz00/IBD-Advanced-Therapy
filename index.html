@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.2.2</title>
-<link rel="stylesheet" href="app/globals.css?v=4.2.2">
-<link rel="stylesheet" href="static/style.css?v=4.2.2">
+<title>IBD先進治療 選択支援 Ver.4.2.3</title>
+<link rel="stylesheet" href="app/globals.css?v=4.2.3">
+<link rel="stylesheet" href="static/style.css?v=4.2.3">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -19,7 +19,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.2.2 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.2.3 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -303,7 +303,14 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.2.2</strong><span>臨床試験グラフの対照群配色</span></summary><ul>
+<details open><summary><strong>Ver.4.2.3</strong><span>主要評価項目の統計情報を追加</span></summary><ul>
+<li>収載する全40試験に、主要評価項目の症例数・解析集団を追加</li>
+<li>主要評価項目の95%信頼区間と統計学的有意差を追加</li>
+<li>確認できない数値は推測せず、一次文献・補足資料での確認を明記</li>
+<li>副次評価項目へ主要評価項目の統計値を誤適用しないための注意書きを追加</li>
+<li>統計情報をスマートフォンでも読みやすいレイアウトに調整</li>
+</ul></details>
+<details><summary><strong>Ver.4.2.2</strong><span>臨床試験グラフの対照群配色</span></summary><ul>
 <li>通常のプラセボ・対照群を従来どおり灰色で表示</li>
 <li>H2H試験だけ対照薬をその薬剤グループ色で表示</li>
 <li>VARSITY・SEAVUEのADAを赤、GALAXI 2/3のUSTを紫で表示</li>
@@ -421,11 +428,12 @@
 <div id="trialReferences" class="reference-list"></div>
 </dialog>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.2.2</strong>
+<strong>IBD先進治療 選択支援 Ver.4.2.3</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=4.2.2" charset="utf-8">
+<script src="static/primary-stats.js?v=4.2.3" charset="utf-8"></script>
+<script src="static/app.js?v=4.2.3" charset="utf-8">
 </script>
 </body>
 </html>
