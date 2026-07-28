@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.1.2</title>
-<link rel="stylesheet" href="static/style.css?v=4.1.2">
+<title>IBD先進治療 選択支援 Ver.4.2.0</title>
+<link rel="stylesheet" href="app/globals.css?v=4.2.0">
+<link rel="stylesheet" href="static/style.css?v=4.2.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -18,7 +19,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.1.2 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.2.0 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -140,7 +141,7 @@
 <label class="field cmv-field">
 <span>CMV関連状態</span>
 <select name="cmvStatus">
-<option value="none">該当なし・未疑診</option>
+<option value="none">該当なし・疑いなし</option>
 <option value="past">CMV既感染／IgG陽性のみ</option>
 <option value="suspected">CMV腸炎の疑い・検査中</option>
 <option value="colitis">組織検査でCMV腸炎を確認</option>
@@ -209,7 +210,7 @@
 <strong>VDZ-CDST</strong>
 <span>アルブミンとCRPを入力してください</span>
 </div>
-<p class="cdst-note">任意入力です。未入力でも推奨結果を表示できます。アルブミンはg/dL、CRPはmg/dLで入力し、計算時にそれぞれg/L、mg/Lへ自動換算します。抗TNFα抗体使用歴は「使用したAdvanced Therapy」のIFX・ADA・GLMから自動判定します。VDZ-CDSTはCD重症度や全薬剤の優劣を判定するものではなく、ベドリズマブ反応可能性を補助的に推定する指標です。外部検証は行われていますが、適用限界として対象集団・評価項目の違いがあり、個々の患者や実臨床へそのまま一般化できるとは限りません。</p>
+<p class="cdst-note">任意入力です。未入力でも推奨結果を表示できます。アルブミンはg/dL、CRPはmg/dLで入力し、計算時にそれぞれg/L、mg/Lへ自動換算します。抗TNFα抗体使用歴は「使用したAdvanced Therapy」のIFX・ADAから自動判定します。VDZ-CDSTはCD重症度や全薬剤の優劣を判定するものではなく、ベドリズマブ反応可能性を補助的に推定する指標です。外部検証は行われていますが、適用限界として対象集団・評価項目の違いがあり、個々の患者や実臨床へそのまま一般化できるとは限りません。</p>
 </div>
 </div>
 <div class="input-group route-group">
@@ -302,7 +303,17 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.1.2</strong><span>ヘッダー説明文の表示調整</span></summary><ul>
+<details open><summary><strong>Ver.4.2.0</strong><span>表示整合性・アクセシビリティ・保守性</span></summary><ul>
+<li>CD文脈のVDZ-CDST説明と判定対象から、UCのみ適応のゴリムマブを削除</li>
+<li>活動性入力と配点理由の表記を「重症」に統一</li>
+<li>危険・警告・成功状態の色をセマンティックトークンへ整理</li>
+<li>表示用の不要な!importantを削減し、スタイルの詳細度を整理</li>
+<li>ボタン、入力欄、チェックボックス、臨床試験カードのフォーカス表示を強化</li>
+<li>CSSの@importを廃止し、基本CSSと追加CSSをHTMLから並列読込</li>
+<li>CMV関連状態の初期表示を「該当なし・疑いなし」へ変更</li>
+<li>公開READMEから開発時限定の記述を削除</li>
+</ul></details>
+<details><summary><strong>Ver.4.1.2</strong><span>ヘッダー説明文の表示調整</span></summary><ul>
 <li>トップページの説明文が「安全性」の途中で不自然に改行されないよう横幅と折り返しを調整</li>
 <li>スマートフォンでは画面幅に合わせて自然に折り返すレスポンシブ表示を維持</li>
 </ul></details>
@@ -378,7 +389,7 @@
 </ul></details>
 <details><summary>主な加点・減点ルール</summary>
 <div class="logic-table">
-<div><b>高度活動性</b><span>IFX・UPA・RIS +8</span></div><div><b>抗TNFα抗体既治療後</b><span>異なる作用機序 +7</span></div>
+<div><b>重症</b><span>IFX・UPA・RIS +8</span></div><div><b>抗TNFα抗体既治療後</b><span>異なる作用機序 +7</span></div>
 <div><b>同一作用機序の一次無効歴</b><span>−6</span></div><div><b>一次無効後の作用機序変更</b><span>+3</span></div>
 <div><b>肛門病変・瘻孔（CD）</b><span>IFX +12</span></div><div><b>VDZ-CDST</b><span>高 +8／中間 +3／低 −5</span></div>
 <div><b>維持期の希望投与経路</b><span>一致 +6／不一致 −4</span></div><div><b>内服アドヒアランス懸念</b><span>内服薬 −8</span></div>
@@ -399,11 +410,11 @@
 <div id="trialReferences" class="reference-list"></div>
 </dialog>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.1.2</strong>
+<strong>IBD先進治療 選択支援 Ver.4.2.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=4.1.2" charset="utf-8">
+<script src="static/app.js?v=4.2.0" charset="utf-8">
 </script>
 </body>
 </html>

@@ -186,7 +186,7 @@ function calculateVdzCdst(){
   }
   const albuminGdl=Number(f.cdstAlbumin),albuminGl=albuminGdl*10,crpMgdl=Number(f.cdstCrp),crpMgl=crpMgdl*10;
   if(!Number.isFinite(albuminGdl)||!Number.isFinite(crpMgdl)||albuminGdl<1||albuminGdl>6||crpMgdl<0||crpMgdl>50)return null;
-  const priorAntiTnf=used().some(id=>['IFX','ADA','GLM'].includes(id));
+  const priorAntiTnf=used().some(id=>['IFX','ADA'].includes(id));
   let score=(yes('cdstSurgery')?0:2)+(priorAntiTnf?0:3)+(yes('cdstFistula')?0:2)+(albuminGl*0.4);
   score+=crpMgl<3?0:crpMgl<=10?-0.5:-3;
   score=Math.round(score*10)/10;
@@ -219,7 +219,7 @@ function validateForm(){
 }
 function resultTags(reasons){
   const tags=[];
-  if(reasons.some(x=>x.includes('有効性')||x.includes('高度活動性')))tags.push('有効性重視');
+  if(reasons.some(x=>x.includes('有効性')))tags.push('有効性重視');
   if(reasons.some(x=>x.includes('安全性')||x.includes('感染症')||x.includes('悪性腫瘍')||x.includes('高齢者')||x.includes('心血管')||x.includes('血栓')))tags.push('安全性重視');
   if(reasons.some(x=>x.includes('希望投与経路')&&x.includes('一致')))tags.push('希望経路一致');
   if(reasons.some(x=>x.includes('作用機序変更')))tags.push('作用機序変更');
@@ -400,7 +400,7 @@ function calculate(f){
   const inductionPreferences=selected('inductionRoute');
   return drugs.filter(d=>d.diseases.includes(f.disease)&&!excluded.has(d.id)).map(d=>{
     let score=70,reasons=[]; const add=(n,s)=>{score+=n;reasons.push(`${n>0?'+':''}${n} ${s}`)};
-    if(f.severity==='severe'&&['IFX','UPA','RIS'].includes(d.id))add(8,'高度活動性で有効性を重視');
+    if(f.severity==='severe'&&['IFX','UPA','RIS'].includes(d.id))add(8,'重症で有効性を重視');
     if(f.disease==='UC'&&d.id==='VED')add(0,'Head-to-Head参考情報（VARSITY）：ADAとの直接比較結果。未比較の他薬剤に対する加点には使用しない');
     if(f.disease==='UC'&&d.id==='ADA')add(0,'Head-to-Head参考情報（VARSITY）：VDZとの直接比較結果。未比較の他薬剤に対する減点には使用しない');
     if(f.disease==='CD'&&d.id==='GUS')add(0,'Head-to-Head参考情報（GALAXI 2/3）：USTとの直接比較結果。未比較の他薬剤に対する加点には使用しない');
