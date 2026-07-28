@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.1.0</title>
-<link rel="stylesheet" href="static/style.css?v=4.1.0">
+<title>IBD先進治療 選択支援 Ver.4.1.1</title>
+<link rel="stylesheet" href="static/style.css?v=4.1.1">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -18,7 +18,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.1.0 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.1.1 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -302,7 +302,10 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.1.0</strong><span>CMV確認・透明性・比較ロジック</span></summary><ul>
+<details open><summary><strong>Ver.4.1.1</strong><span>薬剤クラス表記の統一</span></summary><ul>
+<li>フィルゴチニブとウパダシチニブの薬剤クラス表記を「JAK阻害薬」に統一</li>
+</ul></details>
+<details><summary><strong>Ver.4.1.0</strong><span>CMV確認・透明性・比較ロジック</span></summary><ul>
 <li>CMV腸炎の疑い、組織診断、播種性CMV感染を治療開始前の必須確認へ追加</li>
 <li>C7-HRP、組織CMV免疫染色、組織CMV-PCRを補助評価として入力可能に変更</li>
 <li>CMVが疑われる・確認された場合は適合度順を停止し、感染評価と先行対応を案内</li>
@@ -392,11 +395,11 @@
 <div id="trialReferences" class="reference-list"></div>
 </dialog>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.1.0</strong>
+<strong>IBD先進治療 選択支援 Ver.4.1.1</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=4.1.0" charset="utf-8">
+<script src="static/app.js?v=4.1.1" charset="utf-8">
 </script>
 </body>
 </html>
