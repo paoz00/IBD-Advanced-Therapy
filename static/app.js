@@ -103,10 +103,8 @@ IFX:{studies:[
 ]},
 ADA:{studies:[
  {trial:'ULTRA 2（UC）',endpoint:'臨床的寛解（%）',periods:[['Week 8：臨床的寛解',16.5,9.3],['Week 52：臨床的寛解',17.3,8.5]],source:'https://pubmed.ncbi.nlm.nih.gov/22062358/'},
- {trial:'VARSITY（UC）',headToHead:true,endpoint:'VDZとADAの直接比較（%）',activeLabel:'VDZ',controlLabel:'ADA',periods:[['Week 52：臨床的寛解',31.3,22.5],['Week 52：内視鏡的改善',39.7,27.7]],source:'https://www.nejm.org/doi/full/10.1056/NEJMoa1905725'},
  {trial:'CLASSIC I（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 4：臨床的寛解（160/80 mg）',36.0,12.0]],source:'https://pubmed.ncbi.nlm.nih.gov/16469680/'},
- {trial:'CHARM（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 26：臨床的寛解（隔週）',40.0,17.0],['Week 56：臨床的寛解（隔週）',36.0,12.0]],source:'https://pubmed.ncbi.nlm.nih.gov/17030176/'},
- {trial:'SEAVUE（CD）',headToHead:true,endpoint:'生物学的製剤未使用例の直接比較（%）',activeLabel:'UST',controlLabel:'ADA',periods:[['Week 52：臨床的寛解（有意差なし）',65.0,61.0]],source:'https://pubmed.ncbi.nlm.nih.gov/35691323/'}
+ {trial:'CHARM（CD）',endpoint:'CDAI臨床的寛解（%）',periods:[['Week 26：臨床的寛解（隔週）',40.0,17.0],['Week 56：臨床的寛解（隔週）',36.0,12.0]],source:'https://pubmed.ncbi.nlm.nih.gov/17030176/'}
 ]},
 VED:{studies:[
  {trial:'GEMINI 1（UC）',endpoint:'臨床的反応・寛解（%）',periods:[['Week 6：臨床的反応',47.1,25.5],['Week 6：臨床的寛解',16.9,5.4],['Week 52：臨床的寛解（q8w）',41.8,15.9],['Week 52：臨床的寛解（q4w）',44.8,15.9]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1215734'},
@@ -115,6 +113,9 @@ VED:{studies:[
 ]},
 UST:{studies:[
  {trial:'UNIFI（UC）',endpoint:'臨床的寛解',periods:[['導入期 Week 8',15.6,5.3],['維持期 Week 44',43.8,24.0]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1900750'},
+ {trial:'UNITI-1（CD）',endpoint:'抗TNFα抗体不応・不耐例の導入期臨床的反応（%）',activeLabel:'UST 約6 mg/kg',controlLabel:'プラセボ',periods:[['Week 6：臨床的反応',33.7,21.5]],source:'https://pubmed.ncbi.nlm.nih.gov/27959607/'},
+ {trial:'UNITI-2（CD）',endpoint:'既存治療不応・不耐例の導入期臨床的反応（%）',activeLabel:'UST 約6 mg/kg',controlLabel:'プラセボ',periods:[['Week 6：臨床的反応',55.5,28.7]],source:'https://pubmed.ncbi.nlm.nih.gov/27959607/'},
+ {trial:'IM-UNITI（CD）',endpoint:'UST導入反応例を再ランダム化した維持期臨床的寛解（%）',activeLabel:'UST',controlLabel:'プラセボ',periods:[['Week 44：臨床的寛解（90 mg q8w）',53.1,35.9],['Week 44：臨床的寛解（90 mg q12w）',48.8,35.9]],significance:['P=0.005','P=0.04'],ci:['群間差17.2ポイント（95% CI 5.3–29.2）','群間差13.0ポイント（95% CI 1.1–24.9）'],source:'https://pubmed.ncbi.nlm.nih.gov/27959607/'},
  {trial:'SEAVUE（CD）',headToHead:true,endpoint:'生物学的製剤未使用例の直接比較（%）',activeLabel:'UST',controlLabel:'ADA',periods:[['Week 52：臨床的寛解（有意差なし）',65.0,61.0]],source:'https://pubmed.ncbi.nlm.nih.gov/35691323/'}
 ]},
 GLM:{trial:'PURSUIT-SC / PURSUIT-J（UC）',endpoint:'主要有効性評価（%）',periods:[['PURSUIT-SC Week 6：臨床的反応（200/100 mg）',51.0,30.3],['PURSUIT-SC Week 6：臨床的寛解',17.8,6.4],['PURSUIT-J Week 54：臨床的反応維持',56.3,19.4],['PURSUIT-J Week 54：臨床的寛解',50.0,6.5]],source:'https://pubmed.ncbi.nlm.nih.gov/23735746/',source2:'https://link.springer.com/article/10.1007/s00535-017-1326-1'},
@@ -511,7 +512,7 @@ document.querySelector('#restart').onclick=()=>{form.reset();renderUsed('');cond
 const trialRoot=document.querySelector('#trials'),dialog=document.querySelector('#trialDialog'),detail=document.querySelector('#trialDetail');
 const trialNames={
   IFX:{UC:'ACT 1 / 2・UC-SUCCESS',CD:'ACCENT I / II・SONIC'},
-  ADA:{UC:'ULTRA 2・VARSITY［直接比較］',CD:'CLASSIC I・CHARM・SEAVUE［直接比較］'},
+  ADA:{UC:'ULTRA 2',CD:'CLASSIC I・CHARM'},
   GLM:{UC:'PURSUIT-SC・PURSUIT-J'},
   VED:{UC:'GEMINI 1・VARSITY［直接比較］',CD:'GEMINI 2'},
   UST:{UC:'UNIFI',CD:'UNITI・IM-UNITI・SEAVUE［直接比較］'},

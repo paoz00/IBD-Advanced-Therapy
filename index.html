@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.2.0</title>
-<link rel="stylesheet" href="app/globals.css?v=4.2.0">
-<link rel="stylesheet" href="static/style.css?v=4.2.0">
+<title>IBD先進治療 選択支援 Ver.4.2.1</title>
+<link rel="stylesheet" href="app/globals.css?v=4.2.1">
+<link rel="stylesheet" href="static/style.css?v=4.2.1">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -19,7 +19,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.2.0 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.2.1 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -303,7 +303,13 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.2.0</strong><span>表示整合性・アクセシビリティ・保守性</span></summary><ul>
+<details open><summary><strong>Ver.4.2.1</strong><span>H2H表示整理・UST臨床試験追加</span></summary><ul>
+<li>VARSITYとSEAVUEをアダリムマブ側から削除し、比較試験の重複登録を解消</li>
+<li>H2H試験の対照群を灰色から薬剤グループ色の薄い表示へ変更</li>
+<li>CDのウステキヌマブへUNITI-1、UNITI-2、IM-UNITIの結果グラフを追加</li>
+<li>IM-UNITIへWeek 44の臨床的寛解、95%信頼区間、P値を追加</li>
+</ul></details>
+<details><summary><strong>Ver.4.2.0</strong><span>表示整合性・アクセシビリティ・保守性</span></summary><ul>
 <li>CD文脈のVDZ-CDST説明と判定対象から、UCのみ適応のゴリムマブを削除</li>
 <li>活動性入力と配点理由の表記を「重症」に統一</li>
 <li>危険・警告・成功状態の色をセマンティックトークンへ整理</li>
@@ -410,11 +416,11 @@
 <div id="trialReferences" class="reference-list"></div>
 </dialog>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.2.0</strong>
+<strong>IBD先進治療 選択支援 Ver.4.2.1</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=4.2.0" charset="utf-8">
+<script src="static/app.js?v=4.2.1" charset="utf-8">
 </script>
 </body>
 </html>
