@@ -8,12 +8,12 @@ const regimenData={
   GLM:{induction:['sc'],maintenance:['sc'],label:'導入：皮下注 → 維持：皮下注'},
   VED:{induction:['iv'],maintenance:['iv','sc'],label:'導入：点滴 → 維持：点滴／皮下注'},
   UST:{induction:['iv'],maintenance:['sc'],label:'導入：点滴 → 維持：皮下注',optimization:{kind:'intensify',points:2,label:'Q12WからQ8Wへの短縮選択肢',diseases:['UC','CD']}},
-  RIS:{induction:['iv'],maintenance:['sc'],label:'導入：点滴 → 維持：皮下注',optimization:{kind:'rescue',points:2,label:'追加・延長導入の選択肢',diseases:['UC','CD']}},
+  RIS:{induction:['iv'],maintenance:['sc'],label:'導入：点滴 → 維持：皮下注',optimization:{kind:'rescue',points:2,label:'皮下維持療法開始16週以降の効果減弱時に1200mg単回追加点滴の選択肢',diseases:['UC','CD']}},
   MIRI:{induction:['iv'],maintenance:['sc'],label:'導入：点滴 → 維持：皮下注',optimization:{kind:'rescue',points:2,label:'追加・再導入の選択肢',diseases:['UC','CD']}},
-  GUS:{induction:['iv','sc'],maintenance:['sc'],label:'導入：点滴／皮下注 → 維持：皮下注',optimization:{kind:'intensify',points:2,label:'Q8WからQ4Wへの変更選択肢',diseases:['UC','CD']}},
+  GUS:{induction:['iv','sc'],maintenance:['sc'],label:'導入：点滴／皮下注 → 維持：皮下注',optimization:{kind:'intensify',points:2,label:'100mg・8週間隔から200mg・4週間隔への変更選択肢',diseases:['UC','CD']}},
   OZA:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
   ETR:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
-  TOF:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
+  TOF:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服',optimization:{kind:'intensify',points:2,label:'維持療法中の効果減弱時に5mg・1日2回から10mg・1日2回への増量選択肢',diseases:['UC']}},
   FIL:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服'},
   UPA:{induction:['oral'],maintenance:['oral'],label:'導入：内服 → 維持：内服',optimization:{kind:'intensify',points:2,label:'維持療法15mgから30mgへの増量選択肢',diseases:['UC','CD']}}
 };
@@ -28,18 +28,39 @@ const scheduleData={
   RIS:{
     UC:[['0週','点滴導入','1200mg'],['4週','点滴','1200mg'],['8週','点滴','1200mg'],['12週以後','皮下注8週ごと','180mgまたは360mg（オートドーザー×1本）',1]],
     CD:[['0週','点滴導入','600mg'],['4週','点滴','600mg'],['8週','点滴','600mg'],['12週以後','皮下注8週ごと','360mg（オートドーザー×1本）',1]],
-    optimization:{UC:['導入反応不十分時','追加・延長導入を検討（承認用法と適用条件を確認）'],CD:['導入反応不十分時','追加・延長導入を検討（承認用法と適用条件を確認）']}
+    optimization:{
+      UC:['維持療法中の効果減弱時に追加点滴の選択肢','皮下維持療法開始16週以降に効果が減弱した場合、1200mgを単回点滴静注できる。点滴8週後から皮下投与を再開する。再投与時は前回の点滴から16週以上あけ、必要性を慎重に検討し、漫然と繰り返さない。'],
+      CD:['維持療法中の効果減弱時に追加点滴の選択肢','皮下維持療法開始16週以降に効果が減弱した場合、1200mgを単回点滴静注できる。点滴8週後から皮下投与を再開する。再投与時は前回の点滴から16週以上あけ、必要性を慎重に検討し、漫然と繰り返さない。']
+    }
   },
   MIRI:{
     UC:[['0週','点滴導入','300mg'],['4週','点滴','300mg'],['8週','点滴','300mg'],['12週以後','皮下注4週ごと','200mg（100mg製剤×2本）',2]],
     CD:[['0週','点滴導入','900mg'],['4週','点滴','900mg'],['8週','点滴','900mg'],['12週以後','皮下注4週ごと','300mg（100mg＋200mg製剤、計2本）',2]],
     optimization:{UC:['維持期の効果減弱時','300mg点滴を4週ごとに計3回、その4週後から皮下注200mgを再開'],CD:['維持期の効果減弱時','900mg点滴による再導入を検討（承認用法と適用条件を確認）']}
   },
-  GUS:{steps:[['0週','点滴200mgまたは皮下注導入','皮下注400mg（200mg製剤×2本）',2],['4週','導入投与','点滴200mg／皮下注400mg（2本）',2],['8週','導入投与','点滴200mg／皮下注400mg（2本）',2],['維持期','皮下注4週または8週ごと','100mg（1本）または200mg（1本）',1]],optimization:{UC:['効果不十分時の投与強化','100mgを8週ごとから200mgを4週ごとへ変更（1本）',1],CD:['効果不十分時の投与強化','100mgを8週ごとから200mgを4週ごとへ変更（1本）',1]}},
+  GUS:{steps:[
+    ['0週','皮下注または点滴静注で導入','皮下注400mg（200mg製剤×2本）／点滴静注200mg',2],
+    ['4週','皮下注または点滴静注で導入','皮下注400mg（200mg製剤×2本）／点滴静注200mg',2],
+    ['8週','皮下注または点滴静注で導入','皮下注400mg（200mg製剤×2本）／点滴静注200mg',2],
+    ['投与開始12週後以降','患者の状態に応じた維持療法','皮下注200mgを4週間隔（200mg製剤×1本）',1],
+    ['投与開始16週後から','通常の維持療法','皮下注100mgを8週間隔（100mg製剤×1本）',1]
+  ],optimization:{UC:['用量・投与間隔の変更選択肢','100mg・8週間隔から200mg・4週間隔へ変更（1回200mg製剤×1本）',1],CD:['用量・投与間隔の変更選択肢','100mg・8週間隔から200mg・4週間隔へ変更（1回200mg製剤×1本）',1]}},
   OZA:{steps:[['1～4日目','スターターパックで内服','0.23mg 1日1回'],['5～7日目','段階的に増量して内服','0.46mg 1日1回'],['8日目以後','維持内服','0.92mg 1日1回']]},
   ETR:{steps:[['1日目','内服開始','2mg'],['以後','1日1回内服','2mg 1日1回']]},
-  TOF:{steps:[['導入期','1日2回内服','10mg 1日2回'],['8週以後','維持療法も1日2回内服','通常5mg 1日2回']]},
-  FIL:{steps:[['1日目','内服開始','200mg'],['以後','1日1回内服','200mg 1日1回']]},
+  TOF:{
+    steps:[
+      ['導入療法 8週間','1日2回内服','10mgを1日2回'],
+      ['導入8週で効果不十分の場合','1日2回内服を延長','10mgを1日2回、さらに8週間投与可能（導入は最長計16週間）'],
+      ['維持療法','通常は1日2回内服','通常5mgを1日2回'],
+      ['効果減弱例・難治例','安全性を評価した上で高用量を1日2回内服','10mgを1日2回とする場合がある']
+    ],
+    optimization:{UC:['維持療法中の効果減弱時の増量選択肢','5mg・1日2回から10mg・1日2回への増量を検討。ただし高用量の必要性と安全性を十分に評価する。']},
+    warning:'10mg・1日2回の高用量では、心血管イベント、静脈血栓塞栓症、重篤な感染症、悪性腫瘍などのリスクを特に慎重に評価してください。高用量を漫然と継続せず、治療反応が得られた場合は減量を検討します。'
+  },
+  FIL:{
+    steps:[['導入療法','1日1回内服','200mgを1日1回'],['維持療法','通常は1日1回内服','通常200mgを1日1回。患者の状態に応じて100mgを1日1回に減量できる']],
+    warning:'投与前に腎機能（eGFR）を確認してください。中等度・重度腎機能障害（15≦eGFR＜60）では100mgを1日1回とし、重度では投与の適否を慎重に検討します。末期腎不全（eGFR＜15）には投与しません。'
+  },
   UPA:{UC:[['導入期 8週','1日1回内服','45mg 1日1回'],['維持期','1日1回内服','15mgまたは30mg 1日1回']],CD:[['導入期 12週','1日1回内服','45mg 1日1回'],['維持期','1日1回内服','15mgまたは30mg 1日1回']],optimization:{UC:['維持期の効果不十分時','15mg 1日1回から30mg 1日1回への増量を検討'],CD:['維持期の効果不十分時','15mg 1日1回から30mg 1日1回への増量を検討']}}
 };
 function scheduleSteps(d,disease){
@@ -67,9 +88,9 @@ function routeIconMarkup(label,devices=1){
 function scheduleMarkup(d,disease){
   const steps=scheduleSteps(d,disease);
   if(!steps.length)return '';
-  const schedule=scheduleData[d.id],optimization=schedule.optimization?.[disease],optimization2=schedule.optimization?.[`${disease}2`];
+  const schedule=scheduleData[d.id],optimization=schedule.optimization?.[disease],optimization2=schedule.optimization?.[`${disease}2`],warning=schedule.warning?.[disease]||schedule.warning;
   const optimizationMarkup=[optimization,optimization2].filter(Boolean).map(([title,text,devices])=>`<div class="schedule-optimization"><b>${title}</b>${routeIconMarkup(text,devices)}<span>${text}</span></div>`).join('');
-  return `<details class="schedule-details"><summary>投与スケジュールを見る</summary><div class="schedule-timeline">${steps.map(([time,label,dose,devices],i)=>`<div class="schedule-step"><span>${i+1}</span><b>${time}</b>${routeIconMarkup(label,devices)}<small>${label}</small><strong class="schedule-dose">${dose||''}</strong></div>`).join('')}</div>${optimizationMarkup?`<div class="optimization-schedule"><h4>効果不十分・効果減弱時の選択肢</h4>${optimizationMarkup}<p>患者ごとの反応と安全性を再評価し、承認された適用条件・最新の電子添文を確認してください。適応外の最適化を推奨する表示ではありません。</p></div>`:''}<p class="schedule-note">概略図です。本数は記載した製剤規格を使用した場合の目安です。実際の製剤、用量、投与間隔、増量・短縮は疾患、反応、安全性および最新の電子添文に従って確認してください。</p></details>`;
+  return `<details class="schedule-details"><summary>投与スケジュールを見る</summary><div class="schedule-timeline">${steps.map(([time,label,dose,devices],i)=>`<div class="schedule-step"><span>${i+1}</span><b>${time}</b>${routeIconMarkup(label,devices)}<small>${label}</small><strong class="schedule-dose">${dose||''}</strong></div>`).join('')}</div>${optimizationMarkup?`<div class="optimization-schedule"><h4>効果不十分・効果減弱時の選択肢</h4>${optimizationMarkup}<p>患者ごとの反応と安全性を再評価し、承認された適用条件・最新の電子添文を確認してください。適応外の最適化を推奨する表示ではありません。</p></div>`:''}${warning?`<p class="schedule-warning"><strong>注意</strong>${warning}</p>`:''}<p class="schedule-note">概略図です。本数は記載した製剤規格を使用した場合の目安です。実際の製剤、用量、投与間隔、増量・短縮は疾患、反応、安全性および最新の電子添文に従って確認してください。</p></details>`;
 }
 
 const evidence={
@@ -124,7 +145,7 @@ TOF:{studies:[
  {trial:'OCTAVE Induction 2（UC）',endpoint:'Week 8臨床的寛解（%）',periods:[['臨床的寛解',16.6,3.6]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1606910'},
  {trial:'OCTAVE Sustain（UC）',endpoint:'Week 52臨床的寛解（%）',periods:[['5 mg 1日2回',34.3,11.1],['10 mg 1日2回',40.6,11.1]],source:'https://www.nejm.org/doi/10.1056/NEJMoa1606910'}
 ]},
-FIL:{trial:'SELECTION（UC）',endpoint:'臨床的寛解',periods:[['導入期 Week 10※',26.1,15.3],['維持期 Week 58',37.2,11.2]],source:'https://pubmed.ncbi.nlm.nih.gov/33657431/'}
+FIL:{trial:'SELECTION（UC）',endpoint:'臨床的寛解',periods:[['導入期 Week 10',26.1,15.3],['維持期 Week 58',37.2,11.2]],source:'https://pubmed.ncbi.nlm.nih.gov/33657431/'}
 ,
 UPA:{studies:[
  {trial:'U-ACHIEVE Induction（UC）',endpoint:'Week 8臨床的寛解（%）',periods:[['臨床的寛解',26.0,5.0]],source:'https://pubmed.ncbi.nlm.nih.gov/35644166/'},
@@ -137,7 +158,8 @@ UPA:{studies:[
 
 const form=document.querySelector('#patientForm'),female=document.querySelector('#femaleSection'),pregnancy=document.querySelector('#pregnancyFields'),cd=document.querySelector('#cdGroup'),results=document.querySelector('#results'),usedRoot=document.querySelector('#usedDrugs');
 const checks=(root,items)=>root.innerHTML=items.map(([n,l])=>`<label class="check"><input name="${n}" type="checkbox"><span>${l}</span></label>`).join('');
-checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['aza','AZA／6-MP内服中'],['infection','重篤感染症リスク'],['cvRisk','心血管リスク（喫煙・高血圧・糖尿病・心血管疾患既往など）'],['malignancy','悪性腫瘍の既往（治療後）'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
+checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['aza','AZA／6-MP内服中'],['infection','重篤感染症リスク'],['cvRisk','心血管リスク（喫煙・高血圧・糖尿病・心血管疾患既往など）'],['malignancy','悪性腫瘍の既往あり'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
+checks(document.querySelector('#safetyGateChecks'),[['currentSeriousInfection','現在の重篤な感染症'],['activeTb','活動性結核'],['severeCytopenia','重大な血球減少'],['severeLiver','重度肝機能障害'],['strongImmunosuppressant','強力な免疫抑制薬を併用中（AZA／6-MP以外）'],['urgentComplication','脱水・膿瘍・腸閉塞など、治療選択より先に対応が必要'],['asuc','急性重症潰瘍性大腸炎（ASUC）または入院治療が必要']]);
 checks(document.querySelector('#cdChecks'),[['cdstSurgery','腸管手術歴あり'],['cdstFistula','瘻孔型病変の既往あり'],['perianal','現在、肛門病変・瘻孔あり']]);
 checks(document.querySelector('#optimizationChecks'),[['secondaryLoss','過去に二次無効・効果減弱があった'],['optimizeSame','同じ薬剤で増量・間隔短縮できることを重視'],['rescueOption','追加導入・再導入できることを重視'],['mechanismSwitch','最適化より作用機序変更を優先'],['optimizationNone','どれにも当てはまらない']]);
 checks(document.querySelector('#burdenChecks'),[['visitIncrease','通院回数が増えてもよい'],['infusionTime','点滴時間を許容できる'],['selfInjection','自己注射が可能'],['injectionIncrease','注射回数が増えてもよい'],['adherenceOk','服薬管理に問題がない']]);
@@ -146,9 +168,16 @@ const yes=n=>form.elements[n]?.checked;
 const used=()=>[...form.querySelectorAll('input[name="usedDrug"]:checked')].map(x=>x.value);
 const selected=n=>[...form.querySelectorAll(`input[name="${n}"]:checked`)].map(x=>x.value);
 const toast=document.querySelector('#toast');
+const inlineError=document.querySelector('#error');
 let toastTimer;
+let inlineErrorTimer;
 let menopauseAuto=false;
 function showToast(message){toast.textContent=message;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,4500)}
+function showInlineError(message){
+  inlineError.textContent=message;
+  clearTimeout(inlineErrorTimer);
+  inlineErrorTimer=setTimeout(()=>inlineError.textContent='',5000);
+}
 function calculateVdzCdst(){
   const f=data(),output=document.querySelector('#cdstResult');
   if(used().includes('VED'))return null;
@@ -175,12 +204,17 @@ function validateForm(){
   if(!f.severity)errors.push([form.elements.severity,'活動性を選択してください']);
   used().forEach(id=>{if(!form.elements[`usedReason_${id}`].value)errors.push([form.elements[`usedReason_${id}`],`${drugs.find(d=>d.id===id).name}の使用後の経過を選択してください`])});
   if(f.disease==='CD'&&!used().includes('VED')){
-    if(f.cdstAlbumin==='')errors.push([form.elements.cdstAlbumin,'CDST計算用のアルブミンを入力してください']);
-    else if(+f.cdstAlbumin<1||+f.cdstAlbumin>6)errors.push([form.elements.cdstAlbumin,'アルブミンは1.0〜6.0 g/dLで入力してください']);
-    if(f.cdstCrp==='')errors.push([form.elements.cdstCrp,'CDST計算用のCRPを入力してください']);
-    else if(+f.cdstCrp<0||+f.cdstCrp>50)errors.push([form.elements.cdstCrp,'CRPは0〜50 mg/dLで入力してください']);
+    if(f.cdstAlbumin!==''&&(+f.cdstAlbumin<1||+f.cdstAlbumin>6))errors.push([form.elements.cdstAlbumin,'アルブミンは1.0〜6.0 g/dLで入力してください']);
+    if(f.cdstCrp!==''&&(+f.cdstCrp<0||+f.cdstCrp>50))errors.push([form.elements.cdstCrp,'CRPは0〜50 mg/dLで入力してください']);
   }
-  if(errors.length){errors.forEach(([el])=>el.closest('.field,.used-reason')?.classList.add('invalid'));showToast(errors.map(x=>x[1]).join('／'));errors[0][0].scrollIntoView({behavior:'smooth',block:'center'});errors[0][0].focus();return false}
+  if(errors.length){
+    errors.forEach(([el])=>el.closest('.field,.used-reason')?.classList.add('invalid'));
+    const requiredMissing=['disease','ageGroup','sex','severity'].some(name=>!f[name]);
+    showInlineError(requiredMissing?'必須項目を選択してください':errors[0][1]);
+    showToast(errors.map(x=>x[1]).join('／'));
+    errors[0][0].scrollIntoView({behavior:'smooth',block:'center'});errors[0][0].focus();return false;
+  }
+  inlineError.textContent='';
   return true;
 }
 function resultTags(reasons){
@@ -197,9 +231,37 @@ function resultTags(reasons){
   else if(reasons.some(x=>x.includes('AZA併用')))tags.push('AZA併用');
   return tags.slice(0,3);
 }
+function blockingConditions(f){
+  const items=[];
+  if(yes('currentSeriousInfection'))items.push('現在の重篤な感染症');
+  if(yes('activeTb'))items.push('活動性結核');
+  if(yes('urgentComplication'))items.push('脱水・膿瘍・腸閉塞などの緊急合併症');
+  if(f.disease==='UC'&&yes('asuc'))items.push('ASUCまたは入院治療が必要な状態');
+  return items;
+}
+function safetyClassification(d,f){
+  const jak=['TOF','FIL','UPA'].includes(d.id),reasons=[];
+  let level='eligible';
+  const review=reason=>{if(level!=='excluded')level='review';reasons.push(reason)};
+  const exclude=reason=>{level='excluded';reasons.push(reason)};
+  if(jak&&yes('pregnant'))exclude('妊娠中または妊娠の可能性：JAK阻害薬は選択対象外／禁忌に該当する可能性');
+  if(jak&&yes('severeCytopenia'))exclude('重大な血球減少：血球数の基準確認と回復を優先');
+  if(jak&&yes('severeLiver'))exclude('重度肝機能障害：禁忌または投与非推奨に該当する可能性');
+  if(jak&&(yes('aza')||yes('strongImmunosuppressant')))exclude('AZA／6-MPまたは強力な免疫抑制薬との併用可否を薬剤別に確認');
+  if(d.id==='FIL'&&f.renalFunction==='under15')exclude('eGFR 15未満：フィルゴチニブの腎機能制限に該当する可能性');
+  else if(d.id==='FIL'&&['30-59','15-29'].includes(f.renalFunction))review('腎機能低下：フィルゴチニブ100 mg 1日1回への用量調整を確認');
+  else if(d.id==='FIL'&&f.renalFunction==='unknown')review('腎機能未評価：開始前にeGFRと用量を確認');
+  if(['TOF','UPA'].includes(d.id)&&['30-59','15-29','under15'].includes(f.renalFunction))review('腎機能低下：開始可否・用量を最新の電子添文で確認');
+  if(jak&&(yes('vte')||yes('cvRisk')))review('血栓塞栓症・心血管リスクを評価し、代替治療を含め専門的に判断');
+  if(jak&&yes('pregnancyPlan'))review('妊娠希望あり：避妊期間・妊娠計画と薬剤選択を専門的に確認');
+  if(!jak&&yes('severeCytopenia'))review('重大な血球減少：原因精査と開始可否の専門的判断が必要');
+  if(!jak&&yes('severeLiver'))review('重度肝機能障害：薬剤別の使用可否・用量を確認');
+  if(!jak&&yes('strongImmunosuppressant'))review('強力な免疫抑制薬併用中：重複免疫抑制と感染症リスクを確認');
+  return {level,reasons};
+}
 
 function renderUsed(disease){
-  usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<div class="used-history"><label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label><label class="used-reason" data-reason-for="${d.id}" hidden><span>使用後の経過</span><select name="usedReason_${d.id}"><option value="">選択してください</option><option value="primary">一次無効</option><option value="secondary">二次無効・効果減弱</option><option value="adverse">有害事象で中止</option><option value="remission">寛解後に中止</option><option value="other">その他</option></select></label></div>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
+  usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<div class="used-history"><label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label><div class="used-reason" data-reason-for="${d.id}" hidden><label><span>使用後の経過</span><select name="usedReason_${d.id}"><option value="">選択してください</option><option value="primary">一次無効</option><option value="secondary">二次無効・効果減弱</option><option value="adverse">有害事象で中止</option><option value="remission">寛解後に中止</option><option value="other">その他</option></select></label><label class="reuse-option"><input name="allowReuse_${d.id}" type="checkbox"><span>再投与候補に含める</span><small>寛解後中止など、再投与を個別に検討する場合</small></label></div></div>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
 }
 function updateOptimizationVisibility(){
   const routes=selected('inductionRoute'),any=yes('inductionAny'),hasUsedAt=used().length>0;
@@ -268,6 +330,8 @@ function conditional(changed){
   }
   document.querySelector('#treatmentStepNumber').textContent=f.sex==='female'&&!autoMenopause?'03':'02';
   document.querySelector('#routeStepNumber').textContent=f.disease==='CD'?'04':'03';
+  form.elements.asuc.closest('.check').hidden=f.disease!=='UC';
+  if(f.disease!=='UC')form.elements.asuc.checked=false;
   if(changed==='disease'){
     renderUsed(f.disease);
     renderTrialCards(f.disease);
@@ -302,7 +366,10 @@ form.addEventListener('change',e=>{
   if(n==='usedDrug'){
     const reason=form.querySelector(`[data-reason-for="${e.target.value}"]`);
     reason.hidden=!e.target.checked;
-    if(!e.target.checked)reason.querySelector('select').value='';
+    if(!e.target.checked){
+      reason.querySelector('select').value='';
+      reason.querySelector(`[name="allowReuse_${e.target.value}"]`).checked=false;
+    }
   }
   if(n==='adherence'&&e.target.checked)form.elements.adherenceOk.checked=false;
   if(n==='adherenceOk'&&e.target.checked)form.elements.adherence.checked=false;
@@ -311,10 +378,11 @@ form.addEventListener('change',e=>{
 form.addEventListener('input',e=>{e.target.closest('.field')?.classList.remove('invalid');calculateVdzCdst();results.hidden=true});
 
 function calculate(f){
-  const excluded=new Set(used());
-  const historyEntries=[...excluded].map(id=>({drug:drugs.find(d=>d.id===id),reason:form.elements[`usedReason_${id}`]?.value||''}));
-  const usedClasses=drugs.filter(d=>excluded.has(d.id)).map(d=>d.cls);
-  const historyType=!excluded.size?'none':usedClasses.includes('抗TNFα抗体')?'antiTNF':'advanced';
+  const usedHistory=used();
+  const excluded=new Set(usedHistory.filter(id=>!form.elements[`allowReuse_${id}`]?.checked));
+  const historyEntries=usedHistory.map(id=>({drug:drugs.find(d=>d.id===id),reason:form.elements[`usedReason_${id}`]?.value||''}));
+  const usedClasses=drugs.filter(d=>usedHistory.includes(d.id)).map(d=>d.cls);
+  const historyType=!usedHistory.length?'none':usedClasses.includes('抗TNFα抗体')?'antiTNF':'advanced';
   const inductionPreferences=selected('inductionRoute');
   return drugs.filter(d=>d.diseases.includes(f.disease)&&!excluded.has(d.id)).map(d=>{
     let score=70,reasons=[]; const add=(n,s)=>{score+=n;reasons.push(`${n>0?'+':''}${n} ${s}`)};
@@ -343,6 +411,7 @@ function calculate(f){
       if(cdstScore?.category==='高')add(8,`VDZ-CDST ${cdstScore.score}点：反応可能性 高`);
       else if(cdstScore?.category==='中間')add(3,`VDZ-CDST ${cdstScore.score}点：反応可能性 中間`);
       else if(cdstScore?.category==='低')add(-5,`VDZ-CDST ${cdstScore.score}点：反応可能性 低`);
+      else add(0,'VDZ-CDST未計算：アルブミン・CRPを入力すると補助評価を表示できます');
     }
     if(inductionPreferences.length)inductionPreferences.some(route=>d.induction.includes(route))?add(2,'導入期に許容できる投与経路と一致'):add(-2,'導入期に許容できる投与経路と不一致');
     if(f.maintenanceRoute!=='any')d.maintenance.includes(f.maintenanceRoute)?add(6,'維持期の希望投与経路と一致'):add(-4,'維持期の希望投与経路と不一致');
@@ -395,16 +464,30 @@ function calculate(f){
     }
     if(yes('vte')&&['TOF','FIL','UPA'].includes(d.id))add(-15,'血栓塞栓症リスク');
     if((yes('pregnancyPlan')||yes('pregnant')||yes('nursing'))&&['TOF','FIL','UPA','OZA','ETR'].includes(d.id))add(-20,'妊娠・授乳関連の安全性');
-    return {...d,score,reasons};
-  }).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'ja')).map((d,i,a)=>({...d,rank:a.findIndex(x=>x.score===d.score)+1}));
+    const safety=safetyClassification(d,f);
+    return {...d,score,reasons,status:safety.level,safetyReasons:safety.reasons};
+  }).sort((a,b)=>({eligible:0,review:1,excluded:2}[a.status]-{eligible:0,review:1,excluded:2}[b.status])||b.score-a.score||a.name.localeCompare(b.name,'ja')).map((d,i,a)=>{
+    if(d.status!=='eligible')return {...d,rank:null};
+    const ranked=a.filter(x=>x.status==='eligible');
+    return {...d,rank:ranked.findIndex(x=>x.score===d.score)+1};
+  });
 }
 form.addEventListener('submit',e=>{
   e.preventDefault(); if(!validateForm())return;
-  const rows=calculate(data()),error=document.querySelector('#error');
-  if(!rows.length){error.textContent='使用済み薬剤以外に候補がありません。選択内容を確認してください。';return}
-  error.textContent=''; const top=rows[0].score,names=rows.filter(x=>x.rank===1).map(x=>x.name).join('、');
-  document.querySelector('#summary').innerHTML=`<strong>${names}</strong>${rows.filter(x=>x.rank===1).length>1?' は同点で、いずれも第一選択候補です。':' を第一選択候補として提示します。'} 最終決定は適応・禁忌・最新の添付文書と患者希望を確認してください。`;
-  document.querySelector('#cards').innerHTML=rows.map(r=>{const tags=resultTags(r.reasons);return `<article class="${r.rank===1?'best':''}"><div class="rank"><strong>${r.rank}</strong><small>位</small></div><div class="drug"><h3>${r.name}</h3><p>${r.cls}</p><p class="regimen">${r.label}</p>${tags.length?`<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<p class="reason-line">${r.reasons[0]?.replace(/^[+-]?\d+\s*/,'')||'標準条件による基本評価'}</p></div><div class="score"><strong>${r.score}</strong><small>点 ${r.score===top?'TOP':`-${top-r.score}`}</small></div>${scheduleMarkup(r,data().disease)}<details><summary>評価の内訳</summary>${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`}).join('');
+  const blocks=blockingConditions(data());
+  if(blocks.length){
+    document.querySelector('#summary').className='summary urgent';
+    document.querySelector('#summary').innerHTML=`<strong>治療選択前の対応が必要です</strong><p>${blocks.join('、')}が選択されています。適合度順による薬剤比較は行わず、感染症治療・緊急評価・入院治療経路を優先してください。</p>`;
+    document.querySelector('#cards').innerHTML='<div class="hard-stop"><strong>適合度順の表示を停止しました</strong><span>状態の評価・対応後に入力を更新し、改めて適合度結果を確認してください。</span></div>';
+    results.hidden=false;results.scrollIntoView({behavior:'smooth'});return;
+  }
+  const rows=calculate(data());
+  if(!rows.length){showInlineError('使用済み薬剤以外に候補がありません。選択内容を確認してください。');return}
+  inlineError.textContent=''; const candidates=rows.filter(x=>x.status==='eligible'),reviewRows=rows.filter(x=>x.status==='review'),leaders=candidates.filter((x,_,a)=>x.score===a[0]?.score),top=candidates[0]?.score,names=leaders.map(x=>x.name).join('、');
+  document.querySelector('#summary').className='summary';
+  document.querySelector('#summary').innerHTML=candidates.length?`<strong>${names}</strong>${leaders.length>1?' は同点で、入力条件との適合度が最も高い候補です。':' は入力条件との適合度が最も高い候補です。'} 最終決定は適応・禁忌・最新の電子添文と患者希望を確認してください。`:`<strong>通常の候補として表示できる薬剤はありません</strong><p>${reviewRows.map(x=>x.name).join('、')||'表示薬剤'}は専門的判断または禁忌確認が必要です。</p>`;
+  const statusLabels={eligible:'条件との適合度が高い候補',review:'要専門的判断',excluded:'選択対象外／禁忌に該当する可能性'};
+  document.querySelector('#cards').innerHTML=rows.map(r=>{const tags=resultTags(r.reasons);return `<article class="${r.rank===1&&r.status==='eligible'?'best ':''}status-${r.status}"><div class="rank">${r.rank?`<strong>${r.rank}</strong><small>位</small>`:'<strong>―</strong>'}</div><div class="drug"><span class="status-badge">${statusLabels[r.status]}</span><h3>${r.name}</h3><p>${r.cls}</p><p class="regimen">${r.label}</p>${r.safetyReasons.length?`<div class="safety-reasons">${r.safetyReasons.map(x=>`<p>${x}</p>`).join('')}</div>`:''}${tags.length?`<div class="tags">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''}<p class="reason-line">${r.reasons[0]?.replace(/^[+-]?\d+\s*/,'')||'標準条件による基本評価'}</p></div><div class="score"><strong>${r.score}</strong><small>適合度点<br>${r.status==='eligible'?(r.score===top?'本ツール内TOP':`本ツール内 ${top-r.score}点差`):'参考値'}</small></div>${scheduleMarkup(r,data().disease)}<details><summary>適合度の内訳</summary>${r.safetyReasons.length?`<h4>安全性・要確認</h4><ul>${r.safetyReasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}${r.reasons.length?`<ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>基本点のみ</p>'}</details></article>`}).join('');
   results.hidden=false; results.scrollIntoView({behavior:'smooth'});
 });
 document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
@@ -446,9 +529,24 @@ function renderTrialCards(disease){
     return `<button type="button" class="trial-card trial-${mechanismGroup(d)}" data-drug="${d.id}" aria-label="${d.name}の${disease}臨床試験結果を見る"><span>${d.cls}</span><strong>${d.name}</strong><small>${label}</small><em>${studies.length?'結果グラフを見る':'試験名を確認'}</em></button>`;
   }).join('');
 }
+function studyMethodology(study){
+  const name=study.trial;
+  const responderRerandomized=/ACCENT|CHARM|GEMINI|UNIFI|IM-UNITI|COMMAND|FORTIFY|LUCENT-2|QUASAR|True North|OCTAVE Sustain|SELECTION|U-ACHIEVE Maintenance|U-ENDURE/.test(name);
+  const treatThrough=/ULTRA 2|VARSITY|SEAVUE|ELEVATE UC 52|VIVID-1|GALAXI/.test(name);
+  const extension=/LUCENT-3|VIVID-2/.test(name);
+  const analysis=study.analysisPopulation||(extension?'先行試験の継続参加例。無作為化ITT集団とは異なります。':responderRerandomized?'導入反応例を対象とする維持期の再ランダム化集団を含みます。導入ITT集団とは分母が異なります。':treatThrough?'無作為化後を継続追跡するtreat-through／直接比較集団です。詳細な解析対象は一次文献を確認してください。':'無作為化ITTまたは試験で規定された主要解析集団。正確な定義は一次文献を確認してください。');
+  const maintenance=study.maintenanceDesign||(extension?'長期継続試験（選択された継続例）':responderRerandomized?'re-randomized responder型：導入反応例を維持期に再ランダム化':treatThrough?'treat-through型または継続無作為化比較':'導入試験／単一評価時点。維持結果を含む場合は一次文献でデザインを確認');
+  return {
+    analysis,
+    definition:study.definition||'試験ごとのプロトコル定義（Mayoスコア、CDAI、内視鏡評価など）を使用。完全な定義は一次文献・補足資料を確認してください。',
+    maintenance,
+    imputation:study.imputation||'欠測・中止・救済治療後の扱いは試験ごとに異なります。NRI等の詳細は一次文献の統計解析計画を確認してください。'
+  };
+}
 function renderStudy(ev,index=0){
   const studies=ev.studies||[ev],study=studies[index];
-  detail.innerHTML=`<span class="eyebrow">CLINICAL TRIAL</span>${study.headToHead?'<span class="h2h-badge">HEAD-TO-HEAD 直接比較試験</span>':''}${studies.length>1?`<div class="study-tabs">${studies.map((s,i)=>`<button type="button" data-study="${i}" class="${i===index?'active':''}">${s.headToHead?'H2H｜':''}${s.trial}</button>`).join('')}</div>`:''}<h2>${study.trial}</h2><p>${study.endpoint}</p>${study.periods.map(([label,active,control])=>`<div class="chart"><b>${label}</b><div class="barrow"><span>${control==null?'継続投与群':study.activeLabel||'実薬'} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control"><span>${study.controlLabel||'対照'} ${control}%</span><i style="width:${control}%"></i></div>`}</div>`).join('')}<p class="trial-note">※ 対象集団、評価項目の定義、再ランダム化条件、評価時点は試験ごとに異なります。試験間の数値を直接比較しないでください。</p><a href="${study.source}" target="_blank" rel="noopener">一次資料を開く</a>${study.source2?`　<a href="${study.source2}" target="_blank" rel="noopener">関連試験資料を開く</a>`:''}`;
+  const method=studyMethodology(study);
+  detail.innerHTML=`<span class="eyebrow">CLINICAL TRIAL</span>${study.headToHead?'<span class="h2h-badge">HEAD-TO-HEAD 直接比較試験</span>':''}${studies.length>1?`<div class="study-tabs">${studies.map((s,i)=>`<button type="button" data-study="${i}" class="${i===index?'active':''}">${s.headToHead?'H2H｜':''}${s.trial}</button>`).join('')}</div>`:''}<h2>${study.trial}</h2><p>${study.endpoint}</p><div class="trial-method"><dl><div><dt>解析集団</dt><dd>${method.analysis}</dd></div><div><dt>評価項目の定義</dt><dd>${method.definition}</dd></div><div><dt>維持試験デザイン</dt><dd>${method.maintenance}</dd></div><div><dt>欠測値・未補完法</dt><dd>${method.imputation}</dd></div></dl></div>${study.periods.map(([label,active,control],periodIndex)=>{const sample=study.samples?.[periodIndex],ci=study.ci?.[periodIndex],significance=study.significance?.[periodIndex]||(label.includes('有意差なし')?'統計学的有意差なし':'未収載（一次文献で確認）');return `<div class="chart"><b>${label}</b><div class="barrow"><span>${control==null?'継続投与群':study.activeLabel||'実薬'} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control"><span>${study.controlLabel||'対照'} ${control}%</span><i style="width:${control}%"></i></div>`}<div class="chart-meta"><span><b>各群の症例数</b>${sample||'未収載（割合から逆算せず一次文献で確認）'}</span><span><b>95%信頼区間</b>${ci||'未収載（一次文献で確認）'}</span><span><b>統計学的有意差</b>${significance}</span></div></div>`}).join('')}<p class="trial-note">導入試験と、導入反応例だけを再ランダム化した維持試験では分母・解析集団が異なります。数値を同列に比較せず、未収載項目は必ず一次文献・補足資料で確認してください。</p><a href="${study.source}" target="_blank" rel="noopener">一次資料を開く</a>${study.source2?`　<a href="${study.source2}" target="_blank" rel="noopener">関連試験資料を開く</a>`:''}`;
   detail.querySelectorAll('[data-study]').forEach(button=>button.addEventListener('click',()=>renderStudy(ev,Number(button.dataset.study))));
 }
 trialRoot.addEventListener('click',e=>{
@@ -461,4 +559,12 @@ trialRoot.addEventListener('click',e=>{
 const closeDialog=()=>typeof dialog.close==='function'?dialog.close():dialog.removeAttribute('open');
 document.querySelector('#closeTrial').onclick=closeDialog;
 dialog.addEventListener('click',e=>{if(e.target===dialog)closeDialog()});
+const versionButton=document.querySelector('#versionButton'),versionDialog=document.querySelector('#versionDialog');
+const closeVersionDialog=()=>typeof versionDialog.close==='function'?versionDialog.close():versionDialog.removeAttribute('open');
+versionButton.addEventListener('click',()=>{
+  if(typeof versionDialog.showModal==='function')versionDialog.showModal();
+  else{versionDialog.setAttribute('open','');versionDialog.scrollIntoView({behavior:'smooth',block:'center'})}
+});
+document.querySelector('#closeVersion').addEventListener('click',closeVersionDialog);
+versionDialog.addEventListener('click',e=>{if(e.target===versionDialog)closeVersionDialog()});
 renderUsed(''); renderTrialCards(''); conditional();

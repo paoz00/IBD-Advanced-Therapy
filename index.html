@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD Advanced Therapy 選択支援 Ver.3.14.1</title>
-<link rel="stylesheet" href="static/style.css?v=3.14.1">
+<title>IBD高度治療 選択支援 Ver.4.0.0</title>
+<link rel="stylesheet" href="static/style.css?v=4.0.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -13,11 +13,12 @@
 <main>
 <header class="hero">
 <div class="eyebrow">IBD CLINICAL DECISION SUPPORT</div>
-<h1>Advanced Therapy 選択支援</h1>
-<p>潰瘍性大腸炎・クローン病の患者背景と治療目標を整理し、候補薬を比較します。</p>
-<span class="version">Version 3.14.1</span>
+<h1>IBD高度治療 選択支援</h1>
+<p>潰瘍性大腸炎およびクローン病に対する高度治療の候補を、患者背景、既治療、安全性および治療上の希望に基づいて比較します。</p>
+<div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.0.0 <span aria-hidden="true">›</span></button>
 </header>
-<form id="patientForm">
+<form id="patientForm" novalidate>
 <section>
 <h2>
 <b>01</b> 疾患と基本情報</h2>
@@ -79,7 +80,7 @@
 </label>
 <label class="check">
 <input name="pregnant" type="checkbox">
-<span>妊娠中</span>
+<span>妊娠中または妊娠の可能性あり</span>
 </label>
 <label class="check">
 <input name="nursing" type="checkbox">
@@ -94,8 +95,8 @@
 <div class="group-title">
 <span>01</span>
 <div>
-<h3>使用したAdvanced Therapy</h3>
-<p>複数選択可。選択薬は候補から除外され、既治療の作用機序も採点へ反映されます。</p>
+<h3>Advanced Therapy（高度治療）の使用歴</h3>
+<p>複数選択可。選択した薬剤は原則として新規候補から除外します。また、治療後の経過と既治療薬の作用機序を適合度評価に反映します。</p>
 </div>
 </div>
 <div class="checks" id="usedDrugs">
@@ -112,10 +113,32 @@
 </div>
 <div class="checks" id="riskChecks">
 </div>
+<p class="malignancy-note">※「悪性腫瘍の既往あり」を選択した場合も、腫瘍の種類、治療終了からの期間、再発リスクを個別に評価してください。</p>
+</div>
+<div class="input-group safety-gate-group">
+<div class="group-title">
+<span>03</span>
+<div>
+<h3>治療開始前の必須確認</h3>
+<p>該当時は単なる減点にせず、治療選択前の対応または薬剤別の確認を優先します。</p>
+</div>
+</div>
+<div class="checks" id="safetyGateChecks"></div>
+<label class="field renal-field">
+<span>腎機能（eGFR、mL/min/1.73m²）</span>
+<select name="renalFunction">
+<option value="unknown">未評価・不明</option>
+<option value="60+">60以上</option>
+<option value="30-59">30～59</option>
+<option value="15-29">15～29</option>
+<option value="under15">15未満</option>
+</select>
+</label>
+<p class="safety-gate-note">現在の重篤な感染症、活動性結核、緊急合併症、ASUCを選択した場合は適合度順を表示せず、先に必要な評価・治療を案内します。</p>
 </div>
 <div class="input-group cd-group" id="cdGroup" hidden>
 <div class="group-title">
-<span>03</span>
+<span>04</span>
 <div>
 <h3>CD固有情報・VDZ-CDST</h3>
 <p>ベドリズマブへの反応可能性を予測するCDSTを自動計算します。</p>
@@ -126,11 +149,11 @@
 <div id="cdstAssessment">
 <div class="cdst-labs">
 <label class="field">
-<span>ベースラインのアルブミン（g/dL）</span>
+<span>ベースラインのアルブミン（g/dL・任意）</span>
 <input name="cdstAlbumin" type="number" min="1" max="6" step="0.1" inputmode="decimal" placeholder="例：3.8">
 </label>
 <label class="field">
-<span>ベースラインのCRP（mg/dL）</span>
+<span>ベースラインのCRP（mg/dL・任意）</span>
 <input name="cdstCrp" type="number" min="0" max="50" step="0.01" inputmode="decimal" placeholder="例：0.85">
 </label>
 </div>
@@ -138,7 +161,7 @@
 <strong>VDZ-CDST</strong>
 <span>アルブミンとCRPを入力してください</span>
 </div>
-<p class="cdst-note">アルブミンはg/dL、CRPはmg/dLで入力し、計算時にそれぞれg/L、mg/Lへ自動換算します。抗TNFα抗体使用歴は「使用したAdvanced Therapy」のIFX・ADA・GLMから自動判定します。このCDSTはCD重症度ではなく、ベドリズマブ反応予測の補助指標です。</p>
+<p class="cdst-note">任意入力です。未入力でも推奨結果を表示できます。アルブミンはg/dL、CRPはmg/dLで入力し、計算時にそれぞれg/L、mg/Lへ自動換算します。抗TNFα抗体使用歴は「使用したAdvanced Therapy」のIFX・ADA・GLMから自動判定します。VDZ-CDSTはCD重症度や全薬剤の優劣を判定するものではなく、ベドリズマブ反応可能性を補助的に推定する指標です。外部検証は行われていますが、適用限界として対象集団・評価項目の違いがあり、個々の患者や実臨床へそのまま一般化できるとは限りません。</p>
 </div>
 </div>
 <div class="input-group route-group">
@@ -179,22 +202,26 @@
 </div>
 </section>
 <div class="actions">
-<p id="error" role="alert" class="error">
-</p>
-<button class="primary" type="submit">推奨結果を見る <span>→</span>
+<button class="primary" type="submit">適合度結果を見る <span>→</span>
 </button>
+<p id="error" role="alert" aria-live="assertive" class="error">
+</p>
 <p>入力内容は端末外へ送信されません</p>
 </div>
 </form>
 <section id="results" class="results" hidden>
 <div class="result-head">
 <div>
-<span class="eyebrow">RECOMMENDATION</span>
-<h2>推奨候補</h2>
+<span class="eyebrow">CONDITION FIT</span>
+<h2>条件との適合度が高い候補</h2>
 </div>
 <button id="edit">入力内容を修正</button>
 </div>
 <div id="summary" class="summary">
+</div>
+<div class="score-disclaimer" role="note">
+<strong>本ツール内の適合度スコア（未検証）</strong>
+<p>本スコアは、入力条件と候補薬の特徴を整理するための独自ルールに基づく相対評価です。臨床的な有効性・安全性の優劣を直接示すものではなく、外部検証された予測モデルではありません。</p>
 </div>
 <div id="cards" class="cards">
 </div>
@@ -222,12 +249,64 @@
 <div id="trialDetail">
 </div>
 </dialog>
+<dialog id="versionDialog" class="version-dialog" aria-labelledby="versionDialogTitle">
+<button type="button" id="closeVersion" class="dialog-close" aria-label="変更履歴を閉じる">×</button>
+<span class="eyebrow">VERSION HISTORY</span>
+<h2 id="versionDialogTitle">変更履歴</h2>
+<div class="version-history">
+<details open><summary><strong>Ver.4.0.0</strong><span>安全性・適合度表示・エビデンス情報の再設計</span></summary><ul>
+<li>必須項目未入力時に、赤枠・赤文字・トースト・自動スクロールで案内</li>
+<li>VDZ使用歴がある場合はVDZ-CDSTの入力と測定を不要化</li>
+<li>UST 90mgを45mgシリンジ2本として図示</li>
+<li>投与スケジュール上部の重複した凡例アイコンを削除</li>
+<li>RISの治療最適化を、維持療法開始16週以降の効果減弱時に行う1200mg単回追加点滴へ訂正</li>
+<li>GUSの維持開始時期を明示し、100mg・8週間隔から200mg・4週間隔への変更として用量と間隔を併記</li>
+<li>FILの維持療法に100mg減量選択肢と腎機能（eGFR）確認の注意を追加</li>
+<li>TOFの8週間延長導入、効果減弱・難治例での10mg維持選択肢、高用量の安全性警告を追加</li>
+<li>禁忌・緊急対応候補を減点から分離し、推奨候補・要専門的判断・選択対象外の3段階表示を追加</li>
+<li>VDZ-CDSTのアルブミン・CRPを任意入力へ変更し、未計算でも推奨結果を表示</li>
+<li>独自配点を「条件との適合度」「本ツール内の適合度スコア（未検証）」と明示</li>
+<li>既使用ATを原則除外としつつ、薬剤ごとに再投与候補へ戻せる選択肢を追加</li>
+<li>臨床試験グラフに解析集団・症例数・評価項目定義・95%信頼区間・有意差・維持デザイン・欠測値処理の確認欄を追加</li>
+</ul></details>
+<details><summary><strong>Ver.3.14.1</strong><span>入力案内・投与表示の修正</span></summary><ul>
+<li>必須項目未入力時の赤枠・赤文字・トースト・自動スクロールを追加</li>
+<li>VDZ使用歴がある場合はVDZ-CDSTを測定不要化</li>
+<li>UST 90mgを45mgシリンジ2本として図示</li>
+<li>投与スケジュール上部の重複した凡例アイコンを削除</li>
+</ul></details>
+<details><summary><strong>Ver.3.14.0</strong><span>投与スケジュール・臨床試験</span></summary><ul>
+<li>皮下注の1回投与本数と投与量を図示</li>
+<li>レスキュー、再導入、増量・倍量、投与間隔短縮を追加</li>
+<li>MIRIのLUCENT-1・LUCENT-2・LUCENT-3を個別表示</li>
+<li>作用機序を正式表記へ統一</li>
+</ul></details>
+<details><summary><strong>Ver.3.13.0</strong><span>投与スケジュールの図示</span></summary><ul>
+<li>推奨候補カードに折りたたみ式の投与スケジュールを追加</li>
+<li>点滴・皮下注・内服をピクトグラムで表示</li>
+<li>PCは横型、スマートフォンは縦型のタイムラインに対応</li>
+</ul></details>
+<details><summary><strong>Ver.3.12.0</strong><span>比較試験・作用機序</span></summary><ul>
+<li>VARSITY、SEAVUE、GALAXI 2/3などHead-to-Head試験を追加</li>
+<li>直接比較結果を推奨配点へ補助的に反映</li>
+<li>作用機序表記を統一</li>
+</ul></details>
+<details><summary><strong>Ver.3.11.0以前</strong><span>入力・採点・臨床試験の基盤</span></summary><ul>
+<li>UC/CD別の適応、既使用AT、患者背景、安全性、投与希望を採点へ反映</li>
+<li>同点を競技順位方式（1位、1位、3位）で表示</li>
+<li>主要臨床試験を疾患別カードとグラフで表示</li>
+<li>CDST、肛門病変、AZA併用、治療最適化、年齢別リスク評価を追加</li>
+<li>男性・閉経後では不要な妊娠関連入力を非表示</li>
+</ul></details>
+</div>
+<p class="version-history-note">詳細な変更点はREADME.mdにも記載しています。</p>
+</dialog>
 <footer>
-<strong>IBD Advanced Therapy 選択支援 Ver.3.14.1</strong>
+<strong>IBD高度治療 選択支援 Ver.4.0.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=3.14.1" charset="utf-8">
+<script src="static/app.js?v=4.0.0" charset="utf-8">
 </script>
 </body>
 </html>
