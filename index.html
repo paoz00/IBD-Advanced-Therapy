@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD高度治療 選択支援 Ver.4.0.0</title>
-<link rel="stylesheet" href="static/style.css?v=4.0.0">
+<title>IBD先進治療 選択支援 Ver.4.1.0</title>
+<link rel="stylesheet" href="static/style.css?v=4.1.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -13,10 +13,13 @@
 <main>
 <header class="hero">
 <div class="eyebrow">IBD CLINICAL DECISION SUPPORT</div>
-<h1>IBD高度治療 選択支援</h1>
-<p>潰瘍性大腸炎およびクローン病に対する高度治療の候補を、患者背景、既治療、安全性および治療上の希望に基づいて比較します。</p>
+<h1>IBD先進治療 選択支援</h1>
+<p>潰瘍性大腸炎およびクローン病に対する先進治療の候補を、患者背景、既治療、安全性および治療上の希望に基づいて比較します。</p>
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.0.0 <span aria-hidden="true">›</span></button>
+<div class="hero-actions">
+<button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.1.0 <span aria-hidden="true">›</span></button>
+</div>
 </header>
 <form id="patientForm" novalidate>
 <section>
@@ -95,7 +98,7 @@
 <div class="group-title">
 <span>01</span>
 <div>
-<h3>Advanced Therapy（高度治療）の使用歴</h3>
+<h3>Advanced Therapy（先進治療）の使用歴</h3>
 <p>複数選択可。選択した薬剤は原則として新規候補から除外します。また、治療後の経過と既治療薬の作用機序を適合度評価に反映します。</p>
 </div>
 </div>
@@ -134,7 +137,52 @@
 <option value="under15">15未満</option>
 </select>
 </label>
-<p class="safety-gate-note">現在の重篤な感染症、活動性結核、緊急合併症、ASUCを選択した場合は適合度順を表示せず、先に必要な評価・治療を案内します。</p>
+<label class="field cmv-field">
+<span>CMV関連状態</span>
+<select name="cmvStatus">
+<option value="none">該当なし・未疑診</option>
+<option value="past">CMV既感染／IgG陽性のみ</option>
+<option value="suspected">CMV腸炎の疑い・検査中</option>
+<option value="colitis">組織検査でCMV腸炎を確認</option>
+<option value="disseminated">症候性の播種性CMV感染</option>
+</select>
+</label>
+<div id="cmvDetails" class="cmv-panel" hidden>
+<div class="cmv-grid">
+<label class="field">
+<span>C7-HRP</span>
+<select name="c7hrp">
+<option value="notDone">未実施</option>
+<option value="negative">陰性</option>
+<option value="positive">陽性</option>
+<option value="unknown">結果不明</option>
+</select>
+</label>
+<label class="field">
+<span>組織CMV免疫染色（IHC）</span>
+<select name="cmvIhc">
+<option value="notDone">未実施</option>
+<option value="negative">陰性</option>
+<option value="positive">陽性</option>
+</select>
+</label>
+<label class="field">
+<span>組織CMV-PCR</span>
+<select name="cmvTissuePcr">
+<option value="notDone">未実施</option>
+<option value="negative">陰性</option>
+<option value="positive">陽性</option>
+</select>
+</label>
+</div>
+<div id="c7PositiveFields" class="cmv-grid" hidden>
+<label class="field"><span>C7-HRP陽性細胞数</span><input name="c7PositiveCount" type="number" min="0" step="1" inputmode="numeric"></label>
+<label class="field"><span>判定白血球数</span><input name="c7Denominator" type="number" min="1" step="1" inputmode="numeric" placeholder="例：50000"></label>
+<label class="field"><span>検査日</span><input name="c7TestDate" type="date"></label>
+</div>
+<p class="cmv-note">C7-HRPは補助所見であり、陰性のみでCMV腸炎を除外しません。臨床的に疑う場合は生検組織のCMV免疫染色を基本とし、必要に応じて組織PCRを併用して総合判断してください。</p>
+</div>
+<p class="safety-gate-note">現在の重篤な感染症、活動性結核、緊急合併症、ASUC、CMV腸炎の疑い・確認例、播種性CMV感染を選択した場合は適合度順を表示せず、先に必要な評価・治療を案内します。</p>
 </div>
 <div class="input-group cd-group" id="cdGroup" hidden>
 <div class="group-title">
@@ -254,7 +302,15 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.0.0</strong><span>安全性・適合度表示・エビデンス情報の再設計</span></summary><ul>
+<details open><summary><strong>Ver.4.1.0</strong><span>CMV確認・透明性・比較ロジック</span></summary><ul>
+<li>CMV腸炎の疑い、組織診断、播種性CMV感染を治療開始前の必須確認へ追加</li>
+<li>C7-HRP、組織CMV免疫染色、組織CMV-PCRを補助評価として入力可能に変更</li>
+<li>CMVが疑われる・確認された場合は適合度順を停止し、感染評価と先行対応を案内</li>
+<li>Head-to-Head試験は比較された薬剤間の参考情報に限定し、未比較薬を含む全体順位への固定加点を廃止</li>
+<li>評価ロジック・主要配点・安全性判定・参考文献をアプリ内で確認可能に変更</li>
+<li>ヘッダーのバージョン表示が注意書きの枠と重ならないよう配置を修正</li>
+</ul></details>
+<details><summary><strong>Ver.4.0.0</strong><span>安全性・適合度表示・エビデンス情報の再設計</span></summary><ul>
 <li>必須項目未入力時に、赤枠・赤文字・トースト・自動スクロールで案内</li>
 <li>VDZ使用歴がある場合はVDZ-CDSTの入力と測定を不要化</li>
 <li>UST 90mgを45mgシリンジ2本として図示</li>
@@ -301,12 +357,46 @@
 </div>
 <p class="version-history-note">詳細な変更点はREADME.mdにも記載しています。</p>
 </dialog>
+<dialog id="methodDialog" class="method-dialog" aria-labelledby="methodDialogTitle">
+<button type="button" id="closeMethod" class="dialog-close" aria-label="評価ロジックと参考文献を閉じる">×</button>
+<span class="eyebrow">METHODOLOGY &amp; REFERENCES</span>
+<h2 id="methodDialogTitle">評価ロジック・参考文献</h2>
+<p class="method-alert"><strong>本ツール内の適合度スコアは未検証です。</strong>入力条件と薬剤特性を整理する独自の相対評価であり、臨床的な有効性・安全性の優劣や治療効果を予測するモデルではありません。</p>
+<div class="logic-sections">
+<details open><summary>適合度評価の基本構造</summary><ul>
+<li>候補薬は70点から開始し、患者背景、既治療、投与希望、安全性などを加減します。</li>
+<li>同点は競技順位方式で表示します。要専門的判断・選択対象外候補には順位を付けません。</li>
+<li>Head-to-Head試験は比較された2剤間の参考情報とし、未比較薬を含む全体順位への固定加点には使用しません。</li>
+<li>現在の重篤感染症、活動性結核、緊急合併症、ASUC、CMV腸炎の疑い・確認例では適合度順を停止します。</li>
+</ul></details>
+<details><summary>主な加点・減点ルール</summary>
+<div class="logic-table">
+<div><b>高度活動性</b><span>IFX・UPA・RIS +8</span></div><div><b>抗TNFα抗体既治療後</b><span>異なる作用機序 +7</span></div>
+<div><b>同一作用機序の一次無効歴</b><span>−6</span></div><div><b>一次無効後の作用機序変更</b><span>+3</span></div>
+<div><b>肛門病変・瘻孔（CD）</b><span>IFX +12</span></div><div><b>VDZ-CDST</b><span>高 +8／中間 +3／低 −5</span></div>
+<div><b>維持期の希望投与経路</b><span>一致 +6／不一致 −4</span></div><div><b>内服アドヒアランス懸念</b><span>内服薬 −8</span></div>
+<div><b>悪性腫瘍既往</b><span>VDZ +10／UST +8／IL-23p19 +4／JAK −12</span></div><div><b>血栓塞栓症リスク</b><span>JAK −15</span></div>
+</div>
+<p class="logic-note">主な項目の要約です。各薬剤カードの「適合度の内訳」には実際に適用された全項目を表示します。禁忌可能性・緊急条件は点数とは別に判定します。</p>
+</details>
+<details><summary>安全性判定の考え方</summary><ul>
+<li>「条件との適合度が高い候補」「要専門的判断」「選択対象外／禁忌に該当する可能性」に分類します。</li>
+<li>妊娠可能性、血球減少、重度肝機能障害、腎機能、免疫抑制薬併用は薬剤別に確認します。</li>
+<li>最終判断では最新の電子添文、診療ガイドライン、患者ごとの臨床状況を確認してください。</li>
+</ul></details>
+</div>
+<h3 class="reference-title">評価設計・安全性の参考資料</h3>
+<div id="coreReferences" class="reference-list"></div>
+<h3 class="reference-title">臨床試験の一次文献</h3>
+<p class="reference-note">臨床試験カードで使用しているリンクを薬剤・試験別に一覧化しています。</p>
+<div id="trialReferences" class="reference-list"></div>
+</dialog>
 <footer>
-<strong>IBD高度治療 選択支援 Ver.4.0.0</strong>
+<strong>IBD先進治療 選択支援 Ver.4.1.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/app.js?v=4.0.0" charset="utf-8">
+<script src="static/app.js?v=4.1.0" charset="utf-8">
 </script>
 </body>
 </html>

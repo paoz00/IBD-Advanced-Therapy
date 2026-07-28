@@ -237,6 +237,9 @@ function blockingConditions(f){
   if(yes('activeTb'))items.push('活動性結核');
   if(yes('urgentComplication'))items.push('脱水・膿瘍・腸閉塞などの緊急合併症');
   if(f.disease==='UC'&&yes('asuc'))items.push('ASUCまたは入院治療が必要な状態');
+  if(f.cmvStatus==='suspected')items.push('CMV腸炎の疑い・検査中（組織IHCを基本に、必要に応じて組織PCRを確認）');
+  if(f.cmvStatus==='colitis')items.push('組織検査で確認されたCMV腸炎（抗ウイルス療法、ステロイド減量、先進治療の時期を専門的に判断）');
+  if(f.cmvStatus==='disseminated')items.push('症候性の播種性CMV感染（入院評価と感染症専門医への相談を優先）');
   return items;
 }
 function safetyClassification(d,f){
@@ -332,6 +335,17 @@ function conditional(changed){
   document.querySelector('#routeStepNumber').textContent=f.disease==='CD'?'04':'03';
   form.elements.asuc.closest('.check').hidden=f.disease!=='UC';
   if(f.disease!=='UC')form.elements.asuc.checked=false;
+  const cmvActive=['suspected','colitis','disseminated'].includes(f.cmvStatus);
+  document.querySelector('#cmvDetails').hidden=!cmvActive;
+  document.querySelector('#c7PositiveFields').hidden=!cmvActive||f.c7hrp!=='positive';
+  if(!cmvActive){
+    form.elements.c7hrp.value='notDone';
+    form.elements.cmvIhc.value='notDone';
+    form.elements.cmvTissuePcr.value='notDone';
+    for(const n of ['c7PositiveCount','c7Denominator','c7TestDate'])form.elements[n].value='';
+  }else if(f.c7hrp!=='positive'){
+    for(const n of ['c7PositiveCount','c7Denominator'])form.elements[n].value='';
+  }
   if(changed==='disease'){
     renderUsed(f.disease);
     renderTrialCards(f.disease);
@@ -387,15 +401,16 @@ function calculate(f){
   return drugs.filter(d=>d.diseases.includes(f.disease)&&!excluded.has(d.id)).map(d=>{
     let score=70,reasons=[]; const add=(n,s)=>{score+=n;reasons.push(`${n>0?'+':''}${n} ${s}`)};
     if(f.severity==='severe'&&['IFX','UPA','RIS'].includes(d.id))add(8,'高度活動性で有効性を重視');
-    if(f.disease==='UC'&&d.id==='VED')add(4,'Head-to-Head（VARSITY）：ADAに対するWeek 52臨床的寛解・内視鏡的改善の優越性');
-    if(f.disease==='UC'&&d.id==='ADA')add(0,'Head-to-Head（VARSITY）：VDZとの直接比較結果を考慮');
-    if(f.disease==='CD'&&d.id==='GUS')add(4,'Head-to-Head（GALAXI 2/3）：USTに対するWeek 48複数評価項目の優越性');
-    if(f.disease==='CD'&&['UST','ADA'].includes(d.id)&&!excluded.size)add(0,'Head-to-Head（SEAVUE）：生物学的製剤未使用例でUSTとADAに有意差なし');
-    if(f.disease==='CD'&&d.id==='MIRI'&&historyEntries.length)add(2,'Head-to-Head（VIVID-1）：既治療失敗例のWeek 52組織学的反応でUSTより良好');
+    if(f.disease==='UC'&&d.id==='VED')add(0,'Head-to-Head参考情報（VARSITY）：ADAとの直接比較結果。未比較の他薬剤に対する加点には使用しない');
+    if(f.disease==='UC'&&d.id==='ADA')add(0,'Head-to-Head参考情報（VARSITY）：VDZとの直接比較結果。未比較の他薬剤に対する減点には使用しない');
+    if(f.disease==='CD'&&d.id==='GUS')add(0,'Head-to-Head参考情報（GALAXI 2/3）：USTとの直接比較結果。未比較の他薬剤に対する加点には使用しない');
+    if(f.disease==='CD'&&d.id==='UST')add(0,'Head-to-Head参考情報（GALAXI 2/3、SEAVUE）：比較対象薬との結果に限定し、他薬剤との差には換算しない');
+    if(f.disease==='CD'&&d.id==='ADA'&&!excluded.size)add(0,'Head-to-Head参考情報（SEAVUE）：生物学的製剤未使用例でUSTと有意差なし。未比較薬との差には換算しない');
+    if(f.disease==='CD'&&d.id==='MIRI'&&historyEntries.length)add(0,'Head-to-Head参考情報（VIVID-1）：USTとの直接比較結果。未比較の他薬剤に対する加点には使用しない');
     if(d.id==='OZA')add(-1,'投与負担：導入時にスターターパックによる7日間の漸増が必要');
     if(d.id==='TOF')add(-1,'投与負担：維持療法でも1日2回内服が必要');
     if(historyType==='antiTNF'&&d.cls!=='抗TNFα抗体')add(7,'抗TNFα既治療後の作用機序変更');
-    if(historyType==='advanced'&&['UPA','RIS','MIRI','GUS'].includes(d.id))add(5,'高度治療既治療後の選択肢');
+    if(historyType==='advanced'&&['UPA','RIS','MIRI','GUS'].includes(d.id))add(5,'先進治療既治療後の選択肢');
     const primaryFailures=historyEntries.filter(entry=>entry.reason==='primary');
     if(primaryFailures.some(entry=>entry.drug.cls===d.cls))add(-6,'同一作用機序で一次無効歴あり');
     else if(primaryFailures.length)add(3,'一次無効後の作用機序変更');
@@ -567,4 +582,37 @@ versionButton.addEventListener('click',()=>{
 });
 document.querySelector('#closeVersion').addEventListener('click',closeVersionDialog);
 versionDialog.addEventListener('click',e=>{if(e.target===versionDialog)closeVersionDialog()});
+const coreReferenceData=[
+  ['ECCO感染症ガイドライン（IBD）','重篤感染症、結核、CMVなどの感染症評価','https://academic.oup.com/ecco-jcc/article/20/7/jjag071/8728072'],
+  ['日本消化器病学会 IBD診療ガイドライン','UC・CD診療の国内ガイドライン一覧','https://www.jsge.or.jp/committees/guideline/guideline/ibd.html'],
+  ['PMDA 医療用医薬品情報検索','各薬剤の最新電子添文を確認','https://www.pmda.go.jp/PmdaSearch/iyakuSearch/'],
+  ['ウパダシチニブ電子添文（PMDA）','妊娠、血球減少、肝機能などの安全性条件','https://www.pmda.go.jp/drugs/2025/P20250718001/112130000_30200AMX00027_B100_1.pdf'],
+  ['フィルゴチニブ電子添文（PMDA）','感染症、結核、妊娠、腎機能、併用条件','https://www.pmda.go.jp/PmdaSearch/iyakuDetail/ResultDataSetPDF/230867_3999053F1023_1_05'],
+  ['VDZ-CDST構成・検証資料','CDにおけるベドリズマブ反応可能性の補助評価','https://pmc.ncbi.nlm.nih.gov/articles/PMC9802432/'],
+  ['VDZ-CDST外部評価','CDSTの薬剤特異性と適用限界','https://pubmed.ncbi.nlm.nih.gov/33847351/']
+];
+function renderReferenceLibrary(){
+  document.querySelector('#coreReferences').innerHTML=coreReferenceData.map(([title,note,url])=>`<a href="${url}" target="_blank" rel="noopener"><strong>${title}</strong><span>${note}</span></a>`).join('');
+  const seen=new Set(),items=[];
+  for(const d of drugs){
+    const studies=evidence[d.id]?.studies||[evidence[d.id]];
+    for(const study of studies.filter(Boolean)){
+      for(const [url,label] of [[study.source,'一次文献'],[study.source2,'関連資料']]){
+        if(!url||seen.has(url))continue;
+        seen.add(url);
+        items.push({drug:d.name,trial:study.trial,label,url});
+      }
+    }
+  }
+  document.querySelector('#trialReferences').innerHTML=items.map(item=>`<a href="${item.url}" target="_blank" rel="noopener"><strong>${item.drug}｜${item.trial}</strong><span>${item.label}</span></a>`).join('');
+}
+const methodButton=document.querySelector('#methodButton'),methodDialog=document.querySelector('#methodDialog');
+const closeMethodDialog=()=>typeof methodDialog.close==='function'?methodDialog.close():methodDialog.removeAttribute('open');
+methodButton.addEventListener('click',()=>{
+  renderReferenceLibrary();
+  if(typeof methodDialog.showModal==='function')methodDialog.showModal();
+  else{methodDialog.setAttribute('open','');methodDialog.scrollIntoView({behavior:'smooth',block:'center'})}
+});
+document.querySelector('#closeMethod').addEventListener('click',closeMethodDialog);
+methodDialog.addEventListener('click',e=>{if(e.target===methodDialog)closeMethodDialog()});
 renderUsed(''); renderTrialCards(''); conditional();
