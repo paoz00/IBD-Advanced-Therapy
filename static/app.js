@@ -512,7 +512,21 @@ form.addEventListener('submit',e=>{
   results.hidden=false; results.scrollIntoView({behavior:'smooth'});
 });
 document.querySelector('#edit').onclick=()=>{results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
-document.querySelector('#restart').onclick=()=>{form.reset();renderUsed('');conditional();results.hidden=true;scrollTo({top:0,behavior:'smooth'})};
+document.querySelector('#restart').onclick=()=>{
+  clearTimeout(toastTimer);clearTimeout(inlineErrorTimer);
+  form.reset();
+  menopauseAuto=false;
+  form.querySelectorAll('.field.invalid,.used-reason.invalid').forEach(x=>x.classList.remove('invalid'));
+  toast.hidden=true;toast.textContent='';
+  inlineError.textContent='';
+  document.querySelector('#summary').className='summary';
+  document.querySelector('#summary').innerHTML='';
+  document.querySelector('#cards').innerHTML='';
+  renderUsed('');
+  conditional('reset');
+  results.hidden=true;
+  scrollTo({top:0,behavior:'smooth'});
+};
 
 const trialRoot=document.querySelector('#trials'),dialog=document.querySelector('#trialDialog'),detail=document.querySelector('#trialDetail');
 const trialNames={
@@ -621,4 +635,16 @@ methodButton.addEventListener('click',()=>{
 });
 document.querySelector('#closeMethod').addEventListener('click',closeMethodDialog);
 methodDialog.addEventListener('click',e=>{if(e.target===methodDialog)closeMethodDialog()});
+document.querySelector('#copyShareUrl').addEventListener('click',async()=>{
+  const url=document.querySelector('#shareUrl').href,status=document.querySelector('#copyShareStatus');
+  try{
+    await navigator.clipboard.writeText(url);
+    status.textContent='URLをコピーしました。';
+  }catch{
+    const input=document.createElement('input');
+    input.value=url;document.body.append(input);input.select();
+    const copied=document.execCommand('copy');input.remove();
+    status.textContent=copied?'URLをコピーしました。':'URLを選択してコピーしてください。';
+  }
+});
 renderUsed(''); renderTrialCards(''); conditional();

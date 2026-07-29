@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.2.4</title>
-<link rel="stylesheet" href="app/globals.css?v=4.2.4">
-<link rel="stylesheet" href="static/style.css?v=4.2.4">
+<title>IBD先進治療 選択支援 Ver.4.3.0</title>
+<link rel="stylesheet" href="app/globals.css?v=4.3.0">
+<link rel="stylesheet" href="static/style.css?v=4.3.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -19,7 +19,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.2.4 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.3.0 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -264,7 +264,10 @@
 <span class="eyebrow">CONDITION FIT</span>
 <h2>条件との適合度が高い候補</h2>
 </div>
-<button id="edit">入力内容を修正</button>
+<div class="result-head-actions">
+<button id="edit" type="button">入力内容を修正</button>
+<button id="restart" type="button" class="reset-button">入力内容をリセット</button>
+</div>
 </div>
 <div id="summary" class="summary">
 </div>
@@ -273,9 +276,6 @@
 <p>本スコアは、入力条件と候補薬の特徴を整理するための独自ルールに基づく相対評価です。臨床的な有効性・安全性の優劣を直接示すものではなく、外部検証された予測モデルではありません。</p>
 </div>
 <div id="cards" class="cards">
-</div>
-<div class="result-actions">
-<button id="restart">最初からやり直す</button>
 </div>
 </section>
 <section class="trials">
@@ -303,7 +303,14 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.2.4</strong><span>端末別のヘッダー表示調整</span></summary><ul>
+<details open><summary><strong>Ver.4.3.0</strong><span>入力リセット・QRコード共有</span></summary><ul>
+<li>結果画面に「入力内容を修正」と独立した「入力内容をリセット」ボタンを追加</li>
+<li>リセット時に全入力、使用薬、結果、エラー表示を初期状態へ戻す処理を追加</li>
+<li>公開URLを読み取れるQRコードをアプリ下部へ追加</li>
+<li>公開URLの表示と「URLをコピー」ボタンを追加</li>
+<li>共有欄と操作ボタンをPC・iPhone・iPad向けに調整</li>
+</ul></details>
+<details><summary><strong>Ver.4.2.4</strong><span>端末別のヘッダー表示調整</span></summary><ul>
 <li>PC版の説明文を意味のまとまりに沿った2行表示へ調整</li>
 <li>「患者背景」が途中で分断される不自然な改行を解消</li>
 <li>iPhone版の「IBD先進治療 選択支援」を1行表示へ調整</li>
@@ -433,13 +440,26 @@
 <p class="reference-note">臨床試験カードで使用しているリンクを薬剤・試験別に一覧化しています。</p>
 <div id="trialReferences" class="reference-list"></div>
 </dialog>
+<section class="share-app" aria-labelledby="shareAppTitle">
+<div class="share-app-copy">
+<span class="eyebrow">SHARE THIS APP</span>
+<h2 id="shareAppTitle">このアプリを共有</h2>
+<p>スマートフォンのカメラでQRコードを読み取ると、このアプリを開けます。</p>
+<a id="shareUrl" href="https://paoz00.github.io/IBD-Advanced-Therapy/">https://paoz00.github.io/IBD-Advanced-Therapy/</a>
+<button type="button" id="copyShareUrl">URLをコピー</button>
+<p id="copyShareStatus" class="copy-status" role="status" aria-live="polite"></p>
+</div>
+<div class="qr-frame">
+<img src="static/ibd-app-qr.png" width="246" height="246" alt="IBD先進治療 選択支援を開くQRコード">
+</div>
+</section>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.2.4</strong>
+<strong>IBD先進治療 選択支援 Ver.4.3.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/primary-stats.js?v=4.2.4" charset="utf-8"></script>
-<script src="static/app.js?v=4.2.4" charset="utf-8">
+<script src="static/primary-stats.js?v=4.3.0" charset="utf-8"></script>
+<script src="static/app.js?v=4.3.0" charset="utf-8">
 </script>
 </body>
 </html>
