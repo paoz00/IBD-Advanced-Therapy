@@ -273,21 +273,19 @@ function renderUsed(disease){
   usedRoot.innerHTML=disease?drugs.filter(d=>d.diseases.includes(disease)).map(d=>`<div class="used-history"><label class="check used"><input name="usedDrug" value="${d.id}" type="checkbox"><span>${d.name}（${d.cls}）</span></label><div class="used-reason" data-reason-for="${d.id}" hidden><label><span>使用後の経過</span><select name="usedReason_${d.id}"><option value="">選択してください</option><option value="primary">一次無効</option><option value="secondary">二次無効・効果減弱</option><option value="adverse">有害事象で中止</option><option value="remission">寛解後に中止</option><option value="other">その他</option></select></label><label class="reuse-option"><input name="allowReuse_${d.id}" type="checkbox"><span>再投与候補に含める</span><small>寛解後中止など、再投与を個別に検討する場合</small></label></div></div>`).join(''):'<p class="hint">先に疾患を選択してください。</p>';
 }
 function updateOptimizationVisibility(){
-  const routes=selected('inductionRoute'),any=yes('inductionAny'),hasUsedAt=used().length>0;
+  const hasUsedAt=used().length>0;
   const visibility={
     secondaryLoss:hasUsedAt,
-    optimizeSame:any||routes.length>0,
-    rescueOption:any||routes.includes('iv'),
+    optimizeSame:true,
+    rescueOption:true,
     mechanismSwitch:hasUsedAt
   };
   Object.entries(visibility).forEach(([name,show])=>{
     const input=form.elements[name];input.closest('.check').hidden=!show;
     if(!show)input.checked=false;
   });
-  const hasChoice=Object.values(visibility).some(Boolean);
-  form.elements.optimizationNone.closest('.check').hidden=!hasChoice;
-  if(!hasChoice)form.elements.optimizationNone.checked=false;
-  document.querySelector('#optimizationBlock').hidden=!hasChoice;
+  form.elements.optimizationNone.closest('.check').hidden=false;
+  document.querySelector('#optimizationBlock').hidden=false;
 }
 function updateBurdenVisibility(routes,any,maintenanceVisible){
   const possible=new Set(any?['iv','sc','oral']:routes);
