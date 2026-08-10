@@ -789,7 +789,7 @@ function secondaryEndpointMarkup(study){
   }).join('')}</div>`;
 }
 function adverseEventMarkup(study){
-  const verified=study.adverseEvents?.length?`<h4>収載済みの試験結果</h4><div class="trial-outcome-list adverse-list">${study.adverseEvents.map(item=>`<div><strong>${item.label}</strong><span>${item.value}</span></div>`).join('')}</div>`:'<p class="trial-data-pending">検証済みの発現割合は未収載です。一次資料の安全性解析を確認してください。</p>';
+  const verified=study.adverseEvents?.length?`<h4>収載済みの試験結果</h4><div class="adverse-table-wrap"><table class="adverse-table"><thead><tr><th scope="col">有害事象・安全性項目</th><th scope="col">試験結果</th></tr></thead><tbody>${study.adverseEvents.map(item=>`<tr><th scope="row">${item.label}</th><td>${item.value}</td></tr>`).join('')}</tbody></table></div>`:'<p class="trial-data-pending">検証済みの発現割合は未収載です。一次資料の安全性解析を確認してください。</p>';
   const domains=`<h4>安全性解析で確認する項目</h4><div class="safety-domain-list">${(study.safetyDomains||[]).map(label=>`<span>${label}</span>`).join('')}</div>`;
   return `<p class="trial-outcome-caption">試験期間と安全性解析集団に基づく結果です。電子添文に記載された発現率や市販後のリスクとは区別してください。</p>${verified}${domains}`;
 }
