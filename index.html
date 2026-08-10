@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.4.0</title>
-<link rel="stylesheet" href="app/globals.css?v=4.4.0">
-<link rel="stylesheet" href="static/style.css?v=4.4.0">
+<title>IBD先進治療 選択支援 Ver.4.4.1</title>
+<link rel="stylesheet" href="app/globals.css?v=4.4.1">
+<link rel="stylesheet" href="static/style.css?v=4.4.1">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -19,7 +19,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.4.0 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.4.1 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -223,9 +223,8 @@
 </div>
 <div class="preference-block" id="optimizationBlock" hidden>
 <h4>導入療法で許容できる投与経路（複数選択可）</h4>
-<p class="hint">希望する経路、または「こだわらない」を選択してください。</p>
+<p class="hint">許容できる経路を選択してください。未選択の場合は、投与経路の希望を適合度へ反映しません。</p>
 <div class="checks">
-<label class="check"><input name="inductionAny" type="checkbox"><span>こだわらない</span></label>
 <label class="check"><input name="inductionRoute" value="iv" type="checkbox"><span>点滴静注</span></label>
 <label class="check"><input name="inductionRoute" value="sc" type="checkbox"><span>皮下注</span></label>
 <label class="check"><input name="inductionRoute" value="oral" type="checkbox"><span>内服</span></label>
@@ -234,7 +233,7 @@
 <label class="field route-field" id="maintenanceRouteField" hidden>
 <span>維持療法で希望する投与経路</span>
 <select name="maintenanceRoute">
-<option value="any">こだわらない</option>
+<option value="">選択してください</option>
 <option value="oral" id="maintenanceOralOption">内服</option>
 <option value="sc">皮下注</option>
 <option value="iv">点滴静注</option>
@@ -304,7 +303,14 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.4.0</strong><span>第3b相試験・臨床試験詳細・任意採点を拡張</span></summary><ul>
+<details open><summary><strong>Ver.4.4.1</strong><span>投与経路・治療最適化の不要な選択肢を整理</span></summary><ul>
+<li>導入療法で許容できる投与経路から「こだわらない」を削除</li>
+<li>維持療法で希望する投与経路から「こだわらない」を削除し、「選択してください」へ変更</li>
+<li>効果減弱時の治療最適化から「どれにも当てはまらない」を削除</li>
+<li>未選択の場合は投与経路・治療最適化を適合度へ反映しない処理へ変更</li>
+<li>女性のライフステージにある「どれにも当てはまらない」は維持</li>
+</ul></details>
+<details><summary><strong>Ver.4.4.0</strong><span>第3b相試験・臨床試験詳細・任意採点を拡張</span></summary><ul>
 <li>主要臨床試験に副次評価項目と有害事象の独立表示欄を追加</li>
 <li>グラフの実薬・対照という一般表記を、薬剤名・プラセボ・比較戦略名へ変更</li>
 <li>Head-to-Head試験と併用比較で、すべての比較群名を試験名直下と切替タブへ表示</li>
@@ -482,12 +488,12 @@
 </div>
 </section>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.4.0</strong>
+<strong>IBD先進治療 選択支援 Ver.4.4.1</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/primary-stats.js?v=4.4.0" charset="utf-8"></script>
-<script src="static/app.js?v=4.4.0" charset="utf-8">
+<script src="static/primary-stats.js?v=4.4.1" charset="utf-8"></script>
+<script src="static/app.js?v=4.4.1" charset="utf-8">
 </script>
 </body>
 </html>

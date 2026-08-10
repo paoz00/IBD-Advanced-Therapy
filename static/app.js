@@ -201,7 +201,7 @@ const checks=(root,items)=>root.innerHTML=items.map(([n,l])=>`<label class="chec
 checks(document.querySelector('#riskChecks'),[['steroid','ステロイド依存・抵抗性'],['aza','AZA／6-MP内服中'],['infection','重篤感染症リスク'],['cvRisk','心血管リスク（喫煙・高血圧・糖尿病・心血管疾患既往など）'],['malignancy','悪性腫瘍の既往あり'],['vte','血栓塞栓症リスク'],['adherence','内服アドヒアランス懸念']]);
 checks(document.querySelector('#safetyGateChecks'),[['currentSeriousInfection','現在の重篤な感染症'],['activeTb','活動性結核'],['severeCytopenia','重大な血球減少'],['severeLiver','重度肝機能障害'],['strongImmunosuppressant','強力な免疫抑制薬を併用中（AZA／6-MP以外）'],['urgentComplication','脱水・膿瘍・腸閉塞など、治療選択より先に対応が必要'],['asuc','急性重症潰瘍性大腸炎（ASUC）または入院治療が必要']]);
 checks(document.querySelector('#cdChecks'),[['cdstSurgery','腸管手術歴あり'],['cdstFistula','瘻孔型病変の既往あり'],['perianal','現在、肛門病変・瘻孔あり']]);
-checks(document.querySelector('#optimizationChecks'),[['secondaryLoss','過去に二次無効・効果減弱があった'],['optimizeSame','同じ薬剤で増量・間隔短縮できることを重視'],['rescueOption','追加導入・再導入できることを重視'],['mechanismSwitch','最適化より作用機序変更を優先'],['applyHeadToHead','第3b相Head-to-Head試験の結果を適合度に反映する'],['optimizationNone','どれにも当てはまらない']]);
+checks(document.querySelector('#optimizationChecks'),[['secondaryLoss','過去に二次無効・効果減弱があった'],['optimizeSame','同じ薬剤で増量・間隔短縮できることを重視'],['rescueOption','追加導入・再導入できることを重視'],['mechanismSwitch','最適化より作用機序変更を優先'],['applyHeadToHead','第3b相Head-to-Head試験の結果を適合度に反映する']]);
 checks(document.querySelector('#burdenChecks'),[['visitIncrease','通院回数が増えてもよい'],['infusionTime','点滴時間を許容できる'],['selfInjection','自己注射が可能'],['injectionIncrease','注射回数が増えてもよい'],['adherenceOk','服薬管理に問題がない']]);
 const data=()=>Object.fromEntries(new FormData(form));
 const yes=n=>form.elements[n]?.checked;
@@ -319,16 +319,13 @@ function updateOptimizationVisibility(){
     const input=form.elements[name];input.closest('.check').hidden=!show;
     if(!show)input.checked=false;
   });
-  form.elements.optimizationNone.closest('.check').hidden=false;
   document.querySelector('#optimizationBlock').hidden=false;
 }
 function updateBurdenVisibility(routes,any,maintenanceVisible){
   const possible=new Set(any?['iv','sc','oral']:routes);
   if(maintenanceVisible){
     const value=form.elements.maintenanceRoute.value;
-    if(value==='any'){
-      [...form.elements.maintenanceRoute.options].filter(option=>option.value!=='any'&&!option.disabled).forEach(option=>possible.add(option.value));
-    }else possible.add(value);
+    if(value)possible.add(value);
   }
   const visibility={
     visitIncrease:possible.has('iv')||possible.has('sc'),
@@ -345,19 +342,19 @@ function updateBurdenVisibility(routes,any,maintenanceVisible){
   });
 }
 function updateRoutePreferences(changed){
-  const routes=selected('inductionRoute'),any=yes('inductionAny'),field=document.querySelector('#maintenanceRouteField');
-  const allowedMaintenance=new Set(any?['iv','sc','oral']:drugs.filter(d=>d.induction.some(route=>routes.includes(route))).flatMap(d=>d.maintenance));
-  [...form.elements.maintenanceRoute.options].filter(option=>option.value!=='any').forEach(option=>{
+  const routes=selected('inductionRoute'),field=document.querySelector('#maintenanceRouteField');
+  const allowedMaintenance=new Set(drugs.filter(d=>d.induction.some(route=>routes.includes(route))).flatMap(d=>d.maintenance));
+  [...form.elements.maintenanceRoute.options].filter(option=>option.value).forEach(option=>{
     const allowed=allowedMaintenance.has(option.value);
     option.hidden=!allowed;option.disabled=!allowed;
   });
   const onlyRoute=allowedMaintenance.size===1?[...allowedMaintenance][0]:null;
-  const show=!any&&allowedMaintenance.size>1;
+  const show=allowedMaintenance.size>1;
   field.hidden=!show;
-  if(changed==='inductionRoute'||changed==='inductionAny')form.elements.maintenanceRoute.value=onlyRoute||'any';
-  if(form.elements.maintenanceRoute.selectedOptions[0]?.disabled)form.elements.maintenanceRoute.value=onlyRoute||'any';
-  if(!routes.length&&!any)form.elements.maintenanceRoute.value='any';
-  updateBurdenVisibility(routes,any,show);
+  if(changed==='inductionRoute')form.elements.maintenanceRoute.value=onlyRoute||'';
+  if(form.elements.maintenanceRoute.selectedOptions[0]?.disabled)form.elements.maintenanceRoute.value=onlyRoute||'';
+  if(!routes.length)form.elements.maintenanceRoute.value='';
+  updateBurdenVisibility(routes,false,show);
 }
 function conditional(changed){
   const f=data(),autoMenopause=f.sex==='female'&&['65-74','75+'].includes(f.ageGroup);
@@ -410,12 +407,8 @@ form.addEventListener('change',e=>{
   if(n==='lifeNone'&&e.target.checked)for(const x of ['menopause','pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
   if(['menopause','pregnancyPlan','pregnant','nursing'].includes(n)&&e.target.checked)form.elements.lifeNone.checked=false;
   if(n==='menopause'&&e.target.checked)for(const x of ['pregnancyPlan','pregnant','nursing'])form.elements[x].checked=false;
-  if(n==='optimizationNone'&&e.target.checked)for(const x of ['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch','applyHeadToHead'])form.elements[x].checked=false;
-  if(['secondaryLoss','optimizeSame','rescueOption','mechanismSwitch','applyHeadToHead'].includes(n)&&e.target.checked)form.elements.optimizationNone.checked=false;
   if(n==='mechanismSwitch'&&e.target.checked)for(const x of ['optimizeSame','rescueOption'])form.elements[x].checked=false;
   if(['optimizeSame','rescueOption'].includes(n)&&e.target.checked)form.elements.mechanismSwitch.checked=false;
-  if(n==='inductionAny'&&e.target.checked)form.querySelectorAll('input[name="inductionRoute"]').forEach(x=>x.checked=false);
-  if(n==='inductionRoute'&&e.target.checked)form.elements.inductionAny.checked=false;
   if(n==='usedDrug'){
     const reason=form.querySelector(`[data-reason-for="${e.target.value}"]`);
     reason.hidden=!e.target.checked;
@@ -473,7 +466,7 @@ function calculate(f){
       else add(0,'VDZ-CDST未計算：アルブミン・CRPを入力すると補助評価を表示できます');
     }
     if(inductionPreferences.length)inductionPreferences.some(route=>d.induction.includes(route))?add(2,'導入期に許容できる投与経路と一致'):add(-2,'導入期に許容できる投与経路と不一致');
-    if(f.maintenanceRoute!=='any')d.maintenance.includes(f.maintenanceRoute)?add(6,'維持期の希望投与経路と一致'):add(-4,'維持期の希望投与経路と不一致');
+    if(f.maintenanceRoute)d.maintenance.includes(f.maintenanceRoute)?add(6,'維持期の希望投与経路と一致'):add(-4,'維持期の希望投与経路と不一致');
     if(yes('infusionTime')&&d.induction.includes('iv'))add(1,'点滴時間を許容');
     if(yes('selfInjection')&&d.maintenance.includes('sc'))add(1,'自己注射が可能');
     if(yes('adherenceOk')&&d.maintenance.includes('oral'))add(1,'服薬管理に問題なし');
