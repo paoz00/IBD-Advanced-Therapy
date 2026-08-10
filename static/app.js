@@ -190,10 +190,77 @@ const comparisonTrialGroups={
   'SEQUENCE（CD）':['リサンキズマブ','ウステキヌマブ'],
   'STARDUST（CD）':['ウステキヌマブ（Treat-to-Target）','ウステキヌマブ（標準診療）']
 };
+const secondaryEndpointCatalog={
+  'ACT 1 / 2（UC）':['ACT 1 Week 8：臨床的寛解','粘膜治癒','ステロイドフリー臨床的寛解'],
+  'ACCENT I（CD）':['Week 30：臨床的寛解','Week 54：臨床的寛解','ステロイド中止を伴う臨床的寛解'],
+  'ACCENT II（瘻孔型CD）':['Week 54：完全瘻孔閉鎖','瘻孔反応の持続'],
+  'SONIC（CD）':['Week 26：粘膜治癒','臨床的反応','重篤な感染症'],
+  'UC-SUCCESS（UC）':['Week 16：粘膜治癒','臨床的反応'],
+  'ULTRA 2（UC）':['臨床的反応','粘膜治癒','ステロイドフリー寛解'],
+  'CLASSIC I（CD）':['Week 4臨床的反応（CDAI-70／CDAI-100）'],
+  'CHARM（CD）':['Week 56：臨床的寛解（隔週）','ステロイドフリー寛解','瘻孔寛解'],
+  'GEMINI 1（UC）':['Week 6：臨床的寛解','持続的臨床的反応','粘膜治癒','ステロイドフリー寛解'],
+  'VARSITY（UC）':['Week 52：内視鏡的改善','ステロイドフリー臨床的寛解'],
+  'GEMINI 2（CD）':['Week 52：臨床的寛解（q8w）','CDAI-100反応','ステロイドフリー寛解'],
+  'VERSIFY（CD）':['Week 52：内視鏡的寛解（サブ試験）','内視鏡的反応','組織学的治癒','画像的寛解'],
+  'UNIFI（UC）':['臨床的反応','内視鏡的改善','ステロイドフリー臨床的寛解'],
+  'UNITI-1（CD）':['Week 8臨床的寛解','Week 8臨床的反応'],
+  'UNITI-2（CD）':['Week 8臨床的寛解','Week 8臨床的反応'],
+  'IM-UNITI（CD）':['Week 44：臨床的寛解（90 mg q12w）','臨床的反応','ステロイドフリー寛解'],
+  'SEAVUE（CD）':['ステロイドフリー臨床的寛解','臨床的反応','内視鏡的寛解'],
+  'STARDUST（CD）':['Week 48：内視鏡的寛解（有意差なし）','Week 48：臨床的寛解','粘膜治癒','バイオマーカー寛解'],
+  'PURSUIT-SC / PURSUIT-J（UC）':['PURSUIT-SC Week 6：臨床的寛解','粘膜治癒','PURSUIT-J Week 54：臨床的寛解'],
+  'LUCENT-1 / LUCENT-2（UC）':['臨床的反応','内視鏡的改善','ステロイドフリー臨床的寛解','便意切迫感の改善'],
+  'LUCENT-3（UC）':['Week 152：内視鏡的寛解（Week 52 responder）','ステロイドフリー臨床的寛解','症状寛解'],
+  'VIVID-1・VIVID-2（CD）':['VIVID-1 Week 12反応＋Week 52内視鏡反応','内視鏡的寛解','ステロイドフリー臨床的寛解'],
+  'INSPIRE（UC）':['内視鏡的改善','臨床的反応','内視鏡的寛解'],
+  'COMMAND（UC）':['内視鏡的改善','ステロイドフリー臨床的寛解','症状寛解'],
+  'ADVANCE（CD）':['内視鏡的反応（600 mg）','臨床的反応','内視鏡的寛解'],
+  'MOTIVATE（CD）':['内視鏡的反応（600 mg）','臨床的反応','内視鏡的寛解'],
+  'FORTIFY（CD）':['内視鏡的反応（360 mg）','ステロイドフリー臨床的寛解','内視鏡的寛解'],
+  'SEQUENCE（CD）':['Week 48：内視鏡的寛解（優越性）','ステロイドフリー臨床的寛解','内視鏡的反応'],
+  'QUASAR（UC）':['臨床的反応','内視鏡的改善','ステロイドフリー臨床的寛解'],
+  'ASTRO（UC）':['Week 24：内視鏡的改善（200 mg q4w）','臨床的反応','内視鏡的寛解'],
+  'GALAXI 2 / 3（CD）':['内視鏡的反応（200 mg q4w）','内視鏡的寛解','ステロイドフリー臨床的寛解'],
+  'True North（UC）':['臨床的反応','内視鏡的改善','ステロイドフリー臨床的寛解'],
+  'ELEVATE UC 12（UC）':['内視鏡的改善','臨床的反応','症状寛解'],
+  'ELEVATE UC 52（UC）':['Week 52：臨床的寛解','内視鏡的改善','ステロイドフリー臨床的寛解'],
+  'OCTAVE Induction 1（UC）':['臨床的反応','粘膜治癒'],
+  'OCTAVE Induction 2（UC）':['臨床的反応','粘膜治癒'],
+  'OCTAVE Sustain（UC）':['粘膜治癒','持続的ステロイドフリー寛解'],
+  'SELECTION（UC）':['臨床的反応','内視鏡的改善','持続的ステロイドフリー寛解'],
+  'U-ACHIEVE Induction（UC）':['臨床的反応','内視鏡的改善','症状寛解'],
+  'U-ACCOMPLISH（UC）':['臨床的反応','内視鏡的改善','症状寛解'],
+  'U-ACHIEVE Maintenance（UC）':['内視鏡的改善','ステロイドフリー臨床的寛解','持続的臨床的寛解'],
+  'U-EXCEL / U-EXCEED（CD）':['U-EXCEL：内視鏡的反応','U-EXCEED：内視鏡的反応','ステロイドフリー臨床的寛解'],
+  'U-ENDURE（CD）':['内視鏡的反応（30 mg）','ステロイドフリー臨床的寛解','内視鏡的寛解']
+};
+const commonAdverseEventDomains=['全有害事象','重篤有害事象','重篤感染症','有害事象による治療中止'];
+const drugSpecificAdverseEventDomains={
+  IFX:['感染症','点滴時反応・過敏反応'],
+  ADA:['感染症','注射部位反応'],
+  GLM:['感染症','注射部位反応'],
+  VED:['感染症','点滴時反応','頭痛・関節痛'],
+  UST:['感染症','注射部位反応・過敏反応'],
+  RIS:['感染症','肝機能検査値異常','注射部位反応'],
+  MIRI:['感染症','注射部位反応','肝機能検査値異常'],
+  GUS:['感染症','注射部位反応','肝機能検査値異常'],
+  OZA:['徐脈・房室伝導遅延','肝機能検査値異常','リンパ球減少','黄斑浮腫'],
+  ETR:['徐脈・房室伝導遅延','肝機能検査値異常','リンパ球減少','黄斑浮腫'],
+  TOF:['重篤感染症・帯状疱疹','静脈血栓塞栓症','主要心血管イベント','悪性腫瘍・臨床検査値異常'],
+  FIL:['重篤感染症・帯状疱疹','静脈血栓塞栓症','主要心血管イベント','悪性腫瘍・臨床検査値異常'],
+  UPA:['重篤感染症・帯状疱疹','静脈血栓塞栓症','主要心血管イベント','悪性腫瘍・臨床検査値異常']
+};
+const verifiedTrialAdverseEvents={
+  'STARDUST（CD）':[{label:'鼻咽頭炎',value:'Treat-to-Target 13% ／ 標準診療 13%'},{label:'腹痛',value:'11% ／ 9%'},{label:'関節痛',value:'11% ／ 9%'},{label:'頭痛',value:'11% ／ 10%'}],
+  'GALAXI 2 / 3（CD）':[{label:'重篤有害事象',value:'GUS 200 mg群 7% ／ GUS 100 mg群 11% ／ UST群 12% ／プラセボ群 15%'},{label:'死亡',value:'報告なし'}],
+  'SEQUENCE（CD）':[{label:'CD悪化による治療中止',value:'リサンキズマブ 1.5% ／ ウステキヌマブ 3.4%'}]
+};
 Object.entries(evidence).forEach(([drugId,item])=>(item.studies||[item]).forEach(study=>{
   const [n,ci,p]=globalThis.primaryStatistics?.[study.trial]||['一次論文の主要解析集団を確認してください','一次論文で主要評価項目の95%CIを確認してください','一次論文で統計解析結果を確認してください'];
   const labels=explicitTrialLabels[study.trial];
-  Object.assign(study,{primaryN:n,primaryCI:ci,primaryP:p,activeLabel:labels?.[0]||drugTrialLabels[drugId]||study.activeLabel,controlLabel:labels?.[1]||study.controlLabel||'プラセボ',comparisonType:comparisonTrialTypes[study.trial]||'',comparisonGroups:comparisonTrialGroups[study.trial]||[]});
+  const safetyDomains=[...commonAdverseEventDomains,...(drugSpecificAdverseEventDomains[drugId]||[])];
+  Object.assign(study,{primaryN:n,primaryCI:ci,primaryP:p,activeLabel:labels?.[0]||drugTrialLabels[drugId]||study.activeLabel,controlLabel:labels?.[1]||study.controlLabel||'プラセボ',comparisonType:comparisonTrialTypes[study.trial]||'',comparisonGroups:comparisonTrialGroups[study.trial]||[],secondaryEndpoints:study.secondaryEndpoints||secondaryEndpointCatalog[study.trial]||[],adverseEvents:study.adverseEvents||verifiedTrialAdverseEvents[study.trial]||[],safetyDomains});
 }));
 
 const form=document.querySelector('#patientForm'),female=document.querySelector('#femaleSection'),pregnancy=document.querySelector('#pregnancyFields'),cd=document.querySelector('#cdGroup'),results=document.querySelector('#results'),usedRoot=document.querySelector('#usedDrugs');
@@ -612,11 +679,18 @@ function studyMethodology(study){
 function secondaryEndpointMarkup(study){
   const endpoints=study.secondaryEndpoints||[];
   if(!endpoints.length)return '<p class="trial-data-pending">検証済みの副次評価項目数値は未収載です。一次資料・補足資料を確認してください。</p>';
-  return `<div class="trial-outcome-list">${endpoints.map(item=>`<div><strong>${item.label}</strong><span>${study.activeLabel} ${item.active}%${item.control==null?'':` ／ ${study.controlLabel} ${item.control}%`}</span></div>`).join('')}</div>`;
+  return `<p class="trial-outcome-caption">代表的な副次評価項目です。階層検定、多重性調整、評価時点および解析集団は試験ごとに異なります。</p><div class="trial-outcome-list">${endpoints.map(entry=>{
+    const item=typeof entry==='string'?{label:entry}:entry;
+    const period=study.periods.find(([label])=>label===item.label);
+    const active=item.active??period?.[1],control=item.control??period?.[2];
+    const result=active==null?'結果数値・統計解析は一次資料を確認':`${study.activeLabel} ${active}%${control==null?'':` ／ ${study.controlLabel} ${control}%`}`;
+    return `<div><strong>${item.label}</strong><span>${item.value||result}</span></div>`;
+  }).join('')}</div>`;
 }
 function adverseEventMarkup(study){
-  if(study.adverseEvents?.length)return `<div class="trial-outcome-list adverse-list">${study.adverseEvents.map(item=>`<div><strong>${item.label}</strong><span>${item.value}</span></div>`).join('')}</div>`;
-  return '<p class="trial-data-pending">有害事象、重篤有害事象、重篤感染症および有害事象による中止を安全性解析集団で確認します。試験ごとの検証済み数値は現在収載準備中のため、一次資料の安全性結果を確認してください。</p>';
+  const verified=study.adverseEvents?.length?`<h4>収載済みの試験結果</h4><div class="trial-outcome-list adverse-list">${study.adverseEvents.map(item=>`<div><strong>${item.label}</strong><span>${item.value}</span></div>`).join('')}</div>`:'<p class="trial-data-pending">検証済みの発現割合は未収載です。一次資料の安全性解析を確認してください。</p>';
+  const domains=`<h4>安全性解析で確認する項目</h4><div class="safety-domain-list">${(study.safetyDomains||[]).map(label=>`<span>${label}</span>`).join('')}</div>`;
+  return `<p class="trial-outcome-caption">試験期間と安全性解析集団に基づく結果です。電子添文に記載された発現率や市販後のリスクとは区別してください。</p>${verified}${domains}`;
 }
 function renderStudy(ev,index=0){
   const studies=ev.studies||[ev],study=studies[index];
