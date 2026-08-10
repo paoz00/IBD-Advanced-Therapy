@@ -135,7 +135,7 @@ RIS:{studies:[
  ,{trial:'SEQUENCE（CD）',phase:'第3b相',phase3bH2H:true,headToHead:true,controlColor:'#7655a8',endpoint:'抗TNFα抗体不応・不耐例におけるRISとUSTの直接比較（%）',activeLabel:'RIS',controlLabel:'UST',periods:[['Week 24：臨床的寛解（非劣性）',58.6,39.5],['Week 48：内視鏡的寛解（優越性）',31.8,16.2]],secondaryEndpoints:[{label:'Week 48：内視鏡的寛解',active:31.8,control:16.2}],source:'https://www.nejm.org/doi/full/10.1056/NEJMoa2314585'}
 ]},
 GUS:{studies:[
- {trial:'QUASAR（UC）',endpoint:'静注導入・皮下注維持（%）',periods:[['導入 Week 12：臨床的寛解',23.0,8.0],['維持 Week 44：臨床的寛解（200 mg q4w）',50.0,18.9]],source:'https://pubmed.ncbi.nlm.nih.gov/38104586/'},
+ {trial:'QUASAR（UC）',endpoint:'静注導入・皮下注維持（%）',analysisPopulation:'導入：中等症～重症活動期UCの無作為化治療例701例（GUS 421例、プラセボ280例）。維持：GUS静注導入にWeek 12で臨床的反応を示した568例を再無作為化。',definition:'主要評価項目は導入Week 12および維持Week 44の臨床的寛解。modified Mayo scoreに基づく試験規定の定義を使用。',maintenanceDesign:'re-randomized responder型：GUS導入反応例を200 mg q4w、100 mg q8w、GUS中止プラセボへ1:1:1で再無作為化。維持期の割合を導入時全患者の寛解率として解釈しないでください。',imputation:'主要解析は試験規定の欠測・治療失敗ルールを適用。詳細は一次論文および統計解析計画を確認してください。',summary:'GUS 200 mg静注導入はWeek 12臨床的寛解でプラセボを上回りました。導入反応例では、100 mg q8wと200 mg q4wの両維持用量がGUS中止群を上回りましたが、2用量間の優越性を示す直接比較結果ではありません。',periods:[['導入 Week 12：臨床的寛解',23.0,8.0],['維持 Week 44：臨床的寛解（200 mg q4w）',50.0,19.0],['維持 Week 44：臨床的寛解（100 mg q8w）',45.0,19.0]],secondaryEndpoints:[{label:'導入 Week 12：臨床的反応',value:'GUS 61.5%（259/421）／プラセボ 27.9%（78/280）、調整群間差34%（95% CI 27–41）'},{label:'導入 Week 12：内視鏡的改善',value:'GUS 30%／プラセボ14%、調整群間差16%（95% CI 11–21）'},{label:'導入 Week 12：組織学的・内視鏡的粘膜改善',value:'GUS 23.5%（99/421）／プラセボ7.5%（21/280）、調整群間差16%（95% CI 11–21）'},{label:'導入 Week 12：内視鏡的寛解（正常化）',value:'GUS 15.0%（63/421）／プラセボ5.0%（14/280）、調整群間差10%（95% CI 6–14、検定階層上は名目P<0.0001）'},{label:'導入 Week 12：IBDQ寛解',value:'調整群間差22%（95% CI 15–29）'},{label:'導入 Week 12：疲労反応',value:'調整群間差20%（95% CI 13–26）'},{label:'導入 Week 12：症候性寛解',value:'調整群間差29%（95% CI 23–36）。Week 2は有意差なし（P=0.21）'},{label:'維持 Week 44：ステロイドフリー臨床的寛解',value:'GUS 100 mg q8w 45.2%（85/188）／200 mg q4w 48.9%（93/190）／GUS中止18.4%（35/190）'},{label:'維持 Week 44：臨床的寛解の維持',value:'GUS 100 mg q8w 60.6%（40/66）／200 mg q4w 72.5%（50/69）／GUS中止33.9%（20/59）'},{label:'維持 Week 44：臨床的反応の維持',value:'GUS 100 mg q8w 77.7%（146/188）／200 mg q4w 74.7%（142/190）／GUS中止43.2%（82/190）'},{label:'維持 Week 44：症候性寛解',value:'GUS 100 mg q8w 70.2%（132/188）／200 mg q4w 68.9%（131/190）／GUS中止37.4%（71/190）'},{label:'維持 Week 44：内視鏡的改善',value:'GUS 100 mg q8w 49.5%（93/188）／200 mg q4w 51.6%（98/190）／GUS中止18.9%（36/190）、両用量P<0.001'},{label:'維持 Week 44：組織学的・内視鏡的粘膜改善',value:'GUS 100 mg q8w 43.6%（82/188）／200 mg q4w 47.9%（91/190）／GUS中止16.8%（32/190）、両用量P<0.001'},{label:'維持 Week 44：内視鏡的寛解（正常化）',value:'GUS 100 mg q8w 34.6%（65/188）／200 mg q4w 33.7%（64/190）／GUS中止15.3%（29/190）、両用量P<0.001'},{label:'維持 Week 44：IBDQ寛解',value:'GUS 100 mg q8w 64.4%（121/188）／200 mg q4w 64.2%（122/190）／GUS中止37.4%（71/190）、両用量P<0.001'},{label:'維持 Week 44：疲労反応',value:'GUS 100 mg q8w 50.5%（95/188）／200 mg q4w 43.2%（82/190）／GUS中止29.5%（56/190）；P<0.001、P=0.009'}],adverseEvents:[{label:'導入期：全有害事象',value:'GUS 49%（208/421）／プラセボ49%（138/280）'},{label:'導入期：重篤有害事象',value:'GUS 3%（12/421）／プラセボ7%（20/280）'},{label:'導入期：有害事象による中止',value:'GUS 2%（7/421）／プラセボ4%（11/280）'},{label:'導入期：主な有害事象',value:'UC悪化、貧血、COVID-19（いずれかの群で5%以上）'},{label:'導入期：非黒色腫皮膚癌',value:'GUS 2例／プラセボ0例'},{label:'導入期：主要心血管イベント',value:'GUS 2例（死亡1例）／プラセボ2例（死亡2例）。死亡はいずれも治療関連とは判断されず'},{label:'維持期：全有害事象',value:'GUS 100 mg q8w 65%（120/186）／200 mg q4w 70%（133/190）／GUS中止68%（131/192）'},{label:'維持期：重篤有害事象',value:'GUS 100 mg q8w 3%（5/186）／200 mg q4w 6%（12/190）／GUS中止1%（1/192）'},{label:'維持期：有害事象による中止',value:'GUS 100 mg q8w 4%（7/186）／200 mg q4w 3%（5/190）／GUS中止7%（13/192）'},{label:'維持期：主な有害事象',value:'UC悪化、COVID-19、関節痛、頭痛、上気道感染'},{label:'維持期：悪性腫瘍',value:'非黒色腫皮膚癌2例（ともにGUS中止群）、その他の悪性腫瘍3例（GUS中止群2例、200 mg q4w群1例）'},{label:'維持期：主要心血管イベント・静脈血栓塞栓症',value:'200 mg q4w群で各1例（0.5%）。維持期の死亡報告なし'},{label:'特定の重要事象',value:'GUS投与例で活動性結核、アナフィラキシー、血清病、Hy\'s Lawまたは臨床的に重要な肝障害の報告なし'}],source:'https://pubmed.ncbi.nlm.nih.gov/39706209/',source2:'https://pmc.ncbi.nlm.nih.gov/articles/PMC11345979/',source3:'https://clinicaltrials.gov/study/NCT04033445?tab=results'},
  {trial:'ASTRO（UC）',endpoint:'皮下注導入・維持（%）',periods:[['Week 12：臨床的寛解',28.0,6.0],['Week 24：臨床的寛解（100 mg q8w）',35.3,9.4],['Week 24：臨床的寛解（200 mg q4w）',36.4,9.4],['Week 24：内視鏡的改善（200 mg q4w）',45.0,12.2]],source:'https://pubmed.ncbi.nlm.nih.gov/41544637/'},
  {trial:'GALAXI 2 / 3（CD）',headToHead:true,controlColor:'#7655a8',endpoint:'Week 48のGUSとUSTの直接比較（%）',activeLabel:'GUS',controlLabel:'UST',periods:[['臨床的寛解（200 mg q4w）',58.0,52.4],['内視鏡的反応（200 mg q4w）',51.3,30.8]],source:'https://pubmed.ncbi.nlm.nih.gov/40684778/'}
 ]},
@@ -256,11 +256,99 @@ const verifiedTrialAdverseEvents={
   'GALAXI 2 / 3（CD）':[{label:'重篤有害事象',value:'GUS 200 mg群 7% ／ GUS 100 mg群 11% ／ UST群 12% ／プラセボ群 15%'},{label:'死亡',value:'報告なし'}],
   'SEQUENCE（CD）':[{label:'CD悪化による治療中止',value:'リサンキズマブ 1.5% ／ ウステキヌマブ 3.4%'}]
 };
+const trialSupplementalEvidence={
+  'ULTRA 2（UC）':{
+    secondaryEndpoints:[{label:'Week 52：Week 8反応例の臨床的寛解',value:'ADA 30.9%（Week 8反応例123例）'},{label:'Week 52：Week 8反応例の臨床的反応',value:'ADA 49.6%'},{label:'Week 52：Week 8反応例の粘膜治癒',value:'ADA 43.1%'},{label:'Week 52：ステロイドフリー寛解',value:'ベースライン時ステロイド使用かつWeek 8反応例の21.1%'}],
+    adverseEvents:[{label:'重篤有害事象',value:'ADA 12%／プラセボ12%'},{label:'重篤感染症',value:'ADA 1.6%／プラセボ1.9%'},{label:'悪性腫瘍',value:'ADA群で扁平上皮癌1例、胃癌1例'}],
+    source2:'https://pubmed.ncbi.nlm.nih.gov/23173821/'
+  },
+  'UNIFI（UC）':{
+    secondaryEndpoints:[{label:'導入期：臨床的反応・内視鏡的改善',value:'いずれもUST群がプラセボ群を上回った（多重性調整済み解析は一次論文参照）'},{label:'維持期：ステロイドフリー臨床的寛解・反応維持',value:'UST q8w・q12wの両群で評価'},{label:'長期継続 Week 92：症候性寛解',value:'UST q12w 64.5%／q8w 67.6%（当初の維持期無作為化集団）'}],
+    adverseEvents:[{label:'長期継続 Week 44–96：全有害事象',value:'UST 255.68／プラセボ267.93（100人年当たり）'},{label:'重篤有害事象',value:'UST 9.34／プラセボ12.69（100人年当たり）'},{label:'重篤感染症',value:'UST 2.33／プラセボ2.99（100人年当たり）'},{label:'悪性腫瘍（非黒色腫皮膚癌を含む）',value:'UST 0.93／プラセボ1.49（100人年当たり）'}],
+    source2:'https://pubmed.ncbi.nlm.nih.gov/33086438/'
+  },
+  'LUCENT-1 / LUCENT-2（UC）':{
+    secondaryEndpoints:[{label:'導入期：臨床的反応',value:'MIRI群がプラセボ群を上回った（P<0.001）'},{label:'導入期：内視鏡的寛解・組織学的内視鏡的粘膜改善',value:'MIRI群がプラセボ群を上回った（P<0.001）'},{label:'導入期：Week 4・12症状寛解',value:'MIRI群がプラセボ群を上回った（P<0.001）'},{label:'便意切迫感の改善',value:'MIRI群がプラセボ群を上回った（P<0.001）'}],
+    adverseEvents:[{label:'導入期：重篤有害事象（UC悪化を除く）',value:'MIRI 2.2%／プラセボ2.1%'},{label:'維持期：重篤有害事象（UC悪化を除く）',value:'MIRI 5.2%／プラセボ3.3%'},{label:'重要な注意',value:'肝機能異常、感染症、注射部位反応などは最新の電子添文も確認'}],
+    source2:'https://clinicaltrials.gov/study/NCT03518086?tab=results'
+  },
+  'INSPIRE（UC）':{
+    secondaryEndpoints:[{label:'Week 12：臨床的反応',value:'RIS群がプラセボ群を上回った'},{label:'Week 12：内視鏡的改善・内視鏡的寛解',value:'RIS群がプラセボ群を上回った'},{label:'Week 12：組織学的内視鏡的粘膜改善',value:'RIS群がプラセボ群を上回った'}],
+    adverseEvents:[{label:'安全性解析',value:'12週間の治療下有害事象、重篤有害事象、感染症および肝関連検査値を評価。詳細はJAMA本文・補足表7–10を参照'}],
+    source2:'https://jamanetwork.com/journals/jama/fullarticle/2821291'
+  },
+  'COMMAND（UC）':{
+    secondaryEndpoints:[{label:'Week 52：臨床的反応・内視鏡的改善',value:'RIS 180 mg q8wおよび360 mg q8wについて評価'},{label:'Week 52：ステロイドフリー臨床的寛解',value:'導入反応例の再ランダム化集団で評価'},{label:'Week 52：組織学的内視鏡的粘膜改善',value:'両維持用量について評価'}],
+    adverseEvents:[{label:'安全性解析',value:'維持52週間の曝露調整発現率、重篤有害事象、感染症、肝関連検査値を評価。詳細はJAMA本文・補足表7–10を参照'}],
+    source2:'https://jamanetwork.com/journals/jama/fullarticle/2821291'
+  },
+  'True North（UC）':{
+    secondaryEndpoints:[{label:'臨床的反応',value:'Week 10・52ともOZA群がプラセボ群を上回った'},{label:'内視鏡的改善・組織学的内視鏡的粘膜改善',value:'Week 10・52で評価し、主要な副次評価項目はOZA群が上回った'},{label:'ステロイドフリー臨床的寛解',value:'維持Week 52で評価'}],
+    adverseEvents:[{label:'注目すべき安全性項目',value:'徐脈・伝導障害、黄斑浮腫、感染症、肝機能、肺機能、悪性腫瘍を評価'},{label:'死亡',value:'非盲検コホートで1例（虚血性心筋症・喫煙歴を有し、インフルエンザとARDSを発症）'}],
+    source2:'https://clinicaltrials.gov/study/NCT02435992?tab=results'
+  },
+  'ELEVATE UC 12（UC）':{
+    secondaryEndpoints:[{label:'Week 12：内視鏡的改善',value:'ETR 30.6%／プラセボ18.8%、群間差12.1%（95% CI 3.0–21.2、P=0.009）'},{label:'Week 12：IBDQ総スコア変化',value:'ETR 45.5／プラセボ30.4、群間差17.3（95% CI 8.5–26.2、P<0.001）'}],
+    adverseEvents:[{label:'全治療下有害事象',value:'ETR 47.1%／プラセボ46.6%'},{label:'重篤有害事象',value:'ETR 2.5%／プラセボ1.7%'},{label:'有害事象による中止',value:'ETR 5.5%／プラセボ0.9%'},{label:'主な有害事象',value:'貧血5.9%／6.9%、頭痛4.6%／1.7%、悪心4.2%／1.7%'},{label:'死亡',value:'報告なし'}],
+    source2:'https://www.ncbi.nlm.nih.gov/books/NBK611318/'
+  },
+  'ELEVATE UC 52（UC）':{
+    secondaryEndpoints:[{label:'Week 52：IBDQ総スコア変化',value:'ETR 66.6／プラセボ52.5、群間差17.7（95% CI 6.6–28.8、P=0.002）'},{label:'内視鏡的改善・症候性寛解・組織学的寛解',value:'Week 12および52で評価'}],
+    adverseEvents:[{label:'全治療下有害事象',value:'ETR 71.3%／プラセボ56.3%'},{label:'重篤有害事象',value:'ETR 6.9%／プラセボ6.3%'},{label:'有害事象による中止',value:'ETR 4.2%／プラセボ4.9%'},{label:'主な有害事象',value:'貧血8.3%／9.7%、頭痛8.3%／4.9%、UC悪化7.6%／9.0%、COVID-19 6.9%／6.3%'},{label:'注目すべき事象',value:'心血管イベント4.2%／0%、黄斑浮腫ETR群1例（0.3%）'},{label:'死亡',value:'報告なし'}],
+    source2:'https://www.ncbi.nlm.nih.gov/books/NBK611318/'
+  },
+  'OCTAVE Induction 1（UC）':{
+    secondaryEndpoints:[{label:'Week 8：臨床的反応',value:'TOF 10 mg 1日2回群とプラセボ群で比較'},{label:'Week 8：粘膜治癒',value:'Mayo内視鏡サブスコア0または1で評価'}],
+    adverseEvents:[{label:'重篤有害事象',value:'TOF 3.4%／プラセボ4.1%'},{label:'注目すべき事象',value:'感染症・帯状疱疹、脂質・肝機能・血球数、悪性腫瘍、心血管・血栓塞栓症は電子添文も確認'}],
+    source2:'https://www.ncbi.nlm.nih.gov/books/NBK572265/'
+  },
+  'OCTAVE Induction 2（UC）':{
+    secondaryEndpoints:[{label:'Week 8：臨床的反応',value:'TOF 10 mg 1日2回群とプラセボ群で比較'},{label:'Week 8：粘膜治癒',value:'Mayo内視鏡サブスコア0または1で評価'}],
+    adverseEvents:[{label:'重篤有害事象',value:'TOF 4.2%／プラセボ8.0%'},{label:'注目すべき事象',value:'感染症・帯状疱疹、脂質・肝機能・血球数、悪性腫瘍、心血管・血栓塞栓症は電子添文も確認'}],
+    source2:'https://www.ncbi.nlm.nih.gov/books/NBK572265/'
+  },
+  'OCTAVE Sustain（UC）':{
+    secondaryEndpoints:[{label:'Week 52：粘膜治癒',value:'TOF 5 mg・10 mg 1日2回の各群とプラセボ群で評価'},{label:'持続的ステロイドフリー寛解',value:'維持期の階層化された副次評価項目として評価'}],
+    adverseEvents:[{label:'重篤有害事象',value:'TOF 5 mg 5.1%／10 mg 5.6%／プラセボ6.6%'},{label:'UC悪化',value:'TOF 5 mg 1.0%／10 mg 0.5%／プラセボ4.0%'},{label:'帯状疱疹',value:'報告例はいずれも重篤ではなく、治療中止に至らず'}],
+    source2:'https://www.ncbi.nlm.nih.gov/books/NBK572265/'
+  },
+  'SELECTION（UC）':{
+    secondaryEndpoints:[{label:'臨床的反応・内視鏡的改善',value:'導入Week 10および維持Week 58で評価'},{label:'持続的ステロイドフリー臨床的寛解',value:'維持試験の主要な副次評価項目として評価'}],
+    adverseEvents:[{label:'全有害事象・重篤有害事象・中止',value:'維持期の各群で概ね同程度'},{label:'重篤感染症',value:'FIL投与例で2%未満'},{label:'帯状疱疹',value:'FIL投与例で1%未満'},{label:'重要な注意',value:'感染症、血栓塞栓症、心血管イベント、悪性腫瘍、血球・肝腎機能は電子添文も確認'}],
+    source2:'https://pmc.ncbi.nlm.nih.gov/articles/PMC7958748/'
+  },
+  'U-ACHIEVE Induction（UC）':{
+    secondaryEndpoints:[{label:'Week 2：早期臨床的反応',value:'統合解析でUPA 60%／プラセボ27%'},{label:'Week 8：内視鏡的改善・症候性寛解',value:'UPA群がプラセボ群を上回った'}],
+    adverseEvents:[{label:'重篤有害事象',value:'UPA 2.5%／プラセボ5.8%'},{label:'JAK阻害薬関連事象',value:'重篤感染症、帯状疱疹、血球減少、CK上昇、心血管・血栓塞栓症を評価'}],
+    source2:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10007976/'
+  },
+  'U-ACCOMPLISH（UC）':{
+    secondaryEndpoints:[{label:'Week 2：早期臨床的反応',value:'統合解析でUPA 60%／プラセボ27%'},{label:'Week 8：内視鏡的改善・症候性寛解',value:'UPA群がプラセボ群を上回った'}],
+    adverseEvents:[{label:'重篤有害事象',value:'UPA 3.2%／プラセボ4.5%'},{label:'JAK阻害薬関連事象',value:'重篤感染症、帯状疱疹、血球減少、CK上昇、心血管・血栓塞栓症を評価'}],
+    source2:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10007976/'
+  },
+  'U-ACHIEVE Maintenance（UC）':{
+    secondaryEndpoints:[{label:'Week 52：内視鏡的改善・内視鏡的寛解',value:'UPA 15 mg・30 mgの各群とプラセボ群で評価'},{label:'Week 52：ステロイドフリー・持続的臨床的寛解',value:'両維持用量で評価'}],
+    adverseEvents:[{label:'重篤有害事象',value:'UPA 15 mg 6.8%／30 mg 5.8%／プラセボ12.8%'},{label:'非黒色腫皮膚癌',value:'UPA 30 mg群で2例、他群では報告なし'},{label:'JAK阻害薬関連事象',value:'重篤感染症、帯状疱疹、悪性腫瘍、主要心血管イベント、静脈血栓塞栓症を評価'}],
+    source2:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10007976/'
+  },
+  'U-EXCEL / U-EXCEED（CD）':{
+    secondaryEndpoints:[{label:'ステロイドフリー臨床的寛解',value:'導入期の強制ステロイド漸減下で評価'},{label:'深い寛解・QOL・バイオマーカー',value:'臨床、内視鏡、IBDQ、CRP、便中カルプロテクチンを評価'}],
+    adverseEvents:[{label:'U-EXCEL：主な有害事象',value:'ざ瘡6.9%、貧血6.3%（UPA 45 mg群）'},{label:'U-EXCEED：主な有害事象',value:'鼻咽頭炎7.1%、頭痛6.2%、CD悪化5.9%、上気道感染5.2%（UPA 45 mg群）'},{label:'JAK阻害薬関連事象',value:'重篤・日和見感染症、貧血、好中球減少、CK上昇がプラセボより多く観察'}],
+    source2:'https://www.nejm.org/doi/full/10.1056/NEJMoa2212728'
+  },
+  'U-ENDURE（CD）':{
+    secondaryEndpoints:[{label:'Week 52：深い寛解',value:'CDAI臨床的寛解と内視鏡的寛解の両方で評価'},{label:'臨床的寛解維持・ステロイドフリー寛解',value:'導入反応例の再ランダム化集団で評価'}],
+    adverseEvents:[{label:'CD悪化（100人年当たり）',value:'UPA 15 mg 29.7／30 mg 12.0／プラセボ58.0'},{label:'JAK阻害薬関連事象',value:'重篤・日和見感染症、貧血、好中球減少、CK上昇、悪性腫瘍、心血管・血栓塞栓症を評価'}],
+    source2:'https://www.nejm.org/doi/full/10.1056/NEJMoa2212728'
+  }
+};
 Object.entries(evidence).forEach(([drugId,item])=>(item.studies||[item]).forEach(study=>{
   const [n,ci,p]=globalThis.primaryStatistics?.[study.trial]||['一次論文の主要解析集団を確認してください','一次論文で主要評価項目の95%CIを確認してください','一次論文で統計解析結果を確認してください'];
   const labels=explicitTrialLabels[study.trial];
   const safetyDomains=[...commonAdverseEventDomains,...(drugSpecificAdverseEventDomains[drugId]||[])];
-  Object.assign(study,{primaryN:n,primaryCI:ci,primaryP:p,activeLabel:labels?.[0]||drugTrialLabels[drugId]||study.activeLabel,controlLabel:labels?.[1]||study.controlLabel||'プラセボ',comparisonType:comparisonTrialTypes[study.trial]||'',comparisonGroups:comparisonTrialGroups[study.trial]||[],secondaryEndpoints:study.secondaryEndpoints||secondaryEndpointCatalog[study.trial]||[],adverseEvents:study.adverseEvents||verifiedTrialAdverseEvents[study.trial]||[],safetyDomains});
+  const supplemental=trialSupplementalEvidence[study.trial]||{};
+  Object.assign(study,{primaryN:n,primaryCI:ci,primaryP:p,activeLabel:labels?.[0]||drugTrialLabels[drugId]||study.activeLabel,controlLabel:labels?.[1]||study.controlLabel||'プラセボ',comparisonType:comparisonTrialTypes[study.trial]||'',comparisonGroups:comparisonTrialGroups[study.trial]||[],secondaryEndpoints:study.secondaryEndpoints||supplemental.secondaryEndpoints||secondaryEndpointCatalog[study.trial]||[],adverseEvents:study.adverseEvents||supplemental.adverseEvents||verifiedTrialAdverseEvents[study.trial]||[],safetyDomains,source2:study.source2||supplemental.source2,source3:study.source3||supplemental.source3});
 }));
 
 const form=document.querySelector('#patientForm'),female=document.querySelector('#femaleSection'),pregnancy=document.querySelector('#pregnancyFields'),cd=document.querySelector('#cdGroup'),results=document.querySelector('#results'),usedRoot=document.querySelector('#usedDrugs');
@@ -684,7 +772,20 @@ function secondaryEndpointMarkup(study){
     const period=study.periods.find(([label])=>label===item.label);
     const active=item.active??period?.[1],control=item.control??period?.[2];
     const result=active==null?'結果数値・統計解析は一次資料を確認':`${study.activeLabel} ${active}%${control==null?'':` ／ ${study.controlLabel} ${control}%`}`;
-    return `<div><strong>${item.label}</strong><span>${item.value||result}</span></div>`;
+    const value=item.value||result;
+    const groups=[];
+    if(active!=null){
+      groups.push({label:study.activeLabel,value:Number(active)});
+      if(control!=null)groups.push({label:study.controlLabel,value:Number(control)});
+    }else if(item.value){
+      const resultPart=item.value.split(/[、；]/)[0];
+      resultPart.split('／').forEach(part=>{
+        const match=part.match(/^(.+?)\s+(\d+(?:\.\d+)?)%/);
+        if(match)groups.push({label:match[1].trim(),value:Number(match[2])});
+      });
+    }
+    const graph=groups.length>=1?`<div class="secondary-chart" role="img" aria-label="${item.label}の比較グラフ">${groups.map((group,i)=>`<div class="secondary-bar group-${i+1}"><span>${group.label} ${group.value}%</span><i style="width:${Math.min(100,Math.max(0,group.value))}%"></i></div>`).join('')}</div>`:'';
+    return `<div class="secondary-outcome"><strong>${item.label}</strong>${graph}<span>${value}</span></div>`;
   }).join('')}</div>`;
 }
 function adverseEventMarkup(study){
@@ -696,7 +797,11 @@ function renderStudy(ev,index=0){
   const studies=ev.studies||[ev],study=studies[index];
   const method=studyMethodology(study);
   const comparison=study.comparisonType?`<div class="trial-comparison"><span>${study.comparisonType}</span>${study.comparisonGroups.map((group,i)=>`${i?'<b>vs</b>':''}<strong>${group}</strong>`).join('')}</div>`:'';
-  detail.innerHTML=`<span class="eyebrow">CLINICAL TRIAL</span>${study.phase?`<span class="phase-badge">${study.phase}試験</span>`:''}${study.headToHead?'<span class="h2h-badge">HEAD-TO-HEAD 直接比較試験</span>':''}${studies.length>1?`<div class="study-tabs">${studies.map((s,i)=>`<button type="button" data-study="${i}" class="${i===index?'active':''}">${s.phase?`${s.phase}｜`:''}${s.comparisonType?`${s.trial}｜${s.comparisonGroups.join(' vs ')}`:s.trial}</button>`).join('')}</div>`:''}<h2>${study.trial}</h2>${comparison}<p>${study.endpoint}</p><div class="trial-method"><dl><div><dt>解析集団</dt><dd>${method.analysis}</dd></div><div><dt>評価項目の定義</dt><dd>${method.definition}</dd></div><div><dt>維持試験デザイン</dt><dd>${method.maintenance}</dd></div><div><dt>欠測値・未補完法</dt><dd>${method.imputation}</dd></div></dl></div><div class="primary-statistics"><strong>主要評価項目の統計情報</strong><dl><div><dt>症例数・解析集団</dt><dd>${study.primaryN}</dd></div><div><dt>95%信頼区間</dt><dd>${study.primaryCI}</dd></div><div><dt>統計学的有意差</dt><dd>${study.primaryP}</dd></div></dl></div>${study.periods.map(([label,active,control])=>`<div class="chart"><b>${label}</b><div class="barrow"><span>${study.activeLabel} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control${study.headToHead?' h2h-control':''}"${study.headToHead?` style="--control-color:${study.controlColor}"`:''}><span>${study.controlLabel} ${control}%</span><i style="width:${control}%"></i></div>`}</div>`).join('')}<details class="trial-outcomes"><summary>副次評価項目を見る</summary>${secondaryEndpointMarkup(study)}</details><details class="trial-outcomes adverse-outcomes"><summary>有害事象を見る</summary>${adverseEventMarkup(study)}</details><p class="trial-note">主要評価項目と副次評価項目では解析方法・多重性調整が異なる場合があります。有害事象は有効性の解析集団や評価期間と異なる場合があります。導入試験と、導入反応例だけを再ランダム化した維持試験では分母も異なるため、数値を同列に比較せず、一次文献・補足資料も確認してください。</p><a href="${study.source}" target="_blank" rel="noopener">一次資料を開く</a>${study.source2?`　<a href="${study.source2}" target="_blank" rel="noopener">関連試験資料を開く</a>`:''}`;
+  const summary=study.summary?`<div class="trial-summary"><strong>試験要約</strong><p>${study.summary}</p></div>`:'';
+  const primarySourceName=study.sourceName||`${study.trial} 一次論文`;
+  const relatedSourceName=study.source2Name||`${study.trial} 関連論文・補足資料`;
+  const registrySourceName=study.source3Name||`${study.trial} ClinicalTrials.gov結果登録`;
+  detail.innerHTML=`<span class="eyebrow">CLINICAL TRIAL</span>${study.phase?`<span class="phase-badge">${study.phase}試験</span>`:''}${study.headToHead?'<span class="h2h-badge">HEAD-TO-HEAD 直接比較試験</span>':''}${studies.length>1?`<div class="study-tabs">${studies.map((s,i)=>`<button type="button" data-study="${i}" class="${i===index?'active':''}">${s.phase?`${s.phase}｜`:''}${s.comparisonType?`${s.trial}｜${s.comparisonGroups.join(' vs ')}`:s.trial}</button>`).join('')}</div>`:''}<h2>${study.trial}</h2>${comparison}<p>${study.endpoint}</p>${summary}<div class="trial-method"><dl><div><dt>解析集団</dt><dd>${method.analysis}</dd></div><div><dt>評価項目の定義</dt><dd>${method.definition}</dd></div><div><dt>維持試験デザイン</dt><dd>${method.maintenance}</dd></div><div><dt>欠測値・未補完法</dt><dd>${method.imputation}</dd></div></dl></div><div class="primary-statistics"><strong>主要評価項目の統計情報</strong><dl><div><dt>症例数・解析集団</dt><dd>${study.primaryN}</dd></div><div><dt>95%信頼区間</dt><dd>${study.primaryCI}</dd></div><div><dt>統計学的有意差</dt><dd>${study.primaryP}</dd></div></dl></div>${study.periods.map(([label,active,control])=>`<div class="chart"><b>${label}</b><div class="barrow"><span>${study.activeLabel} ${active}%</span><i style="width:${active}%"></i></div>${control==null?'':`<div class="barrow control${study.headToHead?' h2h-control':''}"${study.headToHead?` style="--control-color:${study.controlColor}"`:''}><span>${study.controlLabel} ${control}%</span><i style="width:${control}%"></i></div>`}</div>`).join('')}<details class="trial-outcomes"><summary>副次評価項目を見る</summary>${secondaryEndpointMarkup(study)}</details><details class="trial-outcomes adverse-outcomes"><summary>有害事象を見る</summary>${adverseEventMarkup(study)}</details><p class="trial-note">主要評価項目と副次評価項目では解析方法・多重性調整が異なる場合があります。有害事象は有効性の解析集団や評価期間と異なる場合があります。導入試験と、導入反応例だけを再ランダム化した維持試験では分母も異なるため、数値を同列に比較せず、一次文献・補足資料も確認してください。</p><div class="trial-sources"><strong>出典</strong><a href="${study.source}" target="_blank" rel="noopener">${primarySourceName}</a>${study.source2?`<a href="${study.source2}" target="_blank" rel="noopener">${relatedSourceName}</a>`:''}${study.source3?`<a href="${study.source3}" target="_blank" rel="noopener">${registrySourceName}</a>`:''}</div>`;
   detail.querySelectorAll('[data-study]').forEach(button=>button.addEventListener('click',()=>renderStudy(ev,Number(button.dataset.study))));
 }
 trialRoot.addEventListener('click',e=>{
@@ -732,7 +837,7 @@ function renderReferenceLibrary(){
   for(const d of drugs){
     const studies=evidence[d.id]?.studies||[evidence[d.id]];
     for(const study of studies.filter(Boolean)){
-      for(const [url,label] of [[study.source,'一次文献'],[study.source2,'関連資料']]){
+      for(const [url,label] of [[study.source,study.sourceName||`${study.trial} 一次論文`],[study.source2,study.source2Name||`${study.trial} 関連論文・補足資料`],[study.source3,study.source3Name||`${study.trial} ClinicalTrials.gov結果登録`]]){
         if(!url||seen.has(url))continue;
         seen.add(url);
         items.push({drug:d.name,trial:study.trial,label,url});

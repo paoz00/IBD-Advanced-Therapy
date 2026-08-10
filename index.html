@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.4.2</title>
-<link rel="stylesheet" href="app/globals.css?v=4.4.2">
-<link rel="stylesheet" href="static/style.css?v=4.4.2">
+<title>IBD先進治療 選択支援 Ver.4.4.3</title>
+<link rel="stylesheet" href="app/globals.css?v=4.4.3">
+<link rel="stylesheet" href="static/style.css?v=4.4.3">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -19,7 +19,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.4.2 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.4.3 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -303,7 +303,15 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.4.2</strong><span>全試験の副次評価項目・安全性表示を拡充</span></summary><ul>
+<details open><summary><strong>Ver.4.4.3</strong><span>臨床試験の副次評価項目・安全性・出典表示を拡充</span></summary><ul>
+<li>QUASAR（UC）の導入・維持試験について、副次評価項目と有害事象の実数を補完</li>
+<li>主要臨床試験に関連論文・補足資料・ClinicalTrials.gov結果登録を追加</li>
+<li>ULTRA 2、UNIFI、LUCENT、INSPIRE／COMMAND、True North、ELEVATE、OCTAVE、SELECTION、UPA関連試験の副次評価項目と安全性情報を拡充</li>
+<li>文献リンクを「一次資料を開く」から、試験名を含む出典名表示へ変更</li>
+<li>数値を確認できる副次評価項目を横棒グラフ化し、2群・3群比較に対応</li>
+<li>95%信頼区間・P値・解析上の注意事項はグラフ下に併記</li>
+</ul></details>
+<details><summary><strong>Ver.4.4.2</strong><span>全試験の副次評価項目・安全性表示を拡充</span></summary><ul>
 <li>全43試験に試験別の代表的な副次評価項目を追加</li>
 <li>検証済み数値がある副次評価項目は薬剤名・比較群名・割合を表示</li>
 <li>数値未確認の項目は推測せず、一次資料での確認が必要と明示</li>
@@ -496,12 +504,12 @@
 </div>
 </section>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.4.2</strong>
+<strong>IBD先進治療 選択支援 Ver.4.4.3</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/primary-stats.js?v=4.4.2" charset="utf-8"></script>
-<script src="static/app.js?v=4.4.2" charset="utf-8">
+<script src="static/primary-stats.js?v=4.4.3" charset="utf-8"></script>
+<script src="static/app.js?v=4.4.3" charset="utf-8">
 </script>
 </body>
 </html>
