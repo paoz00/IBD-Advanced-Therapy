@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IBD先進治療 選択支援 Ver.4.3.3</title>
-<link rel="stylesheet" href="app/globals.css?v=4.3.3">
-<link rel="stylesheet" href="static/style.css?v=4.3.3">
+<title>IBD先進治療 選択支援 Ver.4.4.0</title>
+<link rel="stylesheet" href="app/globals.css?v=4.4.0">
+<link rel="stylesheet" href="static/style.css?v=4.4.0">
 </head>
 <body>
 <div id="toast" role="alert" aria-live="assertive" hidden>
@@ -19,7 +19,7 @@
 <div class="hero-disclaimer">本ツールは医療従事者による治療候補の整理を支援するもので、診断、処方、禁忌判定または最新の電子添文・診療ガイドラインの確認を代替しません。表示順位は独自ルールによる適合度であり、薬剤間の有効性・安全性の優劣を直接示すものではありません。</div>
 <div class="hero-actions">
 <button type="button" id="methodButton" class="method-button" aria-haspopup="dialog">評価ロジック・参考文献</button>
-<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.3.3 <span aria-hidden="true">›</span></button>
+<button type="button" id="versionButton" class="version" aria-haspopup="dialog">Version 4.4.0 <span aria-hidden="true">›</span></button>
 </div>
 </header>
 <form id="patientForm" novalidate>
@@ -243,6 +243,7 @@
 <div class="preference-block">
 <h4>効果減弱時の治療最適化</h4>
 <div class="checks" id="optimizationChecks"></div>
+<p class="hint h2h-score-note">第3b相Head-to-Head試験だけを採点対象とします。統計学的な優越性が示され、対象集団が合う比較対象薬だけを−4点とします。第3相試験、未比較薬、有意差のない比較、非劣性のみの比較には適用しません。</p>
 </div>
 <div class="preference-block" id="burdenBlock" hidden>
 <h4>許容できる投与負担</h4>
@@ -303,7 +304,16 @@
 <span class="eyebrow">VERSION HISTORY</span>
 <h2 id="versionDialogTitle">変更履歴</h2>
 <div class="version-history">
-<details open><summary><strong>Ver.4.3.3</strong><span>投与経路・治療最適化を最初から選択可能に変更</span></summary><ul>
+<details open><summary><strong>Ver.4.4.0</strong><span>第3b相試験・臨床試験詳細・任意採点を拡張</span></summary><ul>
+<li>主要臨床試験に副次評価項目と有害事象の独立表示欄を追加</li>
+<li>グラフの実薬・対照という一般表記を、薬剤名・プラセボ・比較戦略名へ変更</li>
+<li>Head-to-Head試験と併用比較で、すべての比較群名を試験名直下と切替タブへ表示</li>
+<li>第3b相試験としてVERSIFY、STARDUST、SEQUENCEを追加し、VARSITY・SEAVUEにも第3b相表示を追加</li>
+<li>「第3b相Head-to-Head試験の結果を適合度に反映する」を追加し、初期状態はオフに設定</li>
+<li>チェック時はUCのVARSITYでADAを−4点、CDの抗TNFα抗体不応・不耐例ではSEQUENCEでUSTを−4点</li>
+<li>有意差のないSEAVUE、第3相のGALAXI 2/3、単群・治療戦略比較、対象集団が異なる場合は採点対象外</li>
+</ul></details>
+<details><summary><strong>Ver.4.3.3</strong><span>投与経路・治療最適化を最初から選択可能に変更</span></summary><ul>
 <li>Advanced Therapy使用歴がなくても投与経路の希望を最初から選択可能に変更</li>
 <li>増量・間隔短縮と追加導入・再導入の希望を最初から選択可能に変更</li>
 <li>二次無効・効果減弱歴と作用機序変更の希望は、Advanced Therapy使用歴がある場合だけ表示</li>
@@ -430,7 +440,9 @@
 <details open><summary>適合度評価の基本構造</summary><ul>
 <li>候補薬は70点から開始し、患者背景、既治療、投与希望、安全性などを加減します。</li>
 <li>同点は競技順位方式で表示します。要専門的判断・選択対象外候補には順位を付けません。</li>
-<li>Head-to-Head試験は比較された2剤間の参考情報とし、未比較薬を含む全体順位への固定加点には使用しません。</li>
+<li>Head-to-Head試験は初期状態では参考情報のみです。「第3b相Head-to-Head試験の結果を適合度に反映する」を選んだ場合だけ、統計学的な優越性が示された直接比較の対象薬を−4点とします。</li>
+<li>UCではVARSITYのADA、CDでは抗TNFα抗体不応・不耐例に限りSEQUENCEのUSTを減点します。SEAVUEは有意差がないため減点しません。</li>
+<li>第3相のGALAXI 2/3、未比較薬、非劣性のみの比較は採点対象外です。</li>
 <li>現在の重篤感染症、活動性結核、緊急合併症、ASUC、CMV腸炎の疑い・確認例では適合度順を停止します。</li>
 </ul></details>
 <details><summary>主な加点・減点ルール</summary>
@@ -439,6 +451,7 @@
 <div><b>同一作用機序の一次無効歴</b><span>−6</span></div><div><b>一次無効後の作用機序変更</b><span>+3</span></div>
 <div><b>肛門病変・瘻孔（CD）</b><span>IFX +12</span></div><div><b>VDZ-CDST</b><span>高 +8／中間 +3／低 −5</span></div>
 <div><b>維持期の希望投与経路</b><span>一致 +6／不一致 −4</span></div><div><b>内服アドヒアランス懸念</b><span>内服薬 −8</span></div>
+<div><b>第3b相Head-to-Head反映（任意）</b><span>対象集団に合う比較対象薬 −4</span></div>
 <div><b>悪性腫瘍既往</b><span>VDZ +10／UST +8／IL-23p19 +4／JAK −12</span></div><div><b>血栓塞栓症リスク</b><span>JAK −15</span></div>
 </div>
 <p class="logic-note">主な項目の要約です。各薬剤カードの「適合度の内訳」には実際に適用された全項目を表示します。禁忌可能性・緊急条件は点数とは別に判定します。</p>
@@ -469,12 +482,12 @@
 </div>
 </section>
 <footer>
-<strong>IBD先進治療 選択支援 Ver.4.3.3</strong>
+<strong>IBD先進治療 選択支援 Ver.4.4.0</strong>
 <p>医療従事者向けの意思決定支援ツールです。診断・処方を代替しません。</p>
 </footer>
 </main>
-<script src="static/primary-stats.js?v=4.3.3" charset="utf-8"></script>
-<script src="static/app.js?v=4.3.3" charset="utf-8">
+<script src="static/primary-stats.js?v=4.4.0" charset="utf-8"></script>
+<script src="static/app.js?v=4.4.0" charset="utf-8">
 </script>
 </body>
 </html>
